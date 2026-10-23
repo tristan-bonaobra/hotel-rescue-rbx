@@ -1,0 +1,114 @@
+local ServerStorage = game:GetService("ServerStorage")
+local Players = game:GetService("Players")
+
+local shopFolder = script.Parent
+local giversFolder = shopFolder:WaitForChild("Givers")
+local shopItemsFolder = ServerStorage:WaitForChild("ShopItems")
+
+local playerInventories = {}
+
+------------------------------------------------------------------------------
+-- ENFORCEMENT
+------------------------------------------------------------------------------
+
+for _, item in shopItemsFolder:GetChildren() do
+	if item:IsA("Tool") then
+		item.CanBeDropped = false
+	end
+end
+
+------------------------------------------------------------------------------
+-- FUNCTIONS
+------------------------------------------------------------------------------
+
+local function initGiver(giverModel)
+	local item = shopItemsFolder:FindFirstChild(giverModel.Name)
+	local priceObject = item and item:FindFirstChild("Price")
+	local price = priceObject and priceObject.Value
+	local head = giverModel:FindFirstChild("Head")
+	local decal = head and head:FindFirstChildOfClass("Decal")
+	local originalBrickColor = head and head.BrickColor
+	local isActive = false
+	
+	if (not item)
+		or (not price)
+		or (not head)
+		or (not decal)
+	then
+		return
+	end
+	
+	giverModel.Name = item.Name.. " - "..price.." points"
+	decal.ColorMapContent = Content.fromUri(item.TextureId)
+	
+	local buySound = script:WaitForChild("BuySound"):Clone()
+	buySound.Parent = head
+	
+	head.Touched:Connect(function(hit)
+		local char = hit.Parent
+		local plr = game.Players:GetPlayerFromCharacter(char)
+		local leaderstats = plr and plr:FindFirstChild("leaderstats")
+		local pointsObject = leaderstats and leaderstats:FindFirstChild("Points")
+		local currentPoints = pointsObject and pointsObject.Value
+		local canAffordItem = currentPoints and (currentPoints >= price)
+		local backpack = plr and plr.Backpack
+		local alreadyHasItem = backpack and backpack:FindFirstChild(item.Name)
+		
+		if canAffordItem and (not isActive) and (not alreadyHasItem) then
+			isActive = true
+			head.BrickColor = BrickColor.new("Bright red")
+			buySound:Play()
+			
+			pointsObject.Value -= price
+			item:Clone().Parent = plr.Backpack
+			
+			if playerInventories[plr] then
+				table.insert(playerInventories[plr], item:Clone())
+			end
+			
+			task.wait(1)
+			isActive = false
+			head.BrickColor = originalBrickColor
+		end
+	end)
+end
+
+local function grantPlayerItems(plr)
+	for _, ownedItem in playerInventories[plr] do
+		ownedItem:Clone().Parent = plr.Backpack
+	end
+end
+
+local function beginTrackingPlayer(plr)
+	playerInventories[plr] = {}
+	
+	for _, item in shopItemsFolder:GetChildren() do
+		local priceObject = item:FindFirstChild("Price")
+		local price = priceObject and priceObject.Value
+		local isFree = price == 0
+		
+		if isFree then
+			table.insert(playerInventories[plr], item:Clone())
+		end
+	end
+	
+	grantPlayerItems(plr)
+	
+	plr.CharacterAdded:Connect(function()
+		grantPlayerItems(plr)
+	end)
+end
+
+------------------------------------------------------------------------------
+-- CALLS
+------------------------------------------------------------------------------
+
+for _, giverModel in giversFolder:GetChildren() do
+	initGiver(giverModel)
+end
+
+for _, plr in Players:GetPlayers() do
+	beginTrackingPlayer(plr)
+end
+
+Players.PlayerAdded:Connect(beginTrackingPlayer)

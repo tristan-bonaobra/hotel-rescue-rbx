@@ -1,0 +1,9 @@
+{
+  "name": "hotel-rescue-rbx",
+  "tree": {
+    "$className": "DataModel",
+    "ServerScriptService": {
+      "$path": "src/server"
+    }
+  }
+}
