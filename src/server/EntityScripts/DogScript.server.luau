@@ -15,7 +15,6 @@ local neckWeld = torso:WaitForChild("NeckWeld")
 
 local myHead = dog:WaitForChild("Head")
 local leaderHead
-local leaderHum
 local shortestDistance = math.huge
 
 for _, npc in Npcs:GetChildren() do
