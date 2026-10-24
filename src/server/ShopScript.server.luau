@@ -1,5 +1,6 @@
 local ServerStorage = game:GetService("ServerStorage")
 local Players = game:GetService("Players")
+local ServerScriptService = game:GetService("ServerScriptService")
 
 local playerSpawnFolder = workspace:WaitForChild("PlayerSpawn")
 local shopFolder = playerSpawnFolder:WaitForChild("Shop")
@@ -8,9 +9,9 @@ local shopItemsFolder = ServerStorage:WaitForChild("ShopItems")
 
 local playerInventories = {}
 
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- ENFORCEMENT
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 for _, item in shopItemsFolder:GetChildren() do
 	if item:IsA("Tool") then
@@ -18,9 +19,19 @@ for _, item in shopItemsFolder:GetChildren() do
 	end
 end
 
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- FUNCTIONS
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+
+local function loadGearScripts(gear)
+	local gearScriptsMainFolder = ServerScriptService:WaitForChild("GearScripts")
+	local gearScriptsSubFolder = gearScriptsMainFolder:FindFirstChild(gear.Name)
+	if gearScriptsSubFolder then
+		for _, v in gearScriptsSubFolder:GetChildren() do
+			v:Clone().Parent = gear
+		end
+	end
+end
 
 local function initGiver(giverModel)
 	local item = shopItemsFolder:FindFirstChild(giverModel.Name)
@@ -66,6 +77,9 @@ local function initGiver(giverModel)
 			if playerInventories[plr] then
 				table.insert(playerInventories[plr], item:Clone())
 			end
+
+			-- Load scripts now instead of before the new item is stored in virtual inventory
+			loadGearScripts(item)
 			
 			task.wait(1)
 			isActive = false
@@ -76,7 +90,9 @@ end
 
 local function grantPlayerItems(plr)
 	for _, ownedItem in playerInventories[plr] do
-		ownedItem:Clone().Parent = plr.Backpack
+		local clonedItem = ownedItem:Clone()
+		clonedItem.Parent = plr.Backpack
+		loadGearScripts(clonedItem)
 	end
 end
 
@@ -100,9 +116,9 @@ local function beginTrackingPlayer(plr)
 	end)
 end
 
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 -- CALLS
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 for _, giverModel in giversFolder:GetChildren() do
 	initGiver(giverModel)
