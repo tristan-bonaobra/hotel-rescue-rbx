@@ -2,8 +2,7 @@ local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local Players = game:GetService("Players")
 
-local projectFolder = ServerScriptService:WaitForChild("HotelRescue")
-local Config = require(projectFolder:WaitForChild("Config"))
+local Config = require(ServerScriptService:WaitForChild("Config"))
 
 local npcAssetsFolder = ServerStorage:WaitForChild("NpcAssets")
 local npcWinPosesFolder = npcAssetsFolder:WaitForChild("WinPoses")
