@@ -1,8 +1,8 @@
-local projectFolder = game:GetService("ServerScriptService").HotelRescue
+local ServerScriptService = game:GetService("ServerScriptService")
 
-local Config = require(projectFolder.Config)
-local DebrisController = require(projectFolder.MapManipulation.DebrisController)
-local ToolDebris = workspace:WaitForChild("ToolDebris")
+local Config = require(ServerScriptService:WaitForChild("Config"))
+
+local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
@@ -62,7 +62,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			platform.Size = Vector3.new(0.5, platformDiameter, platformDiameter)
 			platform.CFrame = CFrame.new(clickPos) * CFrame.Angles(0, 0, math.rad(90))
 			platform:SetAttribute("IsGearAttachable", true)
-			platform.Parent = ToolDebris
+			platform.Parent = toolDebrisFolder
 			
 			local weld = Instance.new("WeldConstraint")
 			weld.Part0 = clickTarget
