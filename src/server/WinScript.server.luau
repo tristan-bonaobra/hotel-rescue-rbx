@@ -1,3 +1,7 @@
+if not script.Parent:IsA("Model") then
+	return
+end
+
 local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local Players = game:GetService("Players")
