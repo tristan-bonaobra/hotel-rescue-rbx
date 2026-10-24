@@ -1,7 +1,8 @@
 local RunService = game:GetService("RunService")
-local NpcLoader = require(script.Parent)
-local HotelRescue = script.Parent.Parent
-local Config = require(HotelRescue:WaitForChild("Config"))
+local ServerScriptService = game:GetService("ServerScriptService")
+
+local Config = require(ServerScriptService:WaitForChild("Config"))
+local npcFolder = workspace:WaitForChild("Npcs")
 
 local torsoHistories = {}
 
@@ -46,8 +47,6 @@ RunService.Heartbeat:Connect(function()
 	end
 end)
 
-local Npcs = workspace:WaitForChild("Npcs")
-
 local function registerNpc(npc)
 	local torso = npc:WaitForChild("Torso", 5)
 	if torso then
@@ -55,8 +54,8 @@ local function registerNpc(npc)
 	end
 end
 
-for _, npc in pairs(Npcs:GetChildren()) do
+for _, npc in pairs(npcFolder:GetChildren()) do
 	registerNpc(npc)
 end
 
-Npcs.ChildAdded:Connect(registerNpc)
+npcFolder.ChildAdded:Connect(registerNpc)
