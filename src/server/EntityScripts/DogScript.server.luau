@@ -6,7 +6,7 @@ local DEFAULT_NECK_POS = Vector3.new(0, 0.235, 0)
 local DEFAULT_NECK_ROT = CFrame.Angles(math.rad(90), math.rad(180), 0)
 
 local RunService = game:GetService("RunService")
-local Npcs = workspace:WaitForChild("Npcs")
+local npcFolder = workspace:WaitForChild("Npcs")
 
 local dog = script.Parent
 local humanoid = dog:WaitForChild("Humanoid")
@@ -17,7 +17,7 @@ local myHead = dog:WaitForChild("Head")
 local leaderHead
 local shortestDistance = math.huge
 
-for _, npc in Npcs:GetChildren() do
+for _, npc in npcFolder:GetChildren() do
 	local npcHum = npc:FindFirstChildOfClass("Humanoid")
 	local npcHead = npc:FindFirstChild("Head")
 	if npcHum and npcHead then
