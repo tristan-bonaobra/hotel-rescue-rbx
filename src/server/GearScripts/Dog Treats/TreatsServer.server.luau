@@ -1,9 +1,9 @@
 local ServerScriptService = game:GetService("ServerScriptService")
 local ServerStorage = game:GetService("ServerStorage")
 
-local HotelRescue = ServerScriptService:WaitForChild("HotelRescue")
-local Config = require(HotelRescue.Config)
-local Summons = ServerStorage:WaitForChild("Summons")
+local Config = require(ServerScriptService:WaitForChild("Config"))
+
+local summonsFolder = ServerStorage:WaitForChild("Summons")
 local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
@@ -32,7 +32,7 @@ tool.Activated:Connect(function()
 		handle.Whistle:Play()
 	else
 		local char = tool.Parent
-		dog = Summons:WaitForChild("Dog"):Clone()
+		dog = summonsFolder:WaitForChild("Dog"):Clone()
 		dog.Torso.CFrame = char.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
 		dog.Parent = toolDebrisFolder
 		script.DogScript:Clone().Parent = dog	
