@@ -1,6 +1,6 @@
 local ServerScriptService = game:GetService("ServerScriptService")
-local projectFolder = ServerScriptService:WaitForChild("HotelRescue")
-local Config = require(projectFolder:WaitForChild("Config"))
+
+local Config = require(ServerScriptService:WaitForChild("Config"))
 
 local char = script.Parent
 local hum = char and char:FindFirstChildOfClass("Humanoid")
