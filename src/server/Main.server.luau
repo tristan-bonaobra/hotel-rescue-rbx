@@ -1,6 +1,6 @@
-local ServerStorage = game:GetService("ServerStorage")
+local ServerScriptService = game:GetService("ServerScriptService")
 
-local GameMaster = ServerStorage:WaitForChild("GameMaster")
+local GameMaster = ServerScriptService:WaitForChild("GameMaster")
 
 GameMaster.initLeaderstats()
 GameMaster.gameLoop()
