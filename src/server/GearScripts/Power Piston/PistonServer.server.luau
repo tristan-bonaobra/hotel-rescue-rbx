@@ -1,7 +1,9 @@
-local HotelRescue = game:GetService("ServerScriptService").HotelRescue
-local Config = require(HotelRescue.Config)
-local DebrisController = require(HotelRescue.MapManipulation.DebrisController)
-local ToolDebris = workspace:WaitForChild("ToolDebris")
+local ServerScriptService = game:GetService("ServerScriptService")
+
+local Config = require(ServerScriptService:WaitForChild("Config"))
+local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
+
+local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
@@ -9,7 +11,6 @@ local handle = tool:WaitForChild("Handle")
 
 local isActive
 local pistonModel
-local touchConnection
 
 local function playAnim()
 	local anim = Instance.new("StringValue")
@@ -61,7 +62,6 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 		local char = plr.Character
 		local root = char and char:FindFirstChild("HumanoidRootPart")
 		local withinReach = root and (root.Position - clickCFrame.Position).Magnitude <= Config.PISTON_PLACEMENT_DISTANCE
-		local currentMap = workspace:FindFirstChild("CurrentMap")
 		
 		if withinReach and verifyPistonAttachable(clickTarget) then
 			isActive = true
@@ -75,7 +75,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			
 			pistonModel = Instance.new("Model")
 			pistonModel.Name = "Piston"
-			pistonModel.Parent = ToolDebris
+			pistonModel.Parent = toolDebrisFolder
 			
 			local base = Instance.new("Part")
 			base.Name = "Base"
@@ -155,7 +155,7 @@ while true do
 		
 		for _, part in ipairs(partsInBox) do
 			if verifyTempUnanchorable(part) then
-				DebrisController.tempUnanchor(part)
+				BrickUtils.tempUnanchor(part)
 			end
 		end
 	end
