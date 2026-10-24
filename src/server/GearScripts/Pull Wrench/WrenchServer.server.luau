@@ -1,6 +1,7 @@
-local HotelRescue = game:GetService("ServerScriptService").HotelRescue
-local Config = require(HotelRescue.Config)
-local DebrisController = require(HotelRescue.MapManipulation.DebrisController)
+local ServerScriptService = game:GetService("ServerScriptService")
+
+local Config = require(ServerScriptService:WaitForChild("Config"))
+local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
@@ -51,7 +52,7 @@ local function unattachAndDeactivate()
 	game.Debris:AddItem(attachment1, 0)
 	game.Debris:AddItem(rope, 0)
 	if verifyTempUnanchorable(attachedPart) then
-		DebrisController.tempUnanchor(attachedPart)
+		BrickUtils.tempUnanchor(attachedPart)
 	end
 	attachedPart = nil
 	if attConn then
