@@ -6,6 +6,8 @@ local playerSpawnFolder = workspace:WaitForChild("PlayerSpawn")
 local shopFolder = playerSpawnFolder:WaitForChild("Shop")
 local giversFolder = shopFolder:WaitForChild("Givers")
 local shopItemsFolder = ServerStorage:WaitForChild("Gear")
+local soundsFolder = ServerStorage:WaitForChild("Sounds")
+local worldSoundsFolder = soundsFolder:WaitForChild("World")
 
 local playerInventories = {}
 
@@ -53,7 +55,7 @@ local function initGiver(giverModel)
 	giverModel.Name = item.Name.. " - "..price.." points"
 	decal.ColorMapContent = Content.fromUri(item.TextureId)
 	
-	local buySound = script:WaitForChild("BuySound"):Clone()
+	local buySound = worldSoundsFolder:WaitForChild("ShopBuy"):Clone()
 	buySound.Parent = head
 	
 	head.Touched:Connect(function(hit)
