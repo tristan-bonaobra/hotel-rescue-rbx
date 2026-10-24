@@ -1,3 +1,7 @@
+if not script.Parent:IsA("Tool") then
+	return
+end
+
 local ServerScriptService = game:GetService("ServerScriptService")
 local ServerStorage = game:GetService("ServerStorage")
 

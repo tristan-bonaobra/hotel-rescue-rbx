@@ -1,3 +1,7 @@
+if not script.Parent:IsA("Tool") then
+	return
+end
+
 local Chat = game:GetService("Chat")
 local ServerScriptService = game:GetService("ServerScriptService")
 
