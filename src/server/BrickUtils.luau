@@ -4,6 +4,11 @@ local function tempUnanchor(part)
     return true
 end
 
+local function breakPart(part, breakParams)
+    return true
+end
+
 return {
-    tempUnanchor = tempUnanchor
+    tempUnanchor = tempUnanchor,
+    breakPart = breakPart
 }

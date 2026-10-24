@@ -1,7 +1,7 @@
-local Config = require(game:GetService("ServerScriptService").HotelRescue.Config)
+local ServerScriptService = game:GetService("ServerScriptService")
 
-local HotelRescue = game:GetService("ServerScriptService"):WaitForChild("HotelRescue")
-local PartBreaker = require(HotelRescue.MapManipulation.PartBreaker)
+local Config = require(ServerScriptService:WaitForChild("Config"))
+local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
@@ -22,7 +22,6 @@ end
 toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 	local char = plr.Character
 	local root = char and char:FindFirstChild("HumanoidRootPart")
-	local currentMap = workspace:FindFirstChild("CurrentMap")
 	
 	if isActive
 		or (not root)
@@ -47,7 +46,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 				Unanchor = true,
 				Tint = true
 			}
-			PartBreaker.breakPart(clickTarget, breakParams)
+			BrickUtils.breakPart(clickTarget, breakParams)
 			handle.Break:Play()
 		else
 			handle.Miss:Play()
