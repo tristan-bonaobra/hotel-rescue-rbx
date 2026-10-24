@@ -5,7 +5,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local playerSpawnFolder = workspace:WaitForChild("PlayerSpawn")
 local shopFolder = playerSpawnFolder:WaitForChild("Shop")
 local giversFolder = shopFolder:WaitForChild("Givers")
-local shopItemsFolder = ServerStorage:WaitForChild("ShopItems")
+local shopItemsFolder = ServerStorage:WaitForChild("Gear")
 
 local playerInventories = {}
 
