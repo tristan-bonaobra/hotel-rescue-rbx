@@ -66,6 +66,7 @@ local function getWinPoseReferenceModel(spotName)
 	elseif spotName == "Hug" then
 		return npcWinPosesFolder:WaitForChild("Hug")
 	end
+	return
 end
 
 local function getRelativeCFrames(refModel)
