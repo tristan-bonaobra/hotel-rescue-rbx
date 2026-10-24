@@ -1,7 +1,7 @@
 local Chat = game:GetService("Chat")
+local ServerScriptService = game:GetService("ServerScriptService")
 
-local HotelRescue = game:GetService("ServerScriptService").HotelRescue
-local Config = require(HotelRescue.Config)
+local Config = ServerScriptService:WaitForChild("Config")
 
 local tool = script.Parent
 local handle = tool:WaitForChild("Handle")
