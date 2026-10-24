@@ -1,8 +1,7 @@
-local HotelRescue = game:GetService("ServerScriptService").HotelRescue
-local Config = require(HotelRescue.Config)
-local DebrisController = require(HotelRescue.MapManipulation.DebrisController)
+local ServerScriptService = game:GetService("ServerScriptService")
 
-local npcFolder = workspace:WaitForChild("Npcs")
+local Config = require(ServerScriptService:WaitForChild("Config"))
+local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 
 local tool = script.Parent
 local handle = tool:WaitForChild("Handle")
@@ -61,7 +60,7 @@ tool.Activated:Connect(function()
 	for _, part in ipairs(affectedParts) do
 		if verifyBellable(part) then
 			if part.Anchored then
-				DebrisController.tempUnanchor(part)
+				BrickUtils.tempUnanchor(part)
 			end
 			
 			local assemblyRoot = part.AssemblyRootPart or part
