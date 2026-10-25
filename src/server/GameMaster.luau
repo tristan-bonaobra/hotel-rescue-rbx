@@ -5,14 +5,13 @@
 local Players = game:GetService("Players")
 local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
-local Debris = game:GetService("Debris")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local MapManipulation = require(ServerScriptService:WaitForChild("MapManipulation"))
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local mapsLib = ServerStorage:WaitForChild("Maps")
 local soundsLib = ServerStorage:WaitForChild("Sounds")
-local gameSoundsLib = soundsLib:WaitForChild("Game")
 local musicLib = soundsLib:WaitForChild("Music")
 
 local globalSoundsBin = workspace:WaitForChild("GlobalSounds")
@@ -94,34 +93,6 @@ local function killAllPlayers()
 	end
 end
 
-local function autoDestroySound(sound)
-	task.spawn(function()
-		if not sound.IsLoaded then
-			sound.Loaded:Wait()
-		end
-
-		local trueLength = sound.TimeLength / sound.PlaybackSpeed
-		Debris:AddItem(sound, trueLength)
-	end)
-end
-
-local function playGameSound(name, isLooped)
-	local originalSound = gameSoundsLib:FindFirstChild(name)
-	if originalSound then
-		local newSound = originalSound:Clone()
-		newSound.Parent = globalSoundsBin
-		newSound.Looped = isLooped
-		newSound:Play()
-
-		if not isLooped then
-			autoDestroySound(newSound)
-		end
-
-		return newSound
-	end
-	return
-end
-
 ------------------------------------------------------------------------------
 -- GAME LOOP
 ------------------------------------------------------------------------------
@@ -170,7 +141,7 @@ local function storyIntro()
 	hint.Text = "Noob: *turns on TV* :3"
 	task.wait(2)
 	hint.Text = "News: Emergency report!"
-	playGameSound("EmergencyReport")
+	SoundUtils.playSound(globalSoundsBin, "Game.EmergencyReport")
 	task.wait(5)
 	hint.Text = "News: A 1337 magnitude earthquake is coming to Robloxia!"
 	task.wait(5)
@@ -180,7 +151,7 @@ local function storyIntro()
 end
 
 local function earthquake()
-	local newSound = playGameSound("EarthquakeLoop", true)
+	local newSound = SoundUtils.playSound(globalSoundsBin, "Game.EarthquakeLoop", true)
 	hint.Text = "The earth is shaking... >_>"
 	MapManipulation.spawnNpcsOnMap(currentMap)
 	MapManipulation.crumbleMap(currentMap)
@@ -195,7 +166,7 @@ local function storyGameBegin()
 	hint.Text = "Survivor 1: WAHHHH!!!!! ;-;"
 	task.wait(5)
 	hint.Text = "Survivor 2: I want my teddy bear... :(( ??"
-	playGameSound("Ping")
+	SoundUtils.playSound(globalSoundsBin, "Game.Ping")
 	task.wait(5)
 	hint.Text = "President: Players, I have a new mission for you! >:|"
 	task.wait(5)
@@ -204,7 +175,7 @@ local function storyGameBegin()
 	hint.Text = "Players: SIR YES SIR!"
 	task.wait(5)
 	hint.Text = "Captain: Don't forget to return to spawn to buy items, rookie!"
-	playGameSound("Ping")
+	SoundUtils.playSound(globalSoundsBin, "Game.Ping")
 	task.wait(5)
 	hint.Text = ""
 end
@@ -214,7 +185,7 @@ local function gameBegin()
 	winZone.Parent = workspace
 	enableTeleporter()
 	npcsAtStart = #npcsBin:GetChildren()
-	playGameSound("GameBegin")
+	SoundUtils.playSound(globalSoundsBin, "Game.GameBegin")
 end
 
 local function gameCountdown()
@@ -240,10 +211,10 @@ local function recap()
 	end
 	
 	hint.Text = "Times up!"
-	playGameSound("Victory")
+	SoundUtils.playSound(globalSoundsBin, "Game.Victory")
 	task.wait(5)
 	hint.Text = "You evacuated "..totalRescued.." out of "..npcsAtStart.." survivors!"
-	playGameSound("Applause")
+	SoundUtils.playSound(globalSoundsBin, "Game.Applause")
 	task.wait(5)
 	hint.Text = "Thanks for playing!"
 	task.wait(5)
