@@ -1,7 +1,7 @@
 local Players = game:GetService("Players")
 local ServerStorage = game:GetService("ServerStorage")
+local ServerScriptService = game:GetService("ServerScriptService")
 
-local projectFolder = script.Parent
 local mapFolder = ServerStorage:WaitForChild("Maps")
 local globalSoundsFolder = workspace:WaitForChild("GlobalSounds")
 local soundEffectsFolder = globalSoundsFolder:WaitForChild("Effects")
@@ -9,8 +9,8 @@ local musicFolder = globalSoundsFolder:WaitForChild("Music")
 local npcFolder = workspace:WaitForChild("Npcs")
 local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
 
-local Config = require(projectFolder:WaitForChild("Config"))
-local MapManipulation = require(projectFolder:WaitForChild("MapManipulation"))
+local Config = require(ServerScriptService:WaitForChild("Config"))
+local MapManipulation = require(ServerScriptService:WaitForChild("MapManipulation"))
 
 local teleporter = workspace:WaitForChild("Teleporter")
 local message = Instance.new("Message")
