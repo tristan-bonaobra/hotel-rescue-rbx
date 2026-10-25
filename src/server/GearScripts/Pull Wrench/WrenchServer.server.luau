@@ -6,6 +6,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
@@ -121,7 +122,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 		
 		if withinReach and verifyPullable(clickTarget) then
 			playAnim()
-			tool.Handle.Bass:Play()
+			SoundUtils.playSound(tool:WaitForChild("Handle"), "Gear.WrenchBass")
 			
 			attachedPart = clickTarget
 			attachment0 = Instance.new("Attachment")
