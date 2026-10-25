@@ -3,7 +3,7 @@ local Debris = game:GetService("Debris")
 
 local soundsLib = ServerStorage:WaitForChild("Sounds")
 
-local function playSound(instance, pathString, isLooped)
+local function copySound(pathString)
     local path = pathString:split(".")
     local subLibName = path[1]
     local soundName = path[2]
@@ -13,6 +13,14 @@ local function playSound(instance, pathString, isLooped)
 
     if asset then
         local sound = asset:Clone()
+        return sound
+    end
+    return
+end
+
+local function playSound(instance, pathString, isLooped)
+    local sound = copySound(pathString)
+    if sound then
         sound.Parent = instance
         sound.Looped = isLooped
         sound:Play()
@@ -27,5 +35,6 @@ local function playSound(instance, pathString, isLooped)
 end
 
 return {
-    playSound = playSound
+    playSound = playSound,
+    copySound = copySound
 }
