@@ -2,6 +2,8 @@ local ServerStorage = game:GetService("ServerStorage")
 local Players = game:GetService("Players")
 local ServerScriptService = game:GetService("ServerScriptService")
 
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
+
 local playerSpawnFolder = workspace:WaitForChild("PlayerSpawn")
 local shopFolder = playerSpawnFolder:WaitForChild("Shop")
 local giversFolder = shopFolder:WaitForChild("Givers")
@@ -56,9 +58,6 @@ local function initGiver(giverModel)
 	giverModel.Name = item.Name.. " - "..price.." points"
 	decal.ColorMapContent = Content.fromUri(item.TextureId)
 	
-	local buySound = worldSoundsLib:WaitForChild("ShopBuy"):Clone()
-	buySound.Parent = head
-	
 	head.Touched:Connect(function(hit)
 		local char = hit.Parent
 		local plr = game.Players:GetPlayerFromCharacter(char)
@@ -72,7 +71,7 @@ local function initGiver(giverModel)
 		if canAffordItem and (not isActive) and (not alreadyHasItem) then
 			isActive = true
 			head.BrickColor = BrickColor.new("Bright red")
-			buySound:Play()
+			SoundUtils.playSound(head, "World.ShopBuy")
 			
 			pointsObject.Value -= price
 			item:Clone().Parent = plr.Backpack
