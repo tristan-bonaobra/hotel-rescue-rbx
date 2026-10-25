@@ -6,6 +6,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local ServerStorage = game:GetService("ServerStorage")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local summonsFolder = ServerStorage:WaitForChild("Summons")
 local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
@@ -28,19 +29,19 @@ tool.Activated:Connect(function()
 	anim.Parent = tool
 	game.Debris:AddItem(anim, 1)
 	
-	handle.Rustle:Play()
+	SoundUtils.playSound(handle, "Gear.TreatsRustle")
 	
 	if dog then
 		dog:Destroy()
 		dog = nil
-		handle.Whistle:Play()
+		SoundUtils.playSound(handle, "Gear.TreatsWhistle")
 	else
 		local char = tool.Parent
 		dog = summonsFolder:WaitForChild("Dog"):Clone()
 		dog.Torso.CFrame = char.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
 		dog.Parent = toolDebrisFolder
 		script.DogScript:Clone().Parent = dog	
-		dog:WaitForChild("Head"):WaitForChild("Bark"):Play()
+		SoundUtils.playSound(dog:WaitForChild("Head"), "Entity.DogBark")
 	end
 	
 	task.wait(Config.TREATS_COOLDOWN)
