@@ -1,32 +1,45 @@
+------------------------------------------------------------------------------
+-- DEPENDENCIES
+------------------------------------------------------------------------------
+
 local Players = game:GetService("Players")
 local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local Debris = game:GetService("Debris")
 
-local mapFolder = ServerStorage:WaitForChild("Maps")
-local globalSoundsBin = workspace:WaitForChild("GlobalSounds")
-local npcFolder = workspace:WaitForChild("Npcs")
-local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
+local Config = require(ServerScriptService:WaitForChild("Config"))
+local MapManipulation = require(ServerScriptService:WaitForChild("MapManipulation"))
 
+local mapsLib = ServerStorage:WaitForChild("Maps")
 local soundsLib = ServerStorage:WaitForChild("Sounds")
 local gameSoundsLib = soundsLib:WaitForChild("Game")
 local musicLib = soundsLib:WaitForChild("Music")
 
-local Config = require(ServerScriptService:WaitForChild("Config"))
-local MapManipulation = require(ServerScriptService:WaitForChild("MapManipulation"))
+local globalSoundsBin = workspace:WaitForChild("GlobalSounds")
+local npcsBin = workspace:WaitForChild("Npcs")
+local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local teleporter = workspace:WaitForChild("Teleporter")
-local message = Instance.new("Message")
-local hint = Instance.new("Hint")
-local currentMap
-local winZone
-local npcsAtStart
+
+------------------------------------------------------------------------------
+-- NEW OBJECTS
+------------------------------------------------------------------------------
 
 local music = musicLib:WaitForChild("UrbanDescent"):Clone()
 music.Parent = globalSoundsBin
 
+local message = Instance.new("Message")
+local hint = Instance.new("Hint")
 message.Parent = workspace
 hint.Parent = workspace
+
+------------------------------------------------------------------------------
+-- STATE VARIABLES
+------------------------------------------------------------------------------
+
+local currentMap
+local winZone
+local npcsAtStart
 
 ------------------------------------------------------------------------------
 -- MISC FUNCTIONS
@@ -120,11 +133,11 @@ local function intermission()
 end
 
 local function getRandomMap()
-	if #mapFolder:GetChildren() == 0 then
-		mapFolder.ChildAdded:Wait()
+	if #mapsLib:GetChildren() == 0 then
+		mapsLib.ChildAdded:Wait()
 	end
 	
-	local maps = mapFolder:GetChildren()
+	local maps = mapsLib:GetChildren()
 	return maps[math.random(#maps)]:Clone()
 end
 
@@ -200,7 +213,7 @@ local function gameBegin()
 	winZone = ServerStorage:WaitForChild("WinZone"):Clone()
 	winZone.Parent = workspace
 	enableTeleporter()
-	npcsAtStart = #npcFolder:GetChildren()
+	npcsAtStart = #npcsBin:GetChildren()
 	playGameSound("GameBegin")
 end
 
@@ -220,7 +233,7 @@ end
 
 local function recap()
 	local totalRescued = 0
-	for _, npc in npcFolder:GetChildren() do
+	for _, npc in npcsBin:GetChildren() do
 		if npc:GetAttribute("IsRescued") then
 			totalRescued += 1
 		end
@@ -244,8 +257,8 @@ local function resetGame()
 	disableTeleporter()
 	killAllPlayers()
 	task.wait(2)
-	npcFolder:ClearAllChildren()
-	toolDebrisFolder:ClearAllChildren()
+	npcsBin:ClearAllChildren()
+	toolDebrisBin:ClearAllChildren()
 	message.Text = ""
 end
 
