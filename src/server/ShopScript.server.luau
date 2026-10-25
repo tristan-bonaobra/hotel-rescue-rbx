@@ -5,9 +5,10 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local playerSpawnFolder = workspace:WaitForChild("PlayerSpawn")
 local shopFolder = playerSpawnFolder:WaitForChild("Shop")
 local giversFolder = shopFolder:WaitForChild("Givers")
-local shopItemsFolder = ServerStorage:WaitForChild("Gear")
-local soundsFolder = ServerStorage:WaitForChild("Sounds")
-local worldSoundsFolder = soundsFolder:WaitForChild("World")
+
+local gearLib = ServerStorage:WaitForChild("Gear")
+local soundsLib = ServerStorage:WaitForChild("Sounds")
+local worldSoundsLib = soundsLib:WaitForChild("World")
 
 local playerInventories = {}
 
@@ -15,7 +16,7 @@ local playerInventories = {}
 -- ENFORCEMENT
 ---------------------------------------------------------------------------------------------------
 
-for _, item in shopItemsFolder:GetChildren() do
+for _, item in gearLib:GetChildren() do
 	if item:IsA("Tool") then
 		item.CanBeDropped = false
 	end
@@ -36,7 +37,7 @@ local function loadGearScripts(gear)
 end
 
 local function initGiver(giverModel)
-	local item = shopItemsFolder:FindFirstChild(giverModel.Name)
+	local item = gearLib:FindFirstChild(giverModel.Name)
 	local priceObject = item and item:FindFirstChild("Price")
 	local price = priceObject and priceObject.Value
 	local head = giverModel:FindFirstChild("Head")
@@ -55,7 +56,7 @@ local function initGiver(giverModel)
 	giverModel.Name = item.Name.. " - "..price.." points"
 	decal.ColorMapContent = Content.fromUri(item.TextureId)
 	
-	local buySound = worldSoundsFolder:WaitForChild("ShopBuy"):Clone()
+	local buySound = worldSoundsLib:WaitForChild("ShopBuy"):Clone()
 	buySound.Parent = head
 	
 	head.Touched:Connect(function(hit)
@@ -101,7 +102,7 @@ end
 local function beginTrackingPlayer(plr)
 	playerInventories[plr] = {}
 	
-	for _, item in shopItemsFolder:GetChildren() do
+	for _, item in gearLib:GetChildren() do
 		local priceObject = item:FindFirstChild("Price")
 		local price = priceObject and priceObject.Value
 		local isFree = price == 0
