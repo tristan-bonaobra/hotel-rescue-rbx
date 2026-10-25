@@ -17,6 +17,9 @@ local sleepingFaces = classicFacesFolder:WaitForChild("Asleep"):GetChildren()
 local newFace = sleepingFaces[math.random(#sleepingFaces)]:Clone()
 local oldFace = head:FindFirstChildOfClass("Decal")
 
+local soundsLib = ServerStorage:WaitForChild("Sounds")
+local npcSoundsLib = soundsLib:WaitForChild("Npc")
+
 if oldFace then
 	oldFace.Name = "OriginalFace"
 	oldFace.Transparency = 1
@@ -24,7 +27,7 @@ end
 
 newFace.Parent = head
 
-local deathSound = script.BlocklandDeath:Clone()
+local deathSound = npcSoundsLib:WaitForChild("NpcBlockland"):Clone()
 deathSound.Parent = head
 deathSound:Play()
 
