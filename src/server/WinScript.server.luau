@@ -2,6 +2,10 @@ if not script.Parent:IsA("Model") then
 	return
 end
 
+------------------------------------------------------------------------------------------
+-- DEPENDENCIES
+------------------------------------------------------------------------------------------
+
 local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local Players = game:GetService("Players")
@@ -9,9 +13,11 @@ local Players = game:GetService("Players")
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
-local npcAssetsFolder = ServerStorage:WaitForChild("NpcAssets")
-local npcWinPosesFolder = npcAssetsFolder:WaitForChild("WinPoses")
-local npcFolder = workspace:WaitForChild("Npcs")
+local npcAssetsLib = ServerStorage:WaitForChild("NpcAssets")
+local npcWinPosesLib = npcAssetsLib:WaitForChild("WinPoses")
+
+local globalSoundsBin = workspace:WaitForChild("GlobalSounds")
+local npcsBin = workspace:WaitForChild("Npcs")
 
 local winZone = script.Parent
 local winPart = winZone:WaitForChild("WinPart")
@@ -19,7 +25,11 @@ local npcSpotsFolder = winZone:WaitForChild("NpcSpots")
 local npcSpotsConscious = npcSpotsFolder:WaitForChild("Conscious"):GetChildren()
 local npcSpotsUnconscious = npcSpotsFolder:WaitForChild("Unconscious"):GetChildren()
 
-local globalSoundsBin = workspace:WaitForChild("GlobalSounds")
+local npcsRescued = 0
+
+------------------------------------------------------------------------------------------
+-- FUNCTIONS
+------------------------------------------------------------------------------------------
 
 local function anchorModel(model)
 	for _, v in model:GetDescendants() do
@@ -64,11 +74,11 @@ end
 
 local function getWinPoseReferenceModel(spotName)
 	if table.find({"Seat", "Stand", "Watch"}, spotName) then
-		local referenceFolder = npcWinPosesFolder:FindFirstChild(spotName)
+		local referenceFolder = npcWinPosesLib:FindFirstChild(spotName)
 		local references = referenceFolder:GetChildren()
 		return references[math.random(#references)]
 	elseif spotName == "Hug" then
-		return npcWinPosesFolder:WaitForChild("Hug")
+		return npcWinPosesLib:WaitForChild("Hug")
 	end
 	return
 end
@@ -171,8 +181,6 @@ local function chooseSpot(isUnconscious)
 	return spot
 end
 
-local npcsRescued = 0
-
 local function rewardAllPlayersForRescue(isUnconscious)
 	local points = (isUnconscious and Config.REWARD_UNCONSCIOUS) or Config.REWARD_CONSCIOUS
 	for _, plr in Players:GetPlayers() do
@@ -190,10 +198,14 @@ local function rewardAllPlayersForRescue(isUnconscious)
 	end
 end
 
+------------------------------------------------------------------------------------------
+-- ORCHESTRATION
+------------------------------------------------------------------------------------------
+
 winPart.Touched:Connect(function(hit)
 	local npc = hit.Parent
 	local hum = npc:FindFirstChildOfClass("Humanoid")
-	local isInNpcFolder = npc:IsDescendantOf(npcFolder)
+	local isInNpcFolder = npc:IsDescendantOf(npcsBin)
 	local isRescued = npc:GetAttribute("IsRescued")
 	local isUnconscious = npc:GetAttribute("IsUnconscious")
 	if hum and isInNpcFolder and (not isRescued) then
