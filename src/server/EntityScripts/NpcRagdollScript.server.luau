@@ -7,17 +7,21 @@ end
 ------------------------------------------------------------------------------
 
 local ServerStorage = game:GetService("ServerStorage")
+local ServerScriptService = game:GetService("ServerScriptService")
+
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local npcAssetsLib = ServerStorage:WaitForChild("NpcAssets")
 local classicFacesLib = npcAssetsLib:WaitForChild("ClassicFaces")
 local sleepingFacesLib = classicFacesLib:WaitForChild("Asleep"):GetChildren()
-local soundsLib = ServerStorage:WaitForChild("Sounds")
-local npcSoundsLib = soundsLib:WaitForChild("Npc")
 
 local char = script.Parent
 local hum = char:FindFirstChildOfClass("Humanoid")
 local head = char:WaitForChild("Head")
 local torso = char:WaitForChild("Torso")
+local torsoPos = torso.Position
+local newFace = sleepingFacesLib[math.random(#sleepingFacesLib)]:Clone()
+local oldFace = head:FindFirstChildOfClass("Decal")
 
 ------------------------------------------------------------------------------
 -- STATE UNCONSCIOUS
@@ -25,19 +29,15 @@ local torso = char:WaitForChild("Torso")
 
 char:SetAttribute("IsUnconscious", true)
 
-local newFace = sleepingFacesLib[math.random(#sleepingFacesLib)]:Clone()
-local oldFace = head:FindFirstChildOfClass("Decal")
 if oldFace then
 	oldFace.Name = "OriginalFace"
 	oldFace.Transparency = 1
 end
+
 newFace.Parent = head
 
-local deathSound = npcSoundsLib:WaitForChild("NpcBlockland"):Clone()
-deathSound.Parent = head
-deathSound:Play()
+SoundUtils.playSound(head, "Npc.NpcBlockLand")
 
-local torsoPos = torso.Position
 char:PivotTo(CFrame.new(torsoPos) * CFrame.Angles(math.rad(90), 0 , 0))
 
 ------------------------------------------------------------------------------
