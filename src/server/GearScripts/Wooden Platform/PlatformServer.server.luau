@@ -5,6 +5,7 @@ end
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
 
@@ -48,7 +49,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 		platform:Destroy()
 		platform = nil
 		handle.Transparency = 0
-		handle:WaitForChild("ReturnSound"):Play()
+		SoundUtils.playSound(handle, "Gear.PlatformReturn")
 		playAnim()
 	else
 		local clickPos = clickCFrame.Position
@@ -74,7 +75,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			weld.Parent = platform
 			
 			playAnim()
-			handle:WaitForChild("PlaceSound"):Play()
+			SoundUtils.playSound(handle, "Gear.PlatformPlace")
 			handle.Transparency = 1
 		end
 	end
