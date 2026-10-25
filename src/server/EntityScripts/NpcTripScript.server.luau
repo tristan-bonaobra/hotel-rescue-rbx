@@ -18,7 +18,7 @@ hum.PlatformStand = true
 
 char:PivotTo(CFrame.new(torsoPos) * CFrame.Angles(math.rad(-90), 0 , 0))
 
-SoundUtils.playSound(torso, "Npc.NpcSplat")
+SoundUtils.playSound(torso, "Entity.NpcSplat")
 
 char:SetAttribute("IsTripped", true)
 
@@ -26,7 +26,7 @@ task.wait(Config.NPC_TRIP_DURATION)
 
 hum.PlatformStand = false
 
-SoundUtils.playSound(torso, "Npc.NpcTumble")
+SoundUtils.playSound(torso, "Entity.NpcTumble")
 
 char:SetAttribute("IsTripped", false)
 
