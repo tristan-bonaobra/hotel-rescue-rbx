@@ -6,6 +6,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local tool = script.Parent
 local handle = tool:WaitForChild("Handle")
@@ -48,8 +49,8 @@ tool.Activated:Connect(function()
 	anim.Parent = tool
 	game.Debris:AddItem(anim, 1)
 
-	handle.Bass:Play()
-	handle.Quake:Play()
+	SoundUtils.playSound(handle, "Gear.BellBass")
+	SoundUtils.playSound(handle, "Gear.BellQuake")
 	
 	local Effects = game.ServerStorage:FindFirstChild("Effects")
 	if Effects then
