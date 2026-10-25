@@ -5,18 +5,20 @@ end
 local Chat = game:GetService("Chat")
 local ServerScriptService = game:GetService("ServerScriptService")
 
-local Config = ServerScriptService:WaitForChild("Config")
+local Config = require(ServerScriptService:WaitForChild("Config"))
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local tool = script.Parent
 local handle = tool:WaitForChild("Handle")
-local isActive
-local rescueSounds = {}
 
-for _, v in handle:GetChildren() do
-	if v:IsA("Sound") and v.Name:find("rescue") then
-		table.insert(rescueSounds, v)
-	end
-end
+local isActive
+
+local rescueSoundPaths = {
+	"Gear.BearFollow1",
+	"Gear.BearFollow2",
+	"Gear.BearFollow3",
+	"Gear.BearFollow4"
+}
 
 local function playAnim()
 	local anim = Instance.new("StringValue")
@@ -73,23 +75,27 @@ tool.Activated:Connect(function()
 	
 	local char = tool.Parent
 	local head = char:FindFirstChild("Head")
+
 	local chatMessage
+	local soundPath
 	
 	if mode == "StartFollowing" then
 		playAnim()
-		rescueSounds[math.random(#rescueSounds)]:Play()
+		soundPath = rescueSoundPaths[math.random(#rescueSoundPaths)]
 		chatMessage = Config.BEAR_MESSAGE_FOLLOW
 	elseif mode == "StopFollowing" then
 		playAnim()
-		handle.ButtonWav:Play()
+		soundPath = "Gear.BearStay"
 		chatMessage = Config.BEAR_MESSAGE_STAY
 	else
 		tool.GripForward = Vector3.new(1,0,0)
 		tool.GripPos = Vector3.new(.5,-1.5,-1.56)
 		tool.GripRight = Vector3.new(0,-.707,-.707)
 		tool.GripUp = Vector3.new(0,-.707,.707)
-		handle.Squeak:Play()
+		soundPath = "Gear.BearSqueak"
 	end
+
+	SoundUtils.playSound(handle, soundPath)
 	
 	if head and chatMessage then
 		Chat:Chat(head, chatMessage)
