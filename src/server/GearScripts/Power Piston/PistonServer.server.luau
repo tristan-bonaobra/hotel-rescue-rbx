@@ -6,6 +6,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
 
@@ -58,7 +59,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 	if isActive then
 		isActive = false
 		playAnim()
-		handle.Unsummon:Play()
+		SoundUtils.playSound(handle, "Gear.PistonUnsummon")
 		pistonModel:Destroy()
 		pistonModel = nil
 		
