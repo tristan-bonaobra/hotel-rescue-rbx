@@ -1,40 +1,48 @@
-local char = script.Parent
-local hum = char and char:FindFirstChildOfClass("Humanoid")
-
-if not hum then
+if not script.Parent:IsA("Model") then
 	return
 end
 
-char:SetAttribute("IsUnconscious", true)
-
-local head = char and char:WaitForChild("Head")
-local torso = char and char:WaitForChild("Torso")
+------------------------------------------------------------------------------
+-- DEPENDENCIES
+------------------------------------------------------------------------------
 
 local ServerStorage = game:GetService("ServerStorage")
-local npcAssetsFolder = ServerStorage:WaitForChild("NpcAssets")
-local classicFacesFolder = npcAssetsFolder:WaitForChild("ClassicFaces")
-local sleepingFaces = classicFacesFolder:WaitForChild("Asleep"):GetChildren()
-local newFace = sleepingFaces[math.random(#sleepingFaces)]:Clone()
-local oldFace = head:FindFirstChildOfClass("Decal")
 
+local npcAssetsLib = ServerStorage:WaitForChild("NpcAssets")
+local classicFacesLib = npcAssetsLib:WaitForChild("ClassicFaces")
+local sleepingFacesLib = classicFacesLib:WaitForChild("Asleep"):GetChildren()
 local soundsLib = ServerStorage:WaitForChild("Sounds")
 local npcSoundsLib = soundsLib:WaitForChild("Npc")
 
+local char = script.Parent
+local hum = char:FindFirstChildOfClass("Humanoid")
+local head = char:WaitForChild("Head")
+local torso = char:WaitForChild("Torso")
+
+------------------------------------------------------------------------------
+-- STATE UNCONSCIOUS
+------------------------------------------------------------------------------
+
+char:SetAttribute("IsUnconscious", true)
+
+local newFace = sleepingFacesLib[math.random(#sleepingFacesLib)]:Clone()
+local oldFace = head:FindFirstChildOfClass("Decal")
 if oldFace then
 	oldFace.Name = "OriginalFace"
 	oldFace.Transparency = 1
 end
-
 newFace.Parent = head
 
 local deathSound = npcSoundsLib:WaitForChild("NpcBlockland"):Clone()
 deathSound.Parent = head
 deathSound:Play()
 
-do
-	local pos = torso.Position
-	char:PivotTo(CFrame.new(pos) * CFrame.Angles(math.rad(90), 0 , 0))
-end
+local torsoPos = torso.Position
+char:PivotTo(CFrame.new(torsoPos) * CFrame.Angles(math.rad(90), 0 , 0))
+
+------------------------------------------------------------------------------
+-- RAGDOLL
+------------------------------------------------------------------------------
 
 hum.RequiresNeck = false
 hum.AutoRotate = false
