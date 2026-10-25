@@ -1,6 +1,11 @@
 local ServerScriptService = game:GetService("ServerScriptService")
+local ServerStorage = game:GetService("ServerStorage")
+local Debris = game:GetService("Debris")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
+
+local soundsLib = ServerStorage:WaitForChild("Sounds")
+local npcSoundsLib = soundsLib:WaitForChild("Npc")
 
 local char = script.Parent
 local hum = char and char:FindFirstChildOfClass("Humanoid")
@@ -14,21 +19,19 @@ char:SetAttribute("IsTripped", true)
 
 local torso = char and char:WaitForChild("Torso")
 local pos = torso.Position
+
 char:PivotTo(CFrame.new(pos) * CFrame.Angles(math.rad(-90), 0 , 0))
 
-local splat = script:WaitForChild("Splat"):Clone()
-splat.Parent = torso
-splat:Play()
-game.Debris:AddItem(splat, splat.TimeLength + 2)
+local function playNpcSound(name)
+	local sound = npcSoundsLib:WaitForChild(name):Clone()
+	sound.Parent = torso
+	sound:Play()
+	Debris:AddItem(sound, sound.TimeLength / sound.PlaybackSpeed)
+end
 
+playNpcSound("NpcSplat")
 task.wait(Config.NPC_TRIP_DURATION)
-
 hum.PlatformStand = false
 char:SetAttribute("IsTripped", false)
-
-local tumble = script:WaitForChild("Tumble"):Clone()
-tumble.Parent = torso
-tumble:Play()
-game.Debris:AddItem(tumble, tumble.TimeLength + 2)
-
+playNpcSound("NpcTumble")
 script:Destroy()
