@@ -7,6 +7,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local Players = game:GetService("Players")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local npcAssetsFolder = ServerStorage:WaitForChild("NpcAssets")
 local npcWinPosesFolder = npcAssetsFolder:WaitForChild("WinPoses")
@@ -18,8 +19,7 @@ local npcSpotsFolder = winZone:WaitForChild("NpcSpots")
 local npcSpotsConscious = npcSpotsFolder:WaitForChild("Conscious"):GetChildren()
 local npcSpotsUnconscious = npcSpotsFolder:WaitForChild("Unconscious"):GetChildren()
 
-local globalSoundsFolder = workspace:WaitForChild("GlobalSounds")
-local soundEffectsFolder = globalSoundsFolder:WaitForChild("Effects")
+local globalSoundsBin = workspace:WaitForChild("GlobalSounds")
 
 local function anchorModel(model)
 	for _, v in model:GetDescendants() do
@@ -180,17 +180,13 @@ local function rewardAllPlayersForRescue(isUnconscious)
 		local pointsObject = leaderstats:WaitForChild("Points")
 		pointsObject.Value += points
 	end
-	local sound
 	local hint = Instance.new("Hint", workspace)
 	hint.Text = "Survivor #"..npcsRescued.." was rescued for "..points.." point"..(((points > 1) and "s") or "").."!"
 	game.Debris:AddItem(hint, 3)
 	if isUnconscious then
-		sound = soundEffectsFolder:FindFirstChild("ShortSpringSound")
+		SoundUtils.playSound(globalSoundsBin, "Game.ShortSpringSound")
 	else
-		sound = soundEffectsFolder:FindFirstChild("Money")
-	end
-	if sound then
-		sound:Play()
+		SoundUtils.playSound(globalSoundsBin, "Game.Money")
 	end
 end
 
