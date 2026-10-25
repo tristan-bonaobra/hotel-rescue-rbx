@@ -6,6 +6,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
@@ -51,9 +52,9 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 				Tint = true
 			}
 			BrickUtils.breakPart(clickTarget, breakParams)
-			handle.Break:Play()
+			SoundUtils.playSound(handle, "Gear.PickBreak")
 		else
-			handle.Miss:Play()
+			SoundUtils.playSound(handle, "Gear.PickMiss")
 		end
 
 		task.wait(Config.PICK_COOLDOWN)
