@@ -1,10 +1,21 @@
+----------------------------------------------------------------------------------------------
+-- DEPENDENCIES AND VARIABLES
+----------------------------------------------------------------------------------------------
+
 local RunService = game:GetService("RunService")
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
-local npcFolder = workspace:WaitForChild("Npcs")
+
+local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
+
+local npcsBin = workspace:WaitForChild("Npcs")
 
 local torsoHistories = {}
+
+----------------------------------------------------------------------------------------------
+-- HELPER FUNCTIONS
+----------------------------------------------------------------------------------------------
 
 local function trackTorso(torso)
 	torsoHistories[torso] = {}
@@ -13,6 +24,17 @@ end
 local function untrackTorso(torso)
 	torsoHistories[torso] = nil
 end
+
+local function registerNpc(npc)
+	local torso = npc:WaitForChild("Torso", 5)
+	if torso then
+		trackTorso(torso)
+	end
+end
+
+----------------------------------------------------------------------------------------------
+-- HEARTBEAT AND EVENTS
+----------------------------------------------------------------------------------------------
 
 RunService.Heartbeat:Connect(function()
 	for torso, history in pairs(torsoHistories) do
@@ -38,24 +60,17 @@ RunService.Heartbeat:Connect(function()
 		
 		if npc then
 			if (velocityChange >= Config.NPC_IMPACT_THRESHOLD) and (not isUnconscious) then
-				script:WaitForChild("RagdollScript"):Clone().Parent = npc
+				entityScriptsLib:WaitForChild("RagdollScript"):Clone().Parent = npc
 				untrackTorso(torso)
 			elseif (velocityChange >= Config.NPC_IMPACT_THRESHOLD * Config.NPC_TRIP_IMPACT_PCT) and (not isTripped) then
-				script:WaitForChild("TripScript"):Clone().Parent = npc
+				entityScriptsLib:WaitForChild("TripScript"):Clone().Parent = npc
 			end
 		end
 	end
 end)
 
-local function registerNpc(npc)
-	local torso = npc:WaitForChild("Torso", 5)
-	if torso then
-		trackTorso(torso)
-	end
-end
-
-for _, npc in pairs(npcFolder:GetChildren()) do
+for _, npc in pairs(npcsBin:GetChildren()) do
 	registerNpc(npc)
 end
 
-npcFolder.ChildAdded:Connect(registerNpc)
+npcsBin.ChildAdded:Connect(registerNpc)
