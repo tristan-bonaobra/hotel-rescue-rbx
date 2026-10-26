@@ -1,3 +1,5 @@
+sourcemap.json
+
 # Project place file
 /hotel-rescue-rbx.rbxlx
 
@@ -9,4 +11,7 @@
 /*.rbxl
 /*.rbxlx
 
-sourcemap.json
+# Editor & IDE Configs
+.vscode/
+.idea/
+.ipynb_checkpoints/
