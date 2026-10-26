@@ -1,88 +1,3 @@
-local ServerStorage = game:GetService("ServerStorage")
-local NpcAssets = ServerStorage:WaitForChild("NpcAssets")
-local Bodies = NpcAssets:WaitForChild("Bodies")
-local ClassicFaces = NpcAssets:WaitForChild("ClassicFaces")
-local Hats = NpcAssets:WaitForChild("Hats")
-local PantsColors = NpcAssets:WaitForChild("PantsColors")
-local ShirtColors = NpcAssets:WaitForChild("ShirtColors")
-local SkinColors = NpcAssets:WaitForChild("SkinColors")
-local RareSkinColors = NpcAssets:WaitForChild("RareSkinColors")
-local HotelRescue = script.Parent
-local Config = require(HotelRescue:WaitForChild("Config"))
-
-local function getRandomChild(instance)
-	return instance:GetChildren()[math.random(#instance:GetChildren())]
-end
-
-local function createNpc()
-	local pantsColorCategory = getRandomChild(PantsColors)
-	local shirtColorCategory = getRandomChild(ShirtColors)
-	local skinColorCategory = getRandomChild(SkinColors)
-	local faceCategory = ClassicFaces:WaitForChild("Awake")
-	
-	local char = getRandomChild(Bodies):Clone()
-	local face = getRandomChild(faceCategory):Clone()
-	local hat = getRandomChild(Hats):Clone()
-	local pantsColor = getRandomChild(pantsColorCategory).Color
-	local shirtColor = getRandomChild(shirtColorCategory).Color
-	local skinColor = getRandomChild(skinColorCategory).Color
-	local rareSkinColor = getRandomChild(RareSkinColors).Color
-	local dressType = math.random(4)
-	
-	local head = char:WaitForChild("Head")
-	local torso = char:WaitForChild("Torso")
-	local leftArm = char:WaitForChild("Left Arm")
-	local rightArm = char:WaitForChild("Right Arm")
-	local leftLeg = char:WaitForChild("Left Leg")
-	local rightLeg = char:WaitForChild("Right Leg")
-	local hum = char:WaitForChild("Humanoid")
-	
-	face.Parent = head
-	hat.Parent = char
-	hum.JumpPower = Config.NPC_JUMP_POWER
-	char.PrimaryPart = torso
-	
-	if math.random(Config.NPC_RARE_SKIN_DIE) == 1 then
-		skinColor = rareSkinColor
-	end
-	
-	if dressType == 1 then
-		-- Short sleeve with pants
-		head.Color = skinColor
-		torso.Color = shirtColor
-		leftArm.Color = skinColor
-		rightArm.Color = skinColor
-		leftLeg.Color = pantsColor
-		rightLeg.Color = pantsColor
-	elseif dressType == 2 then
-		-- Long sleeves with pants
-		head.Color = skinColor
-		torso.Color = shirtColor
-		leftArm.Color = shirtColor
-		rightArm.Color = shirtColor
-		leftLeg.Color = pantsColor
-		rightLeg.Color = pantsColor
-	elseif dressType == 3 then
-		-- Short sleeve with shorts
-		head.Color = skinColor
-		torso.Color = shirtColor
-		leftArm.Color = skinColor
-		rightArm.Color = skinColor
-		leftLeg.Color = skinColor
-		rightLeg.Color = skinColor
-	elseif dressType == 4 then
-		-- Long sleeve with shorts
-		head.Color = skinColor
-		torso.Color = shirtColor
-		leftArm.Color = shirtColor
-		rightArm.Color = shirtColor
-		leftLeg.Color = skinColor
-		rightLeg.Color = skinColor
-	end
-	
-	return char
-end
-
 local function getTopPosition(part)
 	local cf = part.CFrame
 	local size = part.Size
@@ -123,6 +38,5 @@ local function getSpaceAbovePartForNpc(part)
 end
 
 return {
-	createNpc = createNpc,
-	getSpaceAbovePartForNpc = getSpaceAbovePartForNpc,
+	getSpaceAbovePartForNpc = getSpaceAbovePartForNpc
 }
