@@ -238,28 +238,6 @@ local function isGearAttachable(part)
 		)
 end
 
-local function isBellable(part)
-	local currentMap = getCurrentMap()
-
-	local npc
-	if npcsBin and part:IsDescendantOf(npcsBin) then
-		for _, v in npcsBin:GetChildren() do
-			if part:IsDescendantOf(v) then
-				npc = v
-				break
-			end
-		end
-	end
-	
-	return part
-		and part:IsA("BasePart")
-		and (
-			(currentMap and part:IsDescendantOf(currentMap))
-			or (npc and (not npc:GetAttribute("IsRescued")))
-			or (playgroundBin and part:IsDescendantOf(playgroundBin))
-		)
-end
-
 local function isBuried(part)
 	-- Acts strangely in rare cases where a block has tiny blocks attached perfectly on each side
 	-- or is otherwise completely buried except for a tiny gap on one side.
@@ -326,7 +304,6 @@ return {
 	-- Bool
 	isTempUnanchorable = isTempUnanchorable,
 	isGearAttachable = isGearAttachable,
-	isBellable = isBellable,
 	isBuried = isBuried,
 	-- Other
     getTopPosition = getTopPosition,
