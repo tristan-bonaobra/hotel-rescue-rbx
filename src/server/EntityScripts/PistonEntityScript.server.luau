@@ -22,9 +22,11 @@ local lastPosition = constraint.CurrentPosition
 local smoothedVelocity = 0
 
 local sound = SoundUtils.copySound("Gear.PistonHydraulic")
-sound.Parent = base
 sound.PlaybackSpeed = 0
+sound.Parent = base
+sound:Play()
 
+-- This part is also mostly vibe-coded since a lot of it is math.
 game:GetService("RunService").Heartbeat:Connect(function(dt)
 	local currentPosition = constraint.CurrentPosition
 	local rawVelocity = (currentPosition - lastPosition) / math.max(dt, 0.001)
