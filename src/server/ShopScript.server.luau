@@ -9,8 +9,6 @@ local shopFolder = playerSpawnFolder:WaitForChild("Shop")
 local giversFolder = shopFolder:WaitForChild("Givers")
 
 local gearLib = ServerStorage:WaitForChild("Gear")
-local soundsLib = ServerStorage:WaitForChild("Sounds")
-local worldSoundsLib = soundsLib:WaitForChild("World")
 
 local playerInventories = {}
 
@@ -74,16 +72,15 @@ local function initGiver(giverModel)
 			isActive = true
 			head.BrickColor = BrickColor.new("Bright red")
 			SoundUtils.playSound(head, "World.ShopBuy")
-			
 			pointsObject.Value -= price
-			item:Clone().Parent = plr.Backpack
+
+			local newItem = item:Clone()
+			newItem.Parent = plr.Backpack
+			loadGearScripts(newItem)
 			
 			if playerInventories[plr] then
 				table.insert(playerInventories[plr], item:Clone())
 			end
-
-			-- Load scripts now instead of before the new item is stored in virtual inventory
-			loadGearScripts(item)
 			
 			task.wait(1)
 			isActive = false
