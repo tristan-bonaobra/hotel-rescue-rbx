@@ -7,10 +7,9 @@ local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
-local MapManipulation = require(ServerScriptService:WaitForChild("MapManipulation"))
+local MapUtils = require(ServerScriptService:WaitForChild("MapUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
-local mapsLib = ServerStorage:WaitForChild("Maps")
 local soundsLib = ServerStorage:WaitForChild("Sounds")
 local musicLib = soundsLib:WaitForChild("Music")
 
@@ -103,30 +102,9 @@ local function intermission()
 	hint.Text = ""
 end
 
-local function getRandomMap()
-	if #mapsLib:GetChildren() == 0 then
-		mapsLib.ChildAdded:Wait()
-	end
-	
-	local maps = mapsLib:GetChildren()
-	return maps[math.random(#maps)]:Clone()
-end
-
--- Move to MapUtils
 local function loadMap()
-	currentMap = getRandomMap()
-	currentMap.Name = "CurrentMap"
 	message.Text = "Loading"
-	task.wait(1)
-	if not currentMap:GetAttribute("IsProcessed") then
-		MapManipulation.cleanMap(currentMap)
-		MapManipulation.anchorMap(currentMap)
-		currentMap.Parent = workspace
-		MapManipulation.breakMap(currentMap)
-		if currentMap:GetAttribute("ForWelding") then MapManipulation.weldMap(currentMap) end
-	else
-		currentMap.Parent = workspace
-	end
+	MapUtils.loadMap()
 	message.Text = ""
 	task.wait(5)
 end
@@ -153,8 +131,8 @@ end
 local function earthquake()
 	local newSound = SoundUtils.playSound(globalSoundsBin, "Game.EarthquakeLoop", true)
 	hint.Text = "The earth is shaking... >_>"
-	MapManipulation.spawnNpcsOnMap(currentMap)
-	MapManipulation.crumbleMap(currentMap)
+	MapUtils.spawnNpcsOnMap(currentMap)
+	MapUtils.crumbleMap(currentMap)
 	newSound:Stop()
 	task.wait(5)
 	hint.Text = ""
@@ -223,7 +201,7 @@ end
 
 local function resetGame()
 	message.Text = "Resetting game"
-	MapManipulation.slowDestroy(currentMap)
+	MapUtils.slowDestroy(currentMap)
 	winZone:Destroy()
 	disableTeleporter()
 	killAllPlayers()
@@ -236,7 +214,7 @@ end
 local function gameLoop()
 	while true do
 		intermission()
-		loadMap()
+		currentMap = loadMap()
 		storyIntro()
 		earthquake()
 		storyGameBegin()
@@ -257,5 +235,4 @@ end
 return {
 	initLeaderstats = initLeaderstats,
 	gameLoop = gameLoop,
-	loadMap = loadMap,
 }
