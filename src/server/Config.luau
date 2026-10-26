@@ -63,8 +63,8 @@ Config = {
 	
 	BEAR_RADIUS = 10,
 	BEAR_COOLDOWN = 1,
-	BEAR_MESSAGE_FOLLOW = "?? Follow me!",
-	BEAR_MESSAGE_STAY = "? Stay here!",
+	BEAR_MESSAGE_FOLLOW = "Follow me!",
+	BEAR_MESSAGE_STAY = "Stay here!",
 	
 	TREATS_COOLDOWN = 1,
 	

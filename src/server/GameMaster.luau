@@ -145,7 +145,7 @@ local function storyGameBegin()
 	task.wait(5)
 	hint.Text = "Survivor 1: WAHHHH!!!!! ;-;"
 	task.wait(5)
-	hint.Text = "Survivor 2: I want my teddy bear... :(( ??"
+	hint.Text = "Survivor 2: I want my teddy bear... :(("
 	SoundUtils.playSound(globalSoundsBin, "Game.Ping")
 	task.wait(5)
 	hint.Text = "President: Players, I have a new mission for you! >:|"
