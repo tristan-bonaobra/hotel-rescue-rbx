@@ -8,8 +8,10 @@ local ServerStorage = game:GetService("ServerStorage")
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
-local summonsFolder = ServerStorage:WaitForChild("Summons")
-local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
+local summonsLib = ServerStorage:WaitForChild("Summons")
+local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
+
+local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
 local handle = tool:WaitForChild("Handle")
@@ -37,10 +39,10 @@ tool.Activated:Connect(function()
 		SoundUtils.playSound(handle, "Gear.TreatsWhistle")
 	else
 		local char = tool.Parent
-		dog = summonsFolder:WaitForChild("Dog"):Clone()
+		dog = summonsLib:WaitForChild("Dog"):Clone()
 		dog.Torso.CFrame = char.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
-		dog.Parent = toolDebrisFolder
-		script.DogScript:Clone().Parent = dog	
+		dog.Parent = toolDebrisBin
+		entityScriptsLib:WaitForChild("DogScript"):Clone().Parent = dog	
 		SoundUtils.playSound(dog:WaitForChild("Head"), "Entity.DogBark")
 	end
 	
