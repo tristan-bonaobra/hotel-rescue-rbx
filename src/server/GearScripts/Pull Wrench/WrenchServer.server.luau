@@ -18,7 +18,6 @@ local isActive
 local rope, attachment0, attachment1
 local attachedPart
 local attConn
-local lastSlippery
 
 local function isPullable(part)
 	local currentMap = workspace:FindFirstChild("CurrentMap")
