@@ -51,9 +51,13 @@ local function tempUnanchor(part)
 	task.spawn(function()
 		repeat
 			task.wait(2)
-		until (not part:IsDescendantOf(workspace))
-			and (not part:FindFirstChildOfClass("Attachment"))
-			and (part.AssemblyLinearVelocity.Magnitude + part.AssemblyAngularVelocity.Magnitude) <= Config.DEBRIS_ANCHOR_THRESHOLD
+		until
+			(
+				((part.AssemblyLinearVelocity.Magnitude + part.AssemblyAngularVelocity.Magnitude) <= Config.DEBRIS_ANCHOR_THRESHOLD)
+				and (not part:FindFirstChildOfClass("Attachment"))
+			) 
+		or
+			(not part:IsDescendantOf(workspace))
 		part.Anchored = true
 		part.CustomPhysicalProperties = nil
 		part.AssemblyLinearVelocity = Vector3.new()
