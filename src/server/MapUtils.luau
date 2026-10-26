@@ -9,7 +9,7 @@ local Config = require(ServerScriptService:WaitForChild("Config"))
 local NpcUtils = require(ServerScriptService:WaitForChild("NpcUtils"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 
-local mapsLib = ServerStorage:WaitForChild("MapsLib")
+local mapsLib = ServerStorage:WaitForChild("Maps")
 
 local npcsBin = workspace:WaitForChild("Npcs")
 
