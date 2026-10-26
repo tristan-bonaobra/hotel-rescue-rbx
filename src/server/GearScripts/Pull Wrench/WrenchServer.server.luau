@@ -17,7 +17,7 @@ local attachedPart
 local attConn
 local lastSlippery
 
-local function verifyPullable(part)
+local function isPullable(part)
 	local currentMap = workspace:FindFirstChild("CurrentMap")
 	local Playground = workspace:FindFirstChild("Playground")
 	local Npcs = workspace:FindFirstChild("Npcs")
@@ -29,17 +29,6 @@ local function verifyPullable(part)
 			or (Playground and part:IsDescendantOf(Playground))
 			or (Npcs and part:IsDescendantOf(Npcs))
 			or (part:GetAttribute("IsGearAttachable"))
-		)
-end
-
-local function verifyTempUnanchorable(part)
-	local currentMap = workspace:FindFirstChild("CurrentMap")
-	local Playground = workspace:FindFirstChild("Playground")
-	return part
-		and part:IsA("BasePart")
-		and (
-			(currentMap and part:IsDescendantOf(currentMap))
-			or (Playground and part:IsDescendantOf(Playground))
 		)
 end
 
@@ -56,7 +45,7 @@ local function unattachAndDeactivate()
 	game.Debris:AddItem(attachment0, 0)
 	game.Debris:AddItem(attachment1, 0)
 	game.Debris:AddItem(rope, 0)
-	if verifyTempUnanchorable(attachedPart) then
+	if BrickUtils.isTempUnanchorable(attachedPart) then
 		BrickUtils.tempUnanchor(attachedPart)
 	end
 	attachedPart = nil
@@ -120,7 +109,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 		local root = char and char:FindFirstChild("HumanoidRootPart")
 		local withinReach = (root.Position - clickCFrame.Position).Magnitude <= Config.ROPE_LENGTH
 		
-		if withinReach and verifyPullable(clickTarget) then
+		if withinReach and isPullable(clickTarget) then
 			playAnim()
 			SoundUtils.playSound(tool:WaitForChild("Handle"), "Gear.WrenchBass")
 			
@@ -146,7 +135,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 			rope.Attachment1 = attachment1
 			rope.Parent = root
 			
-			if verifyTempUnanchorable(clickTarget) then
+			if isPullable(clickTarget) then
 				attachedPart.Anchored = false
 				tempSlippery(attachedPart)
 			end
