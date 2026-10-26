@@ -45,7 +45,7 @@ local function unattachAndDeactivate()
 	game.Debris:AddItem(attachment0, 0)
 	game.Debris:AddItem(attachment1, 0)
 	game.Debris:AddItem(rope, 0)
-	if BrickUtils.isTempUnanchorable(attachedPart) then
+	if BrickUtils.isTempUnanchorable(attachedPart) then -- Just in case
 		BrickUtils.tempUnanchor(attachedPart)
 	end
 	attachedPart = nil
@@ -122,7 +122,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 			rope.Attachment1 = attachment1
 			rope.Parent = root
 			
-			if isPullable(clickTarget) then
+			if isPullable(clickTarget) and BrickUtils.isTempUnanchorable(clickTarget) then
 				attachedPart.Anchored = false
 			end
 			
