@@ -7,6 +7,9 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local Config = ServerScriptService:WaitForChild("Config")
 local BrickUtils = ServerScriptService:WaitForChild("BrickUtils")
 
+local npcsBin = workspace:WaitForChild("Npcs")
+local playgroundBin = workspace:FindFirstChild("Playground")
+
 type BreakParams = {
 	Threshold: number,
 	IsRecursive: boolean,
@@ -29,6 +32,10 @@ local function raycast(originPos, targetPos, filterInclude)
 	local rayDirection = targetPos - originPos
 	local raycastResult = workspace:Raycast(originPos, rayDirection, rayParams)
 	return raycastResult
+end
+
+local function getCurrentMap()
+	return workspace:FindFirstChild("CurrentMap")
 end
 
 ----------------------------------------------------------------------------------------------
@@ -203,6 +210,55 @@ local function weldToAdjacent(part)
 end
 
 ----------------------------------------------------------------------------------------------
+-- MAIN FUNCTIONS: BOOL STUFF
+----------------------------------------------------------------------------------------------
+
+local function isBuried(part)
+	-- Acts strangely in rare cases where a block has tiny blocks attached perfectly on each side
+	-- or is otherwise completely buried except for a tiny gap on one side.
+	-- The point is to filter out the thousands of fill bricks in Underground Base.
+	local size = part.Size / 2
+	local targetCFrames = {
+		part.CFrame * CFrame.new(size.X + 0.5, 0, 0),
+		part.CFrame * CFrame.new(-size.X - 0.5, 0, 0),
+		part.CFrame * CFrame.new(0, size.Y + 0.5, 0),
+		part.CFrame * CFrame.new(0, -size.Y - 0.5, 0),
+		part.CFrame * CFrame.new(0, 0, size.Z + 0.5),
+		part.CFrame * CFrame.new(0, 0, -size.Z - 0.5),
+	}
+	for _, targetCFrame in targetCFrames do
+		local targetPos = targetCFrame.Position
+		local raycastResult = raycast(part.Position, targetPos)
+		if not raycastResult then
+			return false
+		end
+	end
+	return true
+end
+
+local function isBellable(part)
+	local currentMap = getCurrentMap()
+
+	local npc
+	if npcsBin and part:IsDescendantOf(npcsBin) then
+		for _, v in npcsBin:GetChildren() do
+			if part:IsDescendantOf(v) then
+				npc = v
+				break
+			end
+		end
+	end
+	
+	return part
+		and part:IsA("BasePart")
+		and (
+			(currentMap and part:IsDescendantOf(currentMap))
+			or (npc and (not npc:GetAttribute("IsRescued")))
+			or (playgroundBin and part:IsDescendantOf(playgroundBin))
+		)
+end
+
+----------------------------------------------------------------------------------------------
 -- MAIN FUNCTIONS: OTHER
 ----------------------------------------------------------------------------------------------
 
@@ -231,29 +287,6 @@ local function getTopPosition(part)
 	return cf:PointToWorldSpace(bestFace.offset)
 end
 
-local function isBuried(part)
-	-- Acts strangely in rare cases where a block has tiny blocks attached perfectly on each side
-	-- or is otherwise completely buried except for a tiny gap on one side.
-	-- The point is to filter out the thousands of fill bricks in Underground Base.
-	local size = part.Size / 2
-	local targetCFrames = {
-		part.CFrame * CFrame.new(size.X + 0.5, 0, 0),
-		part.CFrame * CFrame.new(-size.X - 0.5, 0, 0),
-		part.CFrame * CFrame.new(0, size.Y + 0.5, 0),
-		part.CFrame * CFrame.new(0, -size.Y - 0.5, 0),
-		part.CFrame * CFrame.new(0, 0, size.Z + 0.5),
-		part.CFrame * CFrame.new(0, 0, -size.Z - 0.5),
-	}
-	for _, targetCFrame in targetCFrames do
-		local targetPos = targetCFrame.Position
-		local raycastResult = raycast(part.Position, targetPos)
-		if not raycastResult then
-			return false
-		end
-	end
-	return true
-end
-
 ----------------------------------------------------------------------------------------------
 -- RETURN MODULE
 ----------------------------------------------------------------------------------------------
@@ -265,7 +298,9 @@ return {
 	breakJoints = breakJoints,
 	randTint = randTint,
 	weldToAdjacent = weldToAdjacent,
+	-- Bool
+	isBuried = isBuried,
+	isBellable = isBellable,
 	-- Other
     getTopPosition = getTopPosition,
-	isBuried = isBuried,
 }
