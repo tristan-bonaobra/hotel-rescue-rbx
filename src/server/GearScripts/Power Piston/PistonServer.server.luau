@@ -47,6 +47,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 		if withinReach and BrickUtils.isGearAttachable(clickTarget) then
 			isActive = true
 			
+			SoundUtils.playSound(handle, "Gear.PistonSummon")
 			playAnim()
 			
 			local hitPosition = clickCFrame.Position
