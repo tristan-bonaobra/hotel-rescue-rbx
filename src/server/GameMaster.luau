@@ -12,6 +12,7 @@ local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local soundsLib = ServerStorage:WaitForChild("Sounds")
 local musicLib = soundsLib:WaitForChild("Music")
+local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
 
 local globalSoundsBin = workspace:WaitForChild("GlobalSounds")
 local npcsBin = workspace:WaitForChild("Npcs")
@@ -161,6 +162,7 @@ end
 
 local function gameBegin()
 	winZone = ServerStorage:WaitForChild("WinZone"):Clone()
+	entityScriptsLib:WaitForChild("WinScript"):Clone().Parent = winZone
 	winZone.Parent = workspace
 	enableTeleporter()
 	npcsAtStart = #npcsBin:GetChildren()
