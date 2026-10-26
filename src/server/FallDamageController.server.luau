@@ -76,3 +76,10 @@ for _, npc in pairs(npcsBin:GetChildren()) do
 end
 
 npcsBin.ChildAdded:Connect(registerNpc)
+
+npcsBin.ChildRemoved:Connect(function(npc)
+	local torso = npc:FindFirstChild("Torso")
+	if torso and torsoHistories[torso] then
+		untrackTorso(torso)
+	end
+end)
