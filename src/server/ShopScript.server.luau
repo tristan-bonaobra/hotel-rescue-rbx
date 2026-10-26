@@ -66,9 +66,11 @@ local function initGiver(giverModel)
 		local currentPoints = pointsObject and pointsObject.Value
 		local canAffordItem = currentPoints and (currentPoints >= price)
 		local backpack = plr and plr.Backpack
-		local alreadyHasItem = backpack and backpack:FindFirstChild(item.Name)
+		local hasItemInBackpack = backpack and backpack:FindFirstChild(item.Name)
+		local hasItemInChar = char:FindFirstChild(item.Name)
+		local hasItem = hasItemInBackpack or hasItemInChar
 		
-		if canAffordItem and (not isActive) and (not alreadyHasItem) then
+		if canAffordItem and (not isActive) and (not hasItem) then
 			isActive = true
 			head.BrickColor = BrickColor.new("Bright red")
 			SoundUtils.playSound(head, "World.ShopBuy")
