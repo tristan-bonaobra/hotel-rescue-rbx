@@ -25,32 +25,6 @@ local function playAnim()
 	game.Debris:AddItem(anim, 1)
 end
 
-local function verifyTempUnanchorable(part)
-	local currentMap = workspace:FindFirstChild("CurrentMap")
-	local Playground = workspace:FindFirstChild("Playground")
-	return part
-		and part:IsA("BasePart")
-		and (
-			(currentMap and part:IsDescendantOf(currentMap))
-			or (Playground and part:IsDescendantOf(Playground))
-		)
-end
-
-local function verifyPistonAttachable(part)
-	local currentMap = workspace:FindFirstChild("CurrentMap")
-	local Playground = workspace:FindFirstChild("Playground")
-	local teleporter = workspace:FindFirstChild("Teleporter")
-	return part
-		and part:IsA("BasePart")
-		and (teleporter and (not part:IsDescendantOf(teleporter)))
-		and (
-			part.Anchored
-			or (currentMap and part:IsDescendantOf(currentMap))
-			or (Playground and part:IsDescendantOf(Playground))
-			or (part:GetAttribute("IsGearAttachable"))
-		)
-end
-
 toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSurface)
 	if not tool:IsDescendantOf(plr.Character) then
 		return
@@ -68,7 +42,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 		local root = char and char:FindFirstChild("HumanoidRootPart")
 		local withinReach = root and (root.Position - clickCFrame.Position).Magnitude <= Config.PISTON_PLACEMENT_DISTANCE
 		
-		if withinReach and verifyPistonAttachable(clickTarget) then
+		if withinReach and BrickUtils.isGearAttachable(clickTarget) then
 			isActive = true
 			
 			playAnim()
@@ -159,7 +133,7 @@ while true do
 		local partsInBox = workspace:GetPartBoundsInBox(boxCFrame, boxSize)
 		
 		for _, part in ipairs(partsInBox) do
-			if verifyTempUnanchorable(part) then
+			if BrickUtils.isTempUnanchorable(part) then
 				BrickUtils.tempUnanchor(part)
 			end
 		end

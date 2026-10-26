@@ -10,6 +10,8 @@ local BrickUtils = ServerScriptService:WaitForChild("BrickUtils")
 local npcsBin = workspace:WaitForChild("Npcs")
 local playgroundBin = workspace:FindFirstChild("Playground")
 
+local teleporter = workspace:FindFirstChild("Teleporter")
+
 type BreakParams = {
 	Threshold: number,
 	IsRecursive: boolean,
@@ -213,27 +215,27 @@ end
 -- MAIN FUNCTIONS: BOOL STUFF
 ----------------------------------------------------------------------------------------------
 
-local function isBuried(part)
-	-- Acts strangely in rare cases where a block has tiny blocks attached perfectly on each side
-	-- or is otherwise completely buried except for a tiny gap on one side.
-	-- The point is to filter out the thousands of fill bricks in Underground Base.
-	local size = part.Size / 2
-	local targetCFrames = {
-		part.CFrame * CFrame.new(size.X + 0.5, 0, 0),
-		part.CFrame * CFrame.new(-size.X - 0.5, 0, 0),
-		part.CFrame * CFrame.new(0, size.Y + 0.5, 0),
-		part.CFrame * CFrame.new(0, -size.Y - 0.5, 0),
-		part.CFrame * CFrame.new(0, 0, size.Z + 0.5),
-		part.CFrame * CFrame.new(0, 0, -size.Z - 0.5),
-	}
-	for _, targetCFrame in targetCFrames do
-		local targetPos = targetCFrame.Position
-		local raycastResult = raycast(part.Position, targetPos)
-		if not raycastResult then
-			return false
-		end
-	end
-	return true
+local function isTempUnanchorable(part)
+	local currentMap = getCurrentMap()
+	return part
+		and part:IsA("BasePart")
+		and (
+			(currentMap and part:IsDescendantOf(currentMap))
+			or (playgroundBin and part:IsDescendantOf(playgroundBin))
+		)
+end
+
+local function isGearAttachable(part)
+	local currentMap = getCurrentMap()
+	return part
+		and part:IsA("BasePart")
+		and (teleporter and (not part:IsDescendantOf(teleporter)))
+		and (
+			part.Anchored
+			or (currentMap and part:IsDescendantOf(currentMap))
+			or (playgroundBin and part:IsDescendantOf(playgroundBin))
+			or (part:GetAttribute("IsGearAttachable"))
+		)
 end
 
 local function isBellable(part)
@@ -256,6 +258,29 @@ local function isBellable(part)
 			or (npc and (not npc:GetAttribute("IsRescued")))
 			or (playgroundBin and part:IsDescendantOf(playgroundBin))
 		)
+end
+
+local function isBuried(part)
+	-- Acts strangely in rare cases where a block has tiny blocks attached perfectly on each side
+	-- or is otherwise completely buried except for a tiny gap on one side.
+	-- The point is to filter out the thousands of fill bricks in Underground Base.
+	local size = part.Size / 2
+	local targetCFrames = {
+		part.CFrame * CFrame.new(size.X + 0.5, 0, 0),
+		part.CFrame * CFrame.new(-size.X - 0.5, 0, 0),
+		part.CFrame * CFrame.new(0, size.Y + 0.5, 0),
+		part.CFrame * CFrame.new(0, -size.Y - 0.5, 0),
+		part.CFrame * CFrame.new(0, 0, size.Z + 0.5),
+		part.CFrame * CFrame.new(0, 0, -size.Z - 0.5),
+	}
+	for _, targetCFrame in targetCFrames do
+		local targetPos = targetCFrame.Position
+		local raycastResult = raycast(part.Position, targetPos)
+		if not raycastResult then
+			return false
+		end
+	end
+	return true
 end
 
 ----------------------------------------------------------------------------------------------
@@ -299,8 +324,10 @@ return {
 	randTint = randTint,
 	weldToAdjacent = weldToAdjacent,
 	-- Bool
-	isBuried = isBuried,
+	isTempUnanchorable = isTempUnanchorable,
+	isGearAttachable = isGearAttachable,
 	isBellable = isBellable,
+	isBuried = isBuried,
 	-- Other
     getTopPosition = getTopPosition,
 }
