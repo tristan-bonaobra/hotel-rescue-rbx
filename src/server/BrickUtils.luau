@@ -225,12 +225,11 @@ end
 
 local function isTempUnanchorable(part)
 	local currentMap = getCurrentMap()
-	return part
-		and part:IsA("BasePart")
-		and (
-			(currentMap and part:IsDescendantOf(currentMap))
-			or (playgroundBin and part:IsDescendantOf(playgroundBin))
-		)
+	local isPart = part and part:IsA("Part")
+	local isMap = (currentMap and part:IsDescendantOf(currentMap))
+	local isPlayground = (playgroundBin and part:IsDescendantOf(playgroundBin))
+
+	return part and isPart and (isMap or isPlayground)
 end
 
 local function isGearAttachable(part)
