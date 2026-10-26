@@ -32,11 +32,7 @@ local function registerNpc(npc)
 	end
 end
 
-----------------------------------------------------------------------------------------------
--- HEARTBEAT AND EVENTS
-----------------------------------------------------------------------------------------------
-
-RunService.Heartbeat:Connect(function()
+local function fallDamageHeartbeat()
 	for torso, history in pairs(torsoHistories) do
 		if (not torso) or (not torso:IsDescendantOf(workspace)) then
 			torsoHistories[torso] = nil
@@ -67,7 +63,13 @@ RunService.Heartbeat:Connect(function()
 			end
 		end
 	end
-end)
+end
+
+----------------------------------------------------------------------------------------------
+-- HEARTBEAT AND EVENTS
+----------------------------------------------------------------------------------------------
+
+RunService.Heartbeat:Connect(fallDamageHeartbeat)
 
 for _, npc in pairs(npcsBin:GetChildren()) do
 	registerNpc(npc)
