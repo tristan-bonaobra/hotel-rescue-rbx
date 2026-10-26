@@ -48,8 +48,7 @@ local function tempUnanchor(part)
 	end
 
 	part.Anchored = false
-	part.CustomPhysicalProperties = PhysicalProperties.new(0.7, 0.8, 0, 100, 100)
-	
+
 	task.spawn(function()
 		repeat
 			task.wait(2)
