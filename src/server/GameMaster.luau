@@ -7,12 +7,12 @@ local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
-local MapManipulation = require(ServerScriptService:WaitForChild("MapManipulation"))
+local MapUtils = require(ServerScriptService:WaitForChild("MapUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
-local mapsLib = ServerStorage:WaitForChild("Maps")
 local soundsLib = ServerStorage:WaitForChild("Sounds")
 local musicLib = soundsLib:WaitForChild("Music")
+local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
 
 local globalSoundsBin = workspace:WaitForChild("GlobalSounds")
 local npcsBin = workspace:WaitForChild("Npcs")
@@ -103,32 +103,12 @@ local function intermission()
 	hint.Text = ""
 end
 
-local function getRandomMap()
-	if #mapsLib:GetChildren() == 0 then
-		mapsLib.ChildAdded:Wait()
-	end
-	
-	local maps = mapsLib:GetChildren()
-	return maps[math.random(#maps)]:Clone()
-end
-
--- Move to MapUtils
 local function loadMap()
-	currentMap = getRandomMap()
-	currentMap.Name = "CurrentMap"
 	message.Text = "Loading"
-	task.wait(1)
-	if not currentMap:GetAttribute("IsProcessed") then
-		MapManipulation.cleanMap(currentMap)
-		MapManipulation.anchorMap(currentMap)
-		currentMap.Parent = workspace
-		MapManipulation.breakMap(currentMap)
-		if currentMap:GetAttribute("ForWelding") then MapManipulation.weldMap(currentMap) end
-	else
-		currentMap.Parent = workspace
-	end
+	local map = MapUtils.loadMap()
 	message.Text = ""
 	task.wait(5)
+	return map
 end
 
 local function storyIntro()
@@ -153,8 +133,8 @@ end
 local function earthquake()
 	local newSound = SoundUtils.playSound(globalSoundsBin, "Game.EarthquakeLoop", true)
 	hint.Text = "The earth is shaking... >_>"
-	MapManipulation.spawnNpcsOnMap(currentMap)
-	MapManipulation.crumbleMap(currentMap)
+	MapUtils.spawnNpcsOnMap(currentMap)
+	MapUtils.crumbleMap(currentMap)
 	newSound:Stop()
 	task.wait(5)
 	hint.Text = ""
@@ -165,7 +145,7 @@ local function storyGameBegin()
 	task.wait(5)
 	hint.Text = "Survivor 1: WAHHHH!!!!! ;-;"
 	task.wait(5)
-	hint.Text = "Survivor 2: I want my teddy bear... :(( ??"
+	hint.Text = "Survivor 2: I want my teddy bear... :(("
 	SoundUtils.playSound(globalSoundsBin, "Game.Ping")
 	task.wait(5)
 	hint.Text = "President: Players, I have a new mission for you! >:|"
@@ -182,6 +162,7 @@ end
 
 local function gameBegin()
 	winZone = ServerStorage:WaitForChild("WinZone"):Clone()
+	entityScriptsLib:WaitForChild("WinScript"):Clone().Parent = winZone
 	winZone.Parent = workspace
 	enableTeleporter()
 	npcsAtStart = #npcsBin:GetChildren()
@@ -223,7 +204,7 @@ end
 
 local function resetGame()
 	message.Text = "Resetting game"
-	MapManipulation.slowDestroy(currentMap)
+	MapUtils.slowDestroy(currentMap)
 	winZone:Destroy()
 	disableTeleporter()
 	killAllPlayers()
@@ -236,7 +217,7 @@ end
 local function gameLoop()
 	while true do
 		intermission()
-		loadMap()
+		currentMap = loadMap()
 		storyIntro()
 		earthquake()
 		storyGameBegin()
@@ -257,5 +238,4 @@ end
 return {
 	initLeaderstats = initLeaderstats,
 	gameLoop = gameLoop,
-	loadMap = loadMap,
 }

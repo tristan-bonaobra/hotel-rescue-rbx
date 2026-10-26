@@ -3,8 +3,7 @@ if not script.Parent:IsA("Humanoid") then
 end
 
 local ServerScriptService = game:GetService("ServerScriptService")
-local HotelRescue = ServerScriptService:WaitForChild("HotelRescue")
-local Config = require(HotelRescue:WaitForChild("Config"))
+local Config = require(ServerScriptService:WaitForChild("Config"))
 
 local myHum = script.Parent
 local myChar = myHum.Parent

@@ -8,6 +8,8 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
+local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
+
 local tool = script.Parent
 local handle = tool:WaitForChild("Handle")
 
@@ -67,7 +69,7 @@ tool.Activated:Connect(function()
 				if (mode == "StopFollowing") and existingFollowScript then
 					existingFollowScript:Destroy()
 				elseif (mode == "StartFollowing") and (not existingFollowScript) then
-					script.NpcFollowScript:Clone().Parent = hum
+					entityScriptsLib:WaitForChild("NpcFollowScript"):Clone().Parent = hum
 				end
 			end
 		end

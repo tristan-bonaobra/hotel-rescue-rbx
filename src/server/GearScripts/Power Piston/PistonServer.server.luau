@@ -8,7 +8,9 @@ local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
-local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
+local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
+
+local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
@@ -23,32 +25,6 @@ local function playAnim()
 	anim.Value = "Slash"
 	anim.Parent = tool
 	game.Debris:AddItem(anim, 1)
-end
-
-local function verifyTempUnanchorable(part)
-	local currentMap = workspace:FindFirstChild("CurrentMap")
-	local Playground = workspace:FindFirstChild("Playground")
-	return part
-		and part:IsA("BasePart")
-		and (
-			(currentMap and part:IsDescendantOf(currentMap))
-			or (Playground and part:IsDescendantOf(Playground))
-		)
-end
-
-local function verifyPistonAttachable(part)
-	local currentMap = workspace:FindFirstChild("CurrentMap")
-	local Playground = workspace:FindFirstChild("Playground")
-	local teleporter = workspace:FindFirstChild("Teleporter")
-	return part
-		and part:IsA("BasePart")
-		and (teleporter and (not part:IsDescendantOf(teleporter)))
-		and (
-			part.Anchored
-			or (currentMap and part:IsDescendantOf(currentMap))
-			or (Playground and part:IsDescendantOf(Playground))
-			or (part:GetAttribute("IsGearAttachable"))
-		)
 end
 
 toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSurface)
@@ -68,9 +44,10 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 		local root = char and char:FindFirstChild("HumanoidRootPart")
 		local withinReach = root and (root.Position - clickCFrame.Position).Magnitude <= Config.PISTON_PLACEMENT_DISTANCE
 		
-		if withinReach and verifyPistonAttachable(clickTarget) then
+		if withinReach and BrickUtils.isGearAttachable(clickTarget) then
 			isActive = true
 			
+			SoundUtils.playSound(handle, "Gear.PistonSummon")
 			playAnim()
 			
 			local hitPosition = clickCFrame.Position
@@ -80,7 +57,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			
 			pistonModel = Instance.new("Model")
 			pistonModel.Name = "Piston"
-			pistonModel.Parent = toolDebrisFolder
+			pistonModel.Parent = toolDebrisBin
 			
 			local base = Instance.new("Part")
 			base.Name = "Base"
@@ -89,10 +66,6 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			base.CFrame = surfaceCFrame * CFrame.new(0, base.Size.Y / 2, 0)
 			base:SetAttribute("IsGearAttachable", true)
 			base.Parent = pistonModel
-			
-			for _, v in script.BaseScripts:GetChildren() do
-				v:Clone().Parent = base
-			end
 			
 			local baseWeld = Instance.new("WeldConstraint")
 			baseWeld.Name = "BaseWeld"
@@ -147,6 +120,8 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			smoke.Opacity = 0.5
 			smoke.Enabled = false
 			smoke.Parent = base
+
+			entityScriptsLib:WaitForChild("PistonEntityScript"):Clone().Parent = pistonModel
 		end
 	end
 end)
@@ -159,7 +134,7 @@ while true do
 		local partsInBox = workspace:GetPartBoundsInBox(boxCFrame, boxSize)
 		
 		for _, part in ipairs(partsInBox) do
-			if verifyTempUnanchorable(part) then
+			if BrickUtils.isTempUnanchorable(part) then
 				BrickUtils.tempUnanchor(part)
 			end
 		end

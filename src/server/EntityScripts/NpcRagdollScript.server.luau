@@ -36,7 +36,7 @@ end
 
 newFace.Parent = head
 
-SoundUtils.playSound(head, "Entity.NpcBlockLand")
+SoundUtils.playSound(head, "Entity.NpcBlockland")
 
 char:PivotTo(CFrame.new(torsoPos) * CFrame.Angles(math.rad(90), 0 , 0))
 

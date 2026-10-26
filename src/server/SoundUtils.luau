@@ -18,15 +18,25 @@ local function copySound(pathString)
     return
 end
 
+local function stopSounds(instance, soundName)
+    for _, v in pairs(instance:GetChildren()) do
+        if (v:IsA("Sound")) and (v.Name == soundName) then
+            v:Stop()
+        end
+    end
+end
+
 local function playSound(instance, pathString, isLooped)
     local sound = copySound(pathString)
     if sound then
+        stopSounds(instance, sound.Name)
+        
         sound.Parent = instance
         sound.Looped = isLooped
         sound:Play()
 
         if not isLooped then
-            Debris:AddItem(sound, sound.TimeLength / sound.PlaybackSpeed)
+            Debris:AddItem(sound, (sound.TimeLength / sound.PlaybackSpeed) + 2)
         end
 
         return sound

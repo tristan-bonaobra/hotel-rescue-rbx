@@ -8,6 +8,9 @@ local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
+local playgroundLib = workspace:WaitForChild("Playground")
+local npcsLib = workspace:WaitForChild("Npcs")
+
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
 
@@ -15,31 +18,17 @@ local isActive
 local rope, attachment0, attachment1
 local attachedPart
 local attConn
-local lastSlippery
 
-local function verifyPullable(part)
+local function isPullable(part)
 	local currentMap = workspace:FindFirstChild("CurrentMap")
-	local Playground = workspace:FindFirstChild("Playground")
-	local Npcs = workspace:FindFirstChild("Npcs")
 	return part
 		and part:IsA("BasePart")
 		and (
 			part.Anchored
 			or (currentMap and part:IsDescendantOf(currentMap))
-			or (Playground and part:IsDescendantOf(Playground))
-			or (Npcs and part:IsDescendantOf(Npcs))
-			or (part:GetAttribute("IsGearAttachable"))
-		)
-end
-
-local function verifyTempUnanchorable(part)
-	local currentMap = workspace:FindFirstChild("CurrentMap")
-	local Playground = workspace:FindFirstChild("Playground")
-	return part
-		and part:IsA("BasePart")
-		and (
-			(currentMap and part:IsDescendantOf(currentMap))
-			or (Playground and part:IsDescendantOf(Playground))
+			or part:IsDescendantOf(playgroundLib)
+			or part:IsDescendantOf(npcsLib)
+			or part:GetAttribute("IsGearAttachable")
 		)
 end
 
@@ -56,7 +45,7 @@ local function unattachAndDeactivate()
 	game.Debris:AddItem(attachment0, 0)
 	game.Debris:AddItem(attachment1, 0)
 	game.Debris:AddItem(rope, 0)
-	if verifyTempUnanchorable(attachedPart) then
+	if BrickUtils.isTempUnanchorable(attachedPart) then -- Just in case
 		BrickUtils.tempUnanchor(attachedPart)
 	end
 	attachedPart = nil
@@ -64,18 +53,6 @@ local function unattachAndDeactivate()
 		attConn:Disconnect()
 	end
 	playAnim()
-end
-
-local function tempSlippery(part)
-	lastSlippery = os.time()
-	
-	task.spawn(function()
-		local thisSlippery = lastSlippery
-		task.wait(Config.ROPE_SLIPPERY_DURATION)
-		if lastSlippery == thisSlippery then
-			part.CustomPhysicalProperties = nil
-		end
-	end)
 end
 
 local function reelPlayerAndPart(part, playerTargetPos)
@@ -101,7 +78,6 @@ local function reelPlayerAndPart(part, playerTargetPos)
 	
 	local partImpulseDirection = CFrame.new(part.Position, rootPos).LookVector
 	local partImpulse = partImpulseDirection * Config.ROPE_IMPULSE_PART
-	tempSlippery(part)
 	part:ApplyImpulse(partImpulse) -- ApplyImpulse is mandatory so we dont make trampolines
 end
 
@@ -120,7 +96,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 		local root = char and char:FindFirstChild("HumanoidRootPart")
 		local withinReach = (root.Position - clickCFrame.Position).Magnitude <= Config.ROPE_LENGTH
 		
-		if withinReach and verifyPullable(clickTarget) then
+		if withinReach and isPullable(clickTarget) then
 			playAnim()
 			SoundUtils.playSound(tool:WaitForChild("Handle"), "Gear.WrenchBass")
 			
@@ -146,9 +122,8 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 			rope.Attachment1 = attachment1
 			rope.Parent = root
 			
-			if verifyTempUnanchorable(clickTarget) then
+			if isPullable(clickTarget) and BrickUtils.isTempUnanchorable(clickTarget) then
 				attachedPart.Anchored = false
-				tempSlippery(attachedPart)
 			end
 			
 			local npc

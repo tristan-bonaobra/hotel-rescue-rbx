@@ -8,18 +8,20 @@ local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
+local npcsBin = workspace:WaitForChild("Npcs")
+local playgroundBin = workspace:WaitForChild("Playground")
+
 local tool = script.Parent
 local handle = tool:WaitForChild("Handle")
+
 local isActive
 
-local function verifyBellable(part)
+local function isBellable(part)
 	local currentMap = workspace:FindFirstChild("CurrentMap")
-	local Npcs = workspace:FindFirstChild("Npcs")
-	local Playground = workspace:FindFirstChild("Playground")
-	
+
 	local npc
-	if Npcs and part:IsDescendantOf(Npcs) then
-		for _, v in Npcs:GetChildren() do
+	if npcsBin and part:IsDescendantOf(npcsBin) then
+		for _, v in npcsBin:GetChildren() do
 			if part:IsDescendantOf(v) then
 				npc = v
 				break
@@ -32,7 +34,7 @@ local function verifyBellable(part)
 		and (
 			(currentMap and part:IsDescendantOf(currentMap))
 			or (npc and (not npc:GetAttribute("IsRescued")))
-			or (Playground and part:IsDescendantOf(Playground))
+			or (playgroundBin and part:IsDescendantOf(playgroundBin))
 		)
 end
 
@@ -63,7 +65,7 @@ tool.Activated:Connect(function()
 	local affectedParts = workspace:GetPartBoundsInRadius(handle.Position, Config.BELL_RADIUS)
 	local affectedRoots = {}
 	for _, part in ipairs(affectedParts) do
-		if verifyBellable(part) then
+		if isBellable(part) then
 			if part.Anchored then
 				BrickUtils.tempUnanchor(part)
 			end

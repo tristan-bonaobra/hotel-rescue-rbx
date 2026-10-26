@@ -3,7 +3,7 @@ Config = {
 	
 	INTERMISSION_TIME = 5,
 	GAME_TIME = 8 * 60,
-	STARTER_POINTS = 10,
+	STARTER_POINTS = 999,
 	REWARD_CONSCIOUS = 3,
 	REWARD_UNCONSCIOUS = 1,
 	
@@ -63,8 +63,8 @@ Config = {
 	
 	BEAR_RADIUS = 10,
 	BEAR_COOLDOWN = 1,
-	BEAR_MESSAGE_FOLLOW = "?? Follow me!",
-	BEAR_MESSAGE_STAY = "? Stay here!",
+	BEAR_MESSAGE_FOLLOW = "Follow me!",
+	BEAR_MESSAGE_STAY = "Stay here!",
 	
 	TREATS_COOLDOWN = 1,
 	
