@@ -7,7 +7,6 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local Config = ServerScriptService:WaitForChild("Config")
 local BrickUtils = ServerScriptService:WaitForChild("BrickUtils")
 
-local npcsBin = workspace:WaitForChild("Npcs")
 local playgroundBin = workspace:FindFirstChild("Playground")
 
 local teleporter = workspace:FindFirstChild("Teleporter")

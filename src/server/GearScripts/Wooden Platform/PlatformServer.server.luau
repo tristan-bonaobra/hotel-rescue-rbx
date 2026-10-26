@@ -6,6 +6,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
+local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 
 local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
 
@@ -23,21 +24,6 @@ local function playAnim()
 	anim.Value = "Slash"
 	anim.Parent = tool
 	game.Debris:AddItem(anim, 1)
-end
-
-local function verifyPlatformAttachable(part)
-	local currentMap = workspace:FindFirstChild("CurrentMap")
-	local Playground = workspace:FindFirstChild("Playground")
-	local teleporter = workspace:FindFirstChild("Teleporter")
-	return part
-		and part:IsA("BasePart")
-		and (teleporter and (not part:IsDescendantOf(teleporter)))
-		and (
-			part.Anchored
-			or (currentMap and part:IsDescendantOf(currentMap))
-			or (Playground and part:IsDescendantOf(Playground))
-			or (part:GetAttribute("IsGearAttachable"))
-		)
 end
 
 toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSurface)
@@ -58,7 +44,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 		local clickDistance = root and (root.Position - clickPos).Magnitude
 		local withinReach = clickDistance and (clickDistance <= Config.PLATFORM_PLACEMENT_DISTANCE)
 		
-		if withinReach and verifyPlatformAttachable(clickTarget) then
+		if withinReach and BrickUtils.isGearAttachable(clickTarget) then
 			platform = Instance.new("Part")
 			platform.Name = "WoodenPlatform"
 			platform.Shape = Enum.PartType.Cylinder

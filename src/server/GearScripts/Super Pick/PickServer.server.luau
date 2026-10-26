@@ -8,19 +8,20 @@ local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
+local playgroundBin = workspace:WaitForChild("Playground")
+
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
 local handle = tool:WaitForChild("Handle")
 local isActive
 
-local function verifyPickable(part)
+local function isPickable(part)
 	local currentMap = workspace:FindFirstChild("CurrentMap")
-	local Playground = workspace:FindFirstChild("Playground")
 	return part
 		and part:IsA("BasePart")
 		and (
 			(currentMap and part:IsDescendantOf(currentMap))
-			or (Playground and part:IsDescendantOf(Playground))
+			or (playgroundBin and part:IsDescendantOf(playgroundBin))
 		)
 end
 
@@ -44,7 +45,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 		
 		local withinReach = (root.Position - clickCFrame.Position).Magnitude <= Config.PICK_DISTANCE
 		
-		if withinReach and verifyPickable(clickTarget) then
+		if withinReach and isPickable(clickTarget) then
 			local breakParams = {
 				Threshold = Config.BREAK_THRESHOLD_MANUAL,
 				IsRecursive = false,
