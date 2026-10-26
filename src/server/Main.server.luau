@@ -1,6 +1,6 @@
 local ServerScriptService = game:GetService("ServerScriptService")
 
-local GameMaster = ServerScriptService:WaitForChild("GameMaster")
+local GameMaster = require(ServerScriptService:WaitForChild("GameMaster"))
 
 GameMaster.initLeaderstats()
 GameMaster.gameLoop()
