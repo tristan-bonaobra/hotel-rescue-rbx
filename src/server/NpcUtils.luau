@@ -57,6 +57,7 @@ local function createNpc()
 	hat.Parent = char
 	hum.JumpPower = Config.NPC_JUMP_POWER
 	char.PrimaryPart = torso
+	npcAssetsLib:WaitForChild("NpcAnimator"):Clone().Parent = char
 	
 	if math.random(Config.NPC_RARE_SKIN_DIE) == 1 then
 		skinColor = rareSkinColor
