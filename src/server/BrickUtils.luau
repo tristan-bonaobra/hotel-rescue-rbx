@@ -46,18 +46,25 @@ local function tempUnanchor(part)
 	if not part:IsA("BasePart") then
 		return
 	end
+
 	part.Anchored = false
 	part.CustomPhysicalProperties = PhysicalProperties.new(0.7, 0.8, 0, 100, 100)
+	
 	task.spawn(function()
 		repeat
 			task.wait(2)
-		until
-			(
-				((part.AssemblyLinearVelocity.Magnitude + part.AssemblyAngularVelocity.Magnitude) <= Config.DEBRIS_ANCHOR_THRESHOLD)
-				and (not part:FindFirstChildOfClass("Attachment"))
-			) 
-		or
-			(not part:IsDescendantOf(workspace))
+
+			local mag1 = part.AssemblyLinearVelocity.Magnitude
+			local mag2 = part.AssemblyAngularVelocity.Magnitude
+			local magSum = mag1 + mag2
+
+			local isMoving = magSum > Config.DEBRIS_ANCHOR_THRESHOLD
+			local isAttached = part:FindFirstChildOfClass("Attachment")
+			local notMovingNorAttached = (not isMoving) and (not isAttached)
+			local noLongerExists = not part:IsDescendantOf(workspace)
+
+		until notMovingNorAttached or noLongerExists
+
 		part.Anchored = true
 		part.CustomPhysicalProperties = nil
 		part.AssemblyLinearVelocity = Vector3.new()
