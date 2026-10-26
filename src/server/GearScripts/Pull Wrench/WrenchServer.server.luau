@@ -8,6 +8,9 @@ local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
+local playgroundLib = workspace:WaitForChild("Playground")
+local npcsLib = workspace:WaitForChild("Npcs")
+
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
 
@@ -19,16 +22,14 @@ local lastSlippery
 
 local function isPullable(part)
 	local currentMap = workspace:FindFirstChild("CurrentMap")
-	local Playground = workspace:FindFirstChild("Playground")
-	local Npcs = workspace:FindFirstChild("Npcs")
 	return part
 		and part:IsA("BasePart")
 		and (
 			part.Anchored
 			or (currentMap and part:IsDescendantOf(currentMap))
-			or (Playground and part:IsDescendantOf(Playground))
-			or (Npcs and part:IsDescendantOf(Npcs))
-			or (part:GetAttribute("IsGearAttachable"))
+			or part:IsDescendantOf(playgroundLib)
+			or part:IsDescendantOf(npcsLib)
+			or part:GetAttribute("IsGearAttachable")
 		)
 end
 
