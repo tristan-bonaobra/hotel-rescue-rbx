@@ -8,7 +8,7 @@ local Config = require(ServerScriptService:WaitForChild("Config"))
 
 local playgroundBin = workspace:WaitForChild("Playground")
 
-local teleporter = workspace:FindFirstChild("Teleporter")
+local teleporter = workspace:WaitForChild("Teleporter")
 
 type BreakParams = {
 	Threshold: number,
