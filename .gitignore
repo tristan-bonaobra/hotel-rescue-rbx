@@ -1,5 +1,8 @@
 sourcemap.json
+
+# Dist
 assets/
+/*.zip
 
 # Project place file
 /hotel-rescue-rbx.rbxlx
