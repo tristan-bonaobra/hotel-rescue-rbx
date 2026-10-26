@@ -6,7 +6,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 
-local playgroundBin = workspace:FindFirstChild("Playground")
+local playgroundBin = workspace:WaitForChild("Playground")
 
 local teleporter = workspace:FindFirstChild("Teleporter")
 
@@ -231,7 +231,7 @@ local function isGearAttachable(part)
 		and (
 			part.Anchored
 			or (currentMap and part:IsDescendantOf(currentMap))
-			or (playgroundBin and part:IsDescendantOf(playgroundBin))
+			or part:IsDescendantOf(playgroundBin)
 			or (part:GetAttribute("IsGearAttachable"))
 		)
 end
