@@ -1,4 +1,4 @@
-if not script.Parent.Parent:IsA("BasePart") then
+if not script.Parent:IsA("Model") then
 	return
 end
 
@@ -9,13 +9,20 @@ local STRAIN_PLAYBACK_SPEED = 0.9
 local DEFAULT_PLAYBACK_SPEED = 0.7
 local SOUND_RAMP = 1.5
 
-local sound = script.Parent
-local base = sound.Parent
+local ServerScriptService = game:GetService("ServerScriptService")
+
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
+
+local pistonModel = script.Parent
+local base = pistonModel:WaitForChild("Base")
+local smoke = base:WaitForChild("Smoke")
 local constraint = base:WaitForChild("PrismaticConstraint")
+
 local lastPosition = constraint.CurrentPosition
 local smoothedVelocity = 0
-local smoke = base:WaitForChild("Smoke")
 
+local sound = SoundUtils.copySound("Gear.PistonHydraulic")
+sound.Parent = base
 sound.PlaybackSpeed = 0
 
 game:GetService("RunService").Heartbeat:Connect(function(dt)

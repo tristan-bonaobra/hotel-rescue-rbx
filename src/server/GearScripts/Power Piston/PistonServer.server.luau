@@ -8,7 +8,9 @@ local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
-local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
+local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
+
+local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
@@ -54,7 +56,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			
 			pistonModel = Instance.new("Model")
 			pistonModel.Name = "Piston"
-			pistonModel.Parent = toolDebrisFolder
+			pistonModel.Parent = toolDebrisBin
 			
 			local base = Instance.new("Part")
 			base.Name = "Base"
@@ -63,10 +65,6 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			base.CFrame = surfaceCFrame * CFrame.new(0, base.Size.Y / 2, 0)
 			base:SetAttribute("IsGearAttachable", true)
 			base.Parent = pistonModel
-			
-			for _, v in script.BaseScripts:GetChildren() do
-				v:Clone().Parent = base
-			end
 			
 			local baseWeld = Instance.new("WeldConstraint")
 			baseWeld.Name = "BaseWeld"
@@ -121,6 +119,8 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			smoke.Opacity = 0.5
 			smoke.Enabled = false
 			smoke.Parent = base
+
+			entityScriptsLib:WaitForChild("PistonEntityScript"):Clone().Parent = pistonModel
 		end
 	end
 end)
