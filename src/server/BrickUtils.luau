@@ -4,8 +4,7 @@
 
 local ServerScriptService = game:GetService("ServerScriptService")
 
-local Config = ServerScriptService:WaitForChild("Config")
-local BrickUtils = ServerScriptService:WaitForChild("BrickUtils")
+local Config = require(ServerScriptService:WaitForChild("Config"))
 
 local playgroundBin = workspace:FindFirstChild("Playground")
 
@@ -60,6 +59,27 @@ local function tempUnanchor(part)
 		part.AssemblyLinearVelocity = Vector3.new()
 		part.AssemblyAngularVelocity = Vector3.new()
 	end)
+end
+
+local function breakJoints(part)
+	for _, joint in part:GetJoints() do
+		joint:Destroy()
+	end
+end
+
+local function randTint(part)
+	local h, s, v = part.Color:ToHSV()
+	local a = 1000
+	if math.random(2) == 1 then
+		s += math.random(a * Config.DEBRIS_TINT) / a
+		v += math.random(a * Config.DEBRIS_TINT) / a
+	else
+		s-= math.random(a * Config.DEBRIS_TINT) / a
+		v -= math.random(a * Config.DEBRIS_TINT) / a
+	end
+	s = math.clamp(s, 0, 1)
+	v = math.clamp(v, 0, 1)
+	part.Color = Color3.fromHSV(h, s, v)
 end
 
 -- This function was vibe-coded based on what I wrote previously, which
@@ -143,12 +163,12 @@ local function breakPart(part, breakParams: BreakParams)
 		newFragment.Parent = oldParent
 		
 		if breakParams.Unanchor then
-			BrickUtils.tempUnanchor(newFragment)
+			tempUnanchor(newFragment)
 		end
 		if breakParams.Tint then
-			BrickUtils.randTint(newFragment)
+			randTint(newFragment)
 		end
-		BrickUtils.breakJoints(newFragment)
+		breakJoints(newFragment)
 		
 		fragmentYieldCounter += 1
 		if fragmentYieldCounter % Config.FRAGMENTS_PER_TICK == 0 then
@@ -160,27 +180,6 @@ local function breakPart(part, breakParams: BreakParams)
 	
 	part:Destroy()
 	return newFragments
-end
-
-local function breakJoints(part)
-	for _, joint in part:GetJoints() do
-		joint:Destroy()
-	end
-end
-
-local function randTint(part)
-	local h, s, v = part.Color:ToHSV()
-	local a = 1000
-	if math.random(2) == 1 then
-		s += math.random(a * Config.DEBRIS_TINT) / a
-		v += math.random(a * Config.DEBRIS_TINT) / a
-	else
-		s-= math.random(a * Config.DEBRIS_TINT) / a
-		v -= math.random(a * Config.DEBRIS_TINT) / a
-	end
-	s = math.clamp(s, 0, 1)
-	v = math.clamp(v, 0, 1)
-	part.Color = Color3.fromHSV(h, s, v)
 end
 
 local function weldToAdjacent(part)
@@ -298,7 +297,6 @@ return {
     tempUnanchor = tempUnanchor,
     breakPart = breakPart,
 	breakJoints = breakJoints,
-	randTint = randTint,
 	weldToAdjacent = weldToAdjacent,
 	-- Bool
 	isTempUnanchorable = isTempUnanchorable,
