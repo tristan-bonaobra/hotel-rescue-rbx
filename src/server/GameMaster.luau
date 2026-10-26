@@ -104,9 +104,10 @@ end
 
 local function loadMap()
 	message.Text = "Loading"
-	MapUtils.loadMap()
+	local map = MapUtils.loadMap()
 	message.Text = ""
 	task.wait(5)
+	return map
 end
 
 local function storyIntro()
