@@ -56,18 +56,6 @@ local function unattachAndDeactivate()
 	playAnim()
 end
 
-local function tempSlippery(part)
-	lastSlippery = os.time()
-	
-	task.spawn(function()
-		local thisSlippery = lastSlippery
-		task.wait(Config.ROPE_SLIPPERY_DURATION)
-		if lastSlippery == thisSlippery then
-			part.CustomPhysicalProperties = nil
-		end
-	end)
-end
-
 local function reelPlayerAndPart(part, playerTargetPos)
 	local char = tool.Parent
 	local root = char:FindFirstChild("HumanoidRootPart")
@@ -91,7 +79,6 @@ local function reelPlayerAndPart(part, playerTargetPos)
 	
 	local partImpulseDirection = CFrame.new(part.Position, rootPos).LookVector
 	local partImpulse = partImpulseDirection * Config.ROPE_IMPULSE_PART
-	tempSlippery(part)
 	part:ApplyImpulse(partImpulse) -- ApplyImpulse is mandatory so we dont make trampolines
 end
 
@@ -138,7 +125,6 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 			
 			if isPullable(clickTarget) then
 				attachedPart.Anchored = false
-				tempSlippery(attachedPart)
 			end
 			
 			local npc
