@@ -26,7 +26,7 @@ local function playSound(instance, pathString, isLooped)
         sound:Play()
 
         if not isLooped then
-            Debris:AddItem(sound, sound.TimeLength / sound.PlaybackSpeed)
+            Debris:AddItem(sound, (sound.TimeLength / sound.PlaybackSpeed) + 2)
         end
 
         return sound
