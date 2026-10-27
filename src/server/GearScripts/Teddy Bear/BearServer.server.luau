@@ -79,16 +79,19 @@ tool.Activated:Connect(function()
 	local head = char:FindFirstChild("Head")
 
 	local chatMessage
+	local chatColor
 	local soundPath
 	
 	if mode == "StartFollowing" then
 		playAnim()
 		soundPath = rescueSoundPaths[math.random(#rescueSoundPaths)]
 		chatMessage = Config.BEAR_MESSAGE_FOLLOW
+		chatColor = Enum.ChatColor.Green
 	elseif mode == "StopFollowing" then
 		playAnim()
 		soundPath = "Gear.BearStay"
 		chatMessage = Config.BEAR_MESSAGE_STAY
+		chatColor = Enum.ChatColor.Red
 	else
 		tool.GripForward = Vector3.new(1,0,0)
 		tool.GripPos = Vector3.new(.5,-1.5,-1.56)
@@ -100,7 +103,7 @@ tool.Activated:Connect(function()
 	SoundUtils.playSound(handle, soundPath)
 	
 	if head and chatMessage then
-		Chat:Chat(head, chatMessage)
+		Chat:Chat(head, chatMessage, chatColor or Enum.ChatColor.White)
 	end
 	
 	task.wait(Config.BEAR_COOLDOWN)
