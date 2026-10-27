@@ -40,7 +40,7 @@ local function destroyPart(part)
 	part.Transparency = 0.5
 	part.BrickColor = BrickColor.new("Brick yellow")
 	part.Material = Enum.Material.Slate
-	SoundUtils.playSound(handle, "Gear.PickCrush", false, 0.1)
+	SoundUtils.playSound(handle, "Gear.PickCrush", false, 0.2)
 end
 
 local function breakPart(part)
@@ -54,7 +54,7 @@ local function breakPart(part)
 end
 
 local function pickInteractWithDynamicCooldown(part)
-	SoundUtils.playSound(handle, "Gear.PickBreak", 0.1)
+	SoundUtils.playSound(handle, "Gear.PickBreak", false, 0.2)
 	if BrickUtils.isTiny(part) then
 		destroyPart(part)
 		task.wait(Config.PICK_COOLDOWN / 2)
