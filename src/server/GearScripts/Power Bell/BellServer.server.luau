@@ -18,8 +18,8 @@ local isActive
 
 local function isBellable(part)
 	local currentMap = workspace:FindFirstChild("CurrentMap")
-
 	local npc
+	
 	if npcsBin and part:IsDescendantOf(npcsBin) then
 		for _, v in npcsBin:GetChildren() do
 			if part:IsDescendantOf(v) then
@@ -38,32 +38,33 @@ local function isBellable(part)
 		)
 end
 
-tool.Activated:Connect(function()
-	if isActive then
-		return
-	end
-	
-	isActive = true
-	
+local function playAnim()
 	local anim = Instance.new("StringValue")
 	anim.Name = "toolanim"
 	anim.Value = "Slash"
 	anim.Parent = tool
+	
 	game.Debris:AddItem(anim, 1)
+end
 
+local function shockwaveFx()
 	SoundUtils.playSound(handle, "Gear.BellBass")
 	SoundUtils.playSound(handle, "Gear.BellQuake")
 	
 	local Effects = game.ServerStorage:FindFirstChild("Effects")
+
 	if Effects then
 		local shockwave = Effects:WaitForChild("BellShockwave"):Clone()
 		shockwave.CFrame = CFrame.new(handle.Position)
 		shockwave.Parent = workspace
 		game.Debris:AddItem(shockwave, 0.5)
 	end
-	
+end
+
+local function shockwavePhysics()
 	local affectedParts = workspace:GetPartBoundsInRadius(handle.Position, Config.BELL_RADIUS)
 	local affectedRoots = {}
+
 	for _, part in ipairs(affectedParts) do
 		if isBellable(part) then
 			if part.Anchored then
@@ -75,9 +76,10 @@ tool.Activated:Connect(function()
 				table.insert(affectedRoots, assemblyRoot)
 				local direction = CFrame.new(handle.Position, assemblyRoot.Position).LookVector
 				local velocity = (direction * Config.BELL_FORCE) + Vector3.new(0, Config.BELL_JUMP, 0)
-				assemblyRoot:ApplyImpulse(velocity * assemblyRoot:GetMass())
 				
+				assemblyRoot:ApplyImpulse(velocity * assemblyRoot:GetMass())
 				part.CustomPhysicalProperties = PhysicalProperties.new(0.7, 0.8, 0, 0, 0)
+
 				task.spawn(function()
 					task.wait(0.1)
 					part.CustomPhysicalProperties = nil
@@ -85,7 +87,17 @@ tool.Activated:Connect(function()
 			end
 		end
 	end
+end
+
+tool.Activated:Connect(function()
+	if isActive then
+		return
+	end
 	
+	isActive = true
+	playAnim()
+	shockwaveFx()
+	shockwavePhysics()
 	task.wait(Config.BELL_COOLDOWN)
 	isActive = false
 end)
