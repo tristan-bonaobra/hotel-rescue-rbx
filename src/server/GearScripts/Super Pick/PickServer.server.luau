@@ -25,6 +25,38 @@ local function isPickable(part)
 		)
 end
 
+local function playAnim()
+	local anim = Instance.new("StringValue")
+	anim.Name = "toolanim"
+	anim.Value = "Slash"
+	anim.Parent = tool
+	game.Debris:AddItem(anim, 1)
+end
+
+local function destroyPart(part)
+	part:Destroy()
+	SoundUtils.playSound(handle, "Gear.PickCrush")
+end
+
+local function breakPart(part)
+	local breakParams = {
+		Threshold = Config.BREAK_THRESHOLD_MANUAL,
+		IsRecursive = false,
+		Unanchor = true,
+		Tint = true
+	}
+	BrickUtils.breakPart(part, breakParams)
+end
+
+local function pickInteract(part)
+	SoundUtils.playSound(handle, "Gear.PickBreak")
+	if BrickUtils.isTiny(part) then
+		destroyPart(part)
+	else
+		breakPart(part)
+	end
+end
+
 toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 	local char = plr.Character
 	local root = char and char:FindFirstChild("HumanoidRootPart")
@@ -36,29 +68,11 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 		return
 	else
 		isActive = true
-		
-		local anim = Instance.new("StringValue")
-		anim.Name = "toolanim"
-		anim.Value = "Slash"
-		anim.Parent = tool
-		game.Debris:AddItem(anim, 1)
+		playAnim()
 		
 		local withinReach = (root.Position - clickCFrame.Position).Magnitude <= Config.PICK_DISTANCE
-		
 		if withinReach and isPickable(clickTarget) then
-			if BrickUtils.isTiny(clickTarget) then
-				clickTarget:Destroy()
-				SoundUtils.playSound(handle, "Gear.PickCrush")
-			else
-				local breakParams = {
-					Threshold = Config.BREAK_THRESHOLD_MANUAL,
-					IsRecursive = false,
-					Unanchor = true,
-					Tint = true
-				}
-				BrickUtils.breakPart(clickTarget, breakParams)
-			end
-			SoundUtils.playSound(handle, "Gear.PickBreak")
+			pickInteract(clickTarget)
 		else
 			SoundUtils.playSound(handle, "Gear.PickMiss")
 		end
