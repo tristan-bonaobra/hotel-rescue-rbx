@@ -53,12 +53,14 @@ local function breakPart(part)
 	BrickUtils.breakPart(part, breakParams)
 end
 
-local function pickInteract(part)
+local function pickInteractWithDynamicCooldown(part)
 	SoundUtils.playSound(handle, "Gear.PickBreak")
 	if BrickUtils.isTiny(part) then
 		destroyPart(part)
+		task.wait(Config.PICK_COOLDOWN / 2)
 	else
 		breakPart(part)
+		task.wait(Config.PICK_COOLDOWN)
 	end
 end
 
@@ -77,12 +79,12 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 		
 		local withinReach = (root.Position - clickCFrame.Position).Magnitude <= Config.PICK_DISTANCE
 		if withinReach and isPickable(clickTarget) then
-			pickInteract(clickTarget)
+			pickInteractWithDynamicCooldown(clickTarget)
 		else
 			SoundUtils.playSound(handle, "Gear.PickMiss")
+			task.wait(Config.PICK_COOLDOWN)
 		end
 
-		task.wait(Config.PICK_COOLDOWN)
 		isActive = false
 	end
 end)
