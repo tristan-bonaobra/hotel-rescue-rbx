@@ -34,7 +34,11 @@ local function playAnim()
 end
 
 local function destroyPart(part)
-	part:Destroy()
+	BrickUtils.breakJoints(part)
+	part.Anchored = false
+	part.CanCollide = false
+	part.Transpaency = 0.5
+	part.BrickColor = BrickColor.new("Brick yellow")
 	SoundUtils.playSound(handle, "Gear.PickCrush")
 end
 
