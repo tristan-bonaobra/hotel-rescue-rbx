@@ -71,7 +71,7 @@ local function shockwavePhysics()
 				BrickUtils.tempUnanchor(part)
 			end
 
-			if BrickUtils.isTiny(part) then
+			if BrickUtils.isTiny(part) and (not part:IsDescendantOf(npcsBin)) then
 				BrickUtils.breakJoints(part)
 			end
 			
