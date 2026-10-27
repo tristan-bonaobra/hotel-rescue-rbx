@@ -37,8 +37,9 @@ local function destroyPart(part)
 	BrickUtils.breakJoints(part)
 	part.Anchored = false
 	part.CanCollide = false
-	part.Transpaency = 0.5
+	part.Transparency = 0.5
 	part.BrickColor = BrickColor.new("Brick yellow")
+	part.Material = Enum.Material.Slate
 	SoundUtils.playSound(handle, "Gear.PickCrush")
 end
 
