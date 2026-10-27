@@ -7,7 +7,7 @@ local TARGET_THRESHOLD = 0.25
 local STRAIN_THRESHOLD = 0.75
 local STRAIN_PLAYBACK_SPEED = 0.9
 local DEFAULT_PLAYBACK_SPEED = 0
-local SOUND_RAMP = 1.5
+local SOUND_RAMP = 2
 
 local ServerScriptService = game:GetService("ServerScriptService")
 
@@ -22,7 +22,7 @@ local lastPosition = constraint.CurrentPosition
 local smoothedVelocity = 0
 
 local sound = SoundUtils.copySound("Gear.PistonHydraulic")
-sound.PlaybackSpeed = 0
+sound.PlaybackSpeed = 2
 sound.Parent = base
 sound:Play()
 
