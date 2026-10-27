@@ -70,10 +70,15 @@ local function shockwavePhysics()
 			if part.Anchored then
 				BrickUtils.tempUnanchor(part)
 			end
+
+			if BrickUtils.isTiny(part) then
+				BrickUtils.breakJoints(part)
+			end
 			
 			local assemblyRoot = part.AssemblyRootPart or part
 			if (not table.find(affectedRoots, assemblyRoot)) then
 				table.insert(affectedRoots, assemblyRoot)
+				
 				local direction = CFrame.new(handle.Position, assemblyRoot.Position).LookVector
 				local velocity = (direction * Config.BELL_FORCE) + Vector3.new(0, Config.BELL_JUMP, 0)
 				
