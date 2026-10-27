@@ -268,6 +268,14 @@ local function isBuried(part)
 	return true
 end
 
+local function isTiny(part)
+	local t = Config.BREAK_THRESHOLD_MANUAL
+	local size = part.Size
+	return (size.X <= t)
+		and (size.Y <= t)
+		and (size.Z <= t)
+end
+
 ----------------------------------------------------------------------------------------------
 -- MAIN FUNCTIONS: OTHER
 ----------------------------------------------------------------------------------------------
@@ -311,6 +319,7 @@ return {
 	isTempUnanchorable = isTempUnanchorable,
 	isGearAttachable = isGearAttachable,
 	isBuried = isBuried,
+	isTiny = isTiny,
 	-- Other
     getTopPosition = getTopPosition,
 }
