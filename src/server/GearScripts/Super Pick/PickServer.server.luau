@@ -46,13 +46,18 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 		local withinReach = (root.Position - clickCFrame.Position).Magnitude <= Config.PICK_DISTANCE
 		
 		if withinReach and isPickable(clickTarget) then
-			local breakParams = {
-				Threshold = Config.BREAK_THRESHOLD_MANUAL,
-				IsRecursive = false,
-				Unanchor = true,
-				Tint = true
-			}
-			BrickUtils.breakPart(clickTarget, breakParams)
+			if BrickUtils.isTiny(clickTarget) then
+				clickTarget:Destroy()
+				SoundUtils.playSound(handle, "Gear.PickCrush")
+			else
+				local breakParams = {
+					Threshold = Config.BREAK_THRESHOLD_MANUAL,
+					IsRecursive = false,
+					Unanchor = true,
+					Tint = true
+				}
+				BrickUtils.breakPart(clickTarget, breakParams)
+			end
 			SoundUtils.playSound(handle, "Gear.PickBreak")
 		else
 			SoundUtils.playSound(handle, "Gear.PickMiss")
