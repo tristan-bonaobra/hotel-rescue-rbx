@@ -24,10 +24,10 @@ local weldIndex = {}
 -- HELPER FUNCTIONS
 ----------------------------------------------------------------------------------------------
 
-local function raycast(originPos, targetPos, filterInclude)
+local function raycast(originPos, targetPos, filterType, filterObjects)
 	local rayParams = RaycastParams.new()
-	rayParams.FilterType = Enum.RaycastFilterType.Include
-	rayParams.FilterDescendantsInstances = filterInclude or {workspace}
+	rayParams.FilterType = filterType or Enum.RaycastFilterType.Include
+	rayParams.FilterDescendantsInstances = filterObjects or {workspace}
 
 	local rayDirection = targetPos - originPos
 	local raycastResult = workspace:Raycast(originPos, rayDirection, rayParams)
@@ -310,6 +310,8 @@ end
 ----------------------------------------------------------------------------------------------
 
 return {
+	-- Helper
+	raycast = raycast,
 	-- Debris
     tempUnanchor = tempUnanchor,
     breakPart = breakPart,
