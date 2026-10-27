@@ -6,7 +6,7 @@ local SMOOTH_FACTOR = 15
 local TARGET_THRESHOLD = 0.25
 local STRAIN_THRESHOLD = 0.75
 local STRAIN_PLAYBACK_SPEED = 0.9
-local DEFAULT_PLAYBACK_SPEED = 0.7
+local DEFAULT_PLAYBACK_SPEED = 0
 local SOUND_RAMP = 1.5
 
 local ServerScriptService = game:GetService("ServerScriptService")
