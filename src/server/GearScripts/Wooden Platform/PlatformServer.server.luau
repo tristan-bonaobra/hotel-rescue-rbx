@@ -8,7 +8,7 @@ local Config = require(ServerScriptService:WaitForChild("Config"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 
-local toolDebrisFolder = workspace:WaitForChild("ToolDebris")
+local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
 local toolRemote = tool:WaitForChild("ToolRemote")
@@ -53,7 +53,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			platform.Size = Vector3.new(0.5, platformDiameter, platformDiameter)
 			platform.CFrame = CFrame.new(clickPos) * CFrame.Angles(0, 0, math.rad(90))
 			platform:SetAttribute("IsGearAttachable", true)
-			platform.Parent = toolDebrisFolder
+			platform.Parent = toolDebrisBin
 			
 			local weld = Instance.new("WeldConstraint")
 			weld.Part0 = clickTarget
