@@ -26,13 +26,20 @@ local function stopSounds(instance, soundName)
     end
 end
 
-local function playSound(instance, pathString, isLooped)
+local function playSound(instance, pathString, isLooped, pitchShift)
     local sound = copySound(pathString)
     if sound then
         stopSounds(instance, sound.Name)
         
         sound.Parent = instance
         sound.Looped = isLooped
+
+        if pitchShift then
+            local a = 1000
+            local s = pitchShift * a
+            sound.PlaybackSpeed += math.random(-s, s) / a
+        end
+
         sound:Play()
 
         if not isLooped then
