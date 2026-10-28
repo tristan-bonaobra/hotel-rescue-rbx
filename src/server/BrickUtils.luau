@@ -317,6 +317,19 @@ local function getTopPosition(part)
 	return cf:PointToWorldSpace(bestFace.offset)
 end
 
+local function stabilize(part)
+	local attachment = Instance.new("Attachment")
+    attachment.Parent = part
+
+    local alignOrientation = Instance.new("AlignOrientation")
+    alignOrientation.Mode = Enum.OrientationAlignmentMode.OneAttachment
+    alignOrientation.Attachment0 = attachment
+    alignOrientation.MaxTorque = math.huge
+    alignOrientation.MaxAngularVelocity = 20
+    alignOrientation.Responsiveness = 15
+	alignOrientation.Parent = part
+end
+
 ----------------------------------------------------------------------------------------------
 -- RETURN MODULE
 ----------------------------------------------------------------------------------------------
@@ -337,4 +350,5 @@ return {
 	isTiny = isTiny,
 	-- Other
     getTopPosition = getTopPosition,
+	stabilize = stabilize,
 }
