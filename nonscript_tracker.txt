@@ -1,1 +1,3 @@
 Removed large chunks of the ceiling in Underground Base to allow large rock to fall to the ground and make the map more challenging.
+
+Add HumanoidRootPart to skinny NPCs.
