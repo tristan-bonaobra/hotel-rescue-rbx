@@ -38,6 +38,18 @@ local function getCurrentMap()
 	return workspace:FindFirstChild("CurrentMap")
 end
 
+local function tween(object, properties, duration, easingStyle, easingDirection)
+	local tweenInfo = TweenInfo.new(
+		duration or 1,
+		easingStyle or Enum.EasingStyle.Quad,
+		easingDirection or Enum.EasingDirection.Out
+	)
+
+	local tween = game:GetService("TweenService"):Create(object, tweenInfo, properties)
+	tween:Play()
+	return tween
+end
+
 ----------------------------------------------------------------------------------------------
 -- MAIN FUNCTIONS: DEBRIS
 ----------------------------------------------------------------------------------------------
@@ -312,6 +324,7 @@ end
 return {
 	-- Helper
 	raycast = raycast,
+	tween = tween,
 	-- Debris
     tempUnanchor = tempUnanchor,
     breakPart = breakPart,
