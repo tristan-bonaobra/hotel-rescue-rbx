@@ -20,6 +20,7 @@ local function isPickable(part)
 	local currentMap = workspace:FindFirstChild("CurrentMap")
 	return part
 		and part:IsA("BasePart")
+		and (part.Shape == Enum.PartType.Block) or (part.Shape == Enum.PartType.Wedge)
 		and (
 			(currentMap and part:IsDescendantOf(currentMap))
 			or (playgroundBin and part:IsDescendantOf(playgroundBin))
