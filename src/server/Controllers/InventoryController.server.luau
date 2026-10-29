@@ -111,18 +111,8 @@ local function beginTrackingPlayer(plr)
 	
 	grantPlayerItems(plr)
 
-	local characterListener
-	local leaverListener
-	
-	characterListener = plr.CharacterAdded:Connect(function()
+	plr.CharacterAdded:Connect(function()
 		grantPlayerItems(plr)
-	end)
-
-	leaverListener = Players.PlayerRemoving:Connect(function(leaver)
-		if leaver == plr then
-			characterListener:Disconnect()
-			leaverListener:Disconnect()
-		end
 	end)
 end
 
