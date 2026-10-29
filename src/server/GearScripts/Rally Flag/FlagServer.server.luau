@@ -94,6 +94,7 @@ end
 
 local function retrieveFlag()
     setHandleVisible(true)
+    SoundUtils.playSound(handle, "Gear.FlagPlace").PlaybackSpeed = 0.85
     
     if flag:IsDescendantOf(workspace) then
         flag:Destroy()
