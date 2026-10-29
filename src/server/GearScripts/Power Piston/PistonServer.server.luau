@@ -7,6 +7,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
+local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 
 local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
 
@@ -19,14 +20,6 @@ local handle = tool:WaitForChild("Handle")
 local isActive
 local pistonModel
 
-local function playAnim()
-	local anim = Instance.new("StringValue")
-	anim.Name = "toolanim"
-	anim.Value = "Slash"
-	anim.Parent = tool
-	game.Debris:AddItem(anim, 1)
-end
-
 toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSurface)
 	if not tool:IsDescendantOf(plr.Character) then
 		return
@@ -34,7 +27,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 	
 	if isActive then
 		isActive = false
-		playAnim()
+		GearUtils.playToolAnim(tool, "Slash")
 		SoundUtils.playSound(handle, "Gear.PistonUnsummon")
 		pistonModel:Destroy()
 		pistonModel = nil
@@ -48,7 +41,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			isActive = true
 			
 			SoundUtils.playSound(handle, "Gear.PistonSummon")
-			playAnim()
+			GearUtils.playToolAnim(tool, "Slash")
 			
 			local hitPosition = clickCFrame.Position
 			local localNormal = Vector3.fromNormalId(clickSurface)

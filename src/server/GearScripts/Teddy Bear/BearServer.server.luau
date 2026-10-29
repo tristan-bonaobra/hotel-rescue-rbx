@@ -7,6 +7,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
+local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 
 local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
 
@@ -21,14 +22,6 @@ local rescueSoundPaths = {
 	"Gear.BearFollow3",
 	"Gear.BearFollow4"
 }
-
-local function playAnim()
-	local anim = Instance.new("StringValue")
-	anim.Name = "toolanim"
-	anim.Value = "Slash"
-	anim.Parent = tool
-	game.Debris:AddItem(anim, 1)
-end
 
 tool.Activated:Connect(function()
 	if isActive then
@@ -83,12 +76,12 @@ tool.Activated:Connect(function()
 	local soundPath
 	
 	if mode == "StartFollowing" then
-		playAnim()
+		GearUtils.playToolAnim(tool, "Slash")
 		soundPath = rescueSoundPaths[math.random(#rescueSoundPaths)]
 		chatMessage = Config.BEAR_MESSAGE_FOLLOW
 		chatColor = Enum.ChatColor.Green
 	elseif mode == "StopFollowing" then
-		playAnim()
+		GearUtils.playToolAnim(tool, "Slash")
 		soundPath = "Gear.BearStay"
 		chatMessage = Config.BEAR_MESSAGE_STAY
 		chatColor = Enum.ChatColor.Red

@@ -7,6 +7,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
+local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 
 local playgroundBin = workspace:WaitForChild("Playground")
 
@@ -23,14 +24,6 @@ local function isPickable(part)
 			(currentMap and part:IsDescendantOf(currentMap))
 			or (playgroundBin and part:IsDescendantOf(playgroundBin))
 		)
-end
-
-local function playAnim()
-	local anim = Instance.new("StringValue")
-	anim.Name = "toolanim"
-	anim.Value = "Slash"
-	anim.Parent = tool
-	game.Debris:AddItem(anim, 1)
 end
 
 local function destroyPart(part)
@@ -75,9 +68,11 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 		return
 	else
 		isActive = true
-		playAnim()
+
+		GearUtils.playToolAnim(tool, "Slash")
 		
 		local withinReach = (root.Position - clickCFrame.Position).Magnitude <= Config.PICK_DISTANCE
+		
 		if withinReach and isPickable(clickTarget) then
 			pickInteractWithDynamicCooldown(clickTarget)
 		else

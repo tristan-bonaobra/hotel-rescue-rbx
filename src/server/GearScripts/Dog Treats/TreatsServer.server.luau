@@ -7,6 +7,7 @@ local ServerStorage = game:GetService("ServerStorage")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
+local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 
 local summonsLib = ServerStorage:WaitForChild("Summons")
 local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
@@ -25,12 +26,7 @@ tool.Activated:Connect(function()
 	
 	isActive = true
 	
-	local anim = Instance.new("StringValue")
-	anim.Name = "toolanim"
-	anim.Value = "Slash"
-	anim.Parent = tool
-	game.Debris:AddItem(anim, 1)
-	
+	GearUtils.playToolAnim(tool, "Slash")
 	SoundUtils.playSound(handle, "Gear.TreatsRustle")
 	
 	if dog then

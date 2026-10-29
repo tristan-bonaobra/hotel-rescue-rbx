@@ -7,6 +7,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
+local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 
 local playgroundLib = workspace:WaitForChild("Playground")
 local npcsLib = workspace:WaitForChild("Npcs")
@@ -32,27 +33,24 @@ local function isPullable(part)
 		)
 end
 
-local function playAnim()
-	local anim = Instance.new("StringValue")
-	anim.Name = "toolanim"
-	anim.Value = "Slash"
-	anim.Parent = tool
-	game.Debris:AddItem(anim, 1)
-end
-
 local function unattachAndDeactivate()
 	isActive = false
+
 	game.Debris:AddItem(attachment0, 0)
 	game.Debris:AddItem(attachment1, 0)
 	game.Debris:AddItem(rope, 0)
+
 	if BrickUtils.isTempUnanchorable(attachedPart) then -- Just in case
 		BrickUtils.tempUnanchor(attachedPart)
 	end
+
 	attachedPart = nil
+
 	if attConn then
 		attConn:Disconnect()
 	end
-	playAnim()
+
+	GearUtils.playToolAnim(tool, "Slash")
 end
 
 local function reelPlayerAndPart(part, playerTargetPos)
@@ -97,7 +95,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 		local withinReach = (root.Position - clickCFrame.Position).Magnitude <= Config.ROPE_LENGTH
 		
 		if withinReach and isPullable(clickTarget) then
-			playAnim()
+			GearUtils.playToolAnim(tool, "Slash")
 			SoundUtils.playSound(tool:WaitForChild("Handle"), "Gear.WrenchBass")
 			
 			attachedPart = clickTarget

@@ -7,6 +7,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
+local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
@@ -18,14 +19,6 @@ local platformRadius = Config.PLATFORM_RADIUS
 local platformDiameter = platformRadius * 2
 local platform
 
-local function playAnim()
-	local anim = Instance.new("StringValue")
-	anim.Name = "toolanim"
-	anim.Value = "Slash"
-	anim.Parent = tool
-	game.Debris:AddItem(anim, 1)
-end
-
 toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSurface)
 	if not tool:IsDescendantOf(plr.Character) then
 		return
@@ -36,7 +29,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 		platform = nil
 		handle.Transparency = 0
 		SoundUtils.playSound(handle, "Gear.PlatformReturn")
-		playAnim()
+		GearUtils.playToolAnim(tool, "Slash")
 	else
 		local clickPos = clickCFrame.Position
 		local char = plr.Character
@@ -60,7 +53,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			weld.Part1 = platform
 			weld.Parent = platform
 			
-			playAnim()
+			GearUtils.playToolAnim(tool, "Slash")
 			SoundUtils.playSound(handle, "Gear.PlatformPlace")
 			handle.Transparency = 1
 		end

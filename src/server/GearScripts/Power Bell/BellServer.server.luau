@@ -7,6 +7,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
+local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 
 local npcsBin = workspace:WaitForChild("Npcs")
 local playgroundBin = workspace:WaitForChild("Playground")
@@ -36,15 +37,6 @@ local function isBellable(part)
 			or (npc and (not npc:GetAttribute("IsRescued")))
 			or (playgroundBin and part:IsDescendantOf(playgroundBin))
 		)
-end
-
-local function playAnim()
-	local anim = Instance.new("StringValue")
-	anim.Name = "toolanim"
-	anim.Value = "Slash"
-	anim.Parent = tool
-	
-	game.Debris:AddItem(anim, 1)
 end
 
 local function shockwaveFx()
