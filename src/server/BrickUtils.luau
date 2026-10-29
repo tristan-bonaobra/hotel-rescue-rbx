@@ -89,21 +89,6 @@ local function breakJoints(part)
 	end
 end
 
-local function randTint(part)
-	local h, s, v = part.Color:ToHSV()
-	local a = 1000
-	if math.random(2) == 1 then
-		s += math.random(a * Config.DEBRIS_TINT) / a
-		v += math.random(a * Config.DEBRIS_TINT) / a
-	else
-		s-= math.random(a * Config.DEBRIS_TINT) / a
-		v -= math.random(a * Config.DEBRIS_TINT) / a
-	end
-	s = math.clamp(s, 0, 1)
-	v = math.clamp(v, 0, 1)
-	part.Color = Color3.fromHSV(h, s, v)
-end
-
 local function weldToAdjacent(part)
 	weldIndex[part] = weldIndex[part] or {}
 	
@@ -129,6 +114,33 @@ local function weldToAdjacent(part)
 	end
 	
 	return nCreatedWelds
+end
+
+----------------------------------------------------------------------------------------------
+-- PART APPEARANCE
+----------------------------------------------------------------------------------------------
+
+local function randTint(part)
+	local h, s, v = part.Color:ToHSV()
+	local a = 1000
+	if math.random(2) == 1 then
+		s += math.random(a * Config.DEBRIS_TINT) / a
+		v += math.random(a * Config.DEBRIS_TINT) / a
+	else
+		s-= math.random(a * Config.DEBRIS_TINT) / a
+		v -= math.random(a * Config.DEBRIS_TINT) / a
+	end
+	s = math.clamp(s, 0, 1)
+	v = math.clamp(v, 0, 1)
+	part.Color = Color3.fromHSV(h, s, v)
+end
+
+local function removeFaceInstances(part)
+	for _, v in pairs(part:GetChildren()) do
+		if v:IsA("FaceInstance") then
+			v:Destroy()
+		end
+	end
 end
 
 ----------------------------------------------------------------------------------------------
@@ -312,6 +324,7 @@ local function spawnFragments(
 			end
 		else
 			newFragment = originalPart:Clone()
+			removeFaceInstances(newFragment)
 		end
 		
 		newFragment.Size = data.Size
