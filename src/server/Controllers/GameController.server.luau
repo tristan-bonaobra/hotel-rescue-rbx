@@ -232,10 +232,8 @@ local function gameLoop()
 end
 
 ------------------------------------------------------------------------------
--- END
+-- ORCHESTRATE
 ------------------------------------------------------------------------------
 
-return {
-	initLeaderstats = initLeaderstats,
-	gameLoop = gameLoop,
-}
+initLeaderstats()
+gameLoop()
