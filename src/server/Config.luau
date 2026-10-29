@@ -15,6 +15,7 @@ Config = {
 		"Tool",
 		"ClickDetector",
 		"SpawnPoint",
+		"Light"
 	},
 	DEBRIS_ANCHOR_THRESHOLD = 0.5,
 	DEBRIS_TINT = 0.1,
