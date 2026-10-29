@@ -108,7 +108,10 @@ local function loadMap()
 		anchorMap(currentMap)
 		currentMap.Parent = workspace
 		breakMap(currentMap)
-		if currentMap:GetAttribute("ForWelding") then weldMap(currentMap) end
+
+		if currentMap:GetAttribute("ForWelding") then
+			weldMap(currentMap)
+		end
 	else
 		currentMap.Parent = workspace
 	end
