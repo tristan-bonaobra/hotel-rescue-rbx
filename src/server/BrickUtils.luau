@@ -405,6 +405,12 @@ local function isTiny(part)
 		and (size.Z <= t)
 end
 
+local function isBreakable(part)
+	return (part.Shape == Enum.PartType.Block)
+		or (part.Shape == Enum.PartType.Wedge)
+		or (part:IsA("WedgePart"))
+end
+
 ----------------------------------------------------------------------------------------------
 -- MAIN FUNCTIONS: OTHER
 ----------------------------------------------------------------------------------------------
@@ -466,6 +472,7 @@ return {
 	isGearAttachable = isGearAttachable,
 	isBuried = isBuried,
 	isTiny = isTiny,
+	isBreakable = isBreakable,
 	-- Other
     getTopPosition = getTopPosition,
 	stabilize = stabilize,
