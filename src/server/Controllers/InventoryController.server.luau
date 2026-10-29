@@ -13,18 +13,17 @@ local gearLib = ServerStorage:WaitForChild("Gear")
 local playerInventories = {}
 
 ---------------------------------------------------------------------------------------------------
--- ENFORCEMENT
----------------------------------------------------------------------------------------------------
-
-for _, item in gearLib:GetChildren() do
-	if item:IsA("Tool") then
-		item.CanBeDropped = false
-	end
-end
-
----------------------------------------------------------------------------------------------------
 -- FUNCTIONS
 ---------------------------------------------------------------------------------------------------
+
+local function standardizeItems()
+	for _, item in gearLib:GetChildren() do
+		if item:IsA("Tool") then
+			item.CanBeDropped = false
+			item.ToolTip = item.Name
+		end
+	end
+end
 
 local function loadGearScripts(gear)
 	local gearScriptsMainFolder = ServerScriptService:WaitForChild("GearScripts")
@@ -58,7 +57,7 @@ local function initGiver(giverModel)
 	
 	head.Touched:Connect(function(hit)
 		local char = hit.Parent
-		local plr = game.Players:GetPlayerFromCharacter(char)
+		local plr = Players:GetPlayerFromCharacter(char)
 		local leaderstats = plr and plr:FindFirstChild("leaderstats")
 		local pointsObject = leaderstats and leaderstats:FindFirstChild("Points")
 		local currentPoints = pointsObject and pointsObject.Value
@@ -111,15 +110,27 @@ local function beginTrackingPlayer(plr)
 	end
 	
 	grantPlayerItems(plr)
+
+	local characterListener
+	local leaverListener
 	
-	plr.CharacterAdded:Connect(function()
+	characterListener = plr.CharacterAdded:Connect(function()
 		grantPlayerItems(plr)
+	end)
+
+	leaverListener = Players.PlayerRemoving:Connect(function(leaver)
+		if leaver == plr then
+			characterListener:Disconnect()
+			leaverListener:Disconnect()
+		end
 	end)
 end
 
 ---------------------------------------------------------------------------------------------------
--- CALLS
+-- EVENTS
 ---------------------------------------------------------------------------------------------------
+
+standardizeItems()
 
 for _, giverModel in giversFolder:GetChildren() do
 	initGiver(giverModel)
