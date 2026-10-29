@@ -171,11 +171,12 @@ local function updateRalliedHumanoids()
 
         local justUpdated = math.floor(known.LastRallied) == math.floor(os.clock())
         local inWorkspace = hum:IsDescendantOf(workspace)
+        local rallyElapsed = os.clock() - known.LastRallied > Config.FLAG_BOOST_DURATION
 
         if inWorkspace and (justUpdated or isNearFlag(known.HumanoidRootPart)) then
             setHumanoidRallied(hum, true)
             ralliedHumanoidsDict[hum].LastRallied = os.clock()
-        elseif os.clock() - known.LastRallied > Config.FLAG_BOOST_DURATION then
+        elseif rallyElapsed or hum:GetAttribute("IsUnconscious") then
             setHumanoidRallied(hum, false)
             ralliedHumanoidsDict[hum] = nil
         end
