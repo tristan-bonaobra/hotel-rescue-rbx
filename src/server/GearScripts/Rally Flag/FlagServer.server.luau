@@ -59,7 +59,9 @@ end
 local function placeFlag()
     flag = handle:Clone()
     flag.Name = "RallyFlag"
+
     BrickUtils.breakJoints(flag)
+    BrickUtils.stabilize(flag)
 
     setHandleVisible(false)
     GearUtils.toolAnim(tool, "Slash")
