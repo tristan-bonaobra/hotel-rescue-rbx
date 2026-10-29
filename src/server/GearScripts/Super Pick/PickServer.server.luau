@@ -69,7 +69,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 	else
 		isActive = true
 
-		GearUtils.playToolAnim(tool, "Slash")
+		GearUtils.toolAnim(tool, "Slash")
 		
 		local withinReach = (root.Position - clickCFrame.Position).Magnitude <= Config.PICK_DISTANCE
 		

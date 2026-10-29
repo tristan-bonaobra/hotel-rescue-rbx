@@ -76,12 +76,12 @@ tool.Activated:Connect(function()
 	local soundPath
 	
 	if mode == "StartFollowing" then
-		GearUtils.playToolAnim(tool, "Slash")
+		GearUtils.toolAnim(tool, "Slash")
 		soundPath = rescueSoundPaths[math.random(#rescueSoundPaths)]
 		chatMessage = Config.BEAR_MESSAGE_FOLLOW
 		chatColor = Enum.ChatColor.Green
 	elseif mode == "StopFollowing" then
-		GearUtils.playToolAnim(tool, "Slash")
+		GearUtils.toolAnim(tool, "Slash")
 		soundPath = "Gear.BearStay"
 		chatMessage = Config.BEAR_MESSAGE_STAY
 		chatColor = Enum.ChatColor.Red

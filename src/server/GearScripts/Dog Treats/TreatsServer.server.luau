@@ -26,7 +26,7 @@ tool.Activated:Connect(function()
 	
 	isActive = true
 	
-	GearUtils.playToolAnim(tool, "Slash")
+	GearUtils.toolAnim(tool, "Slash")
 	SoundUtils.playSound(handle, "Gear.TreatsRustle")
 	
 	if dog then

@@ -29,7 +29,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 		platform = nil
 		handle.Transparency = 0
 		SoundUtils.playSound(handle, "Gear.PlatformReturn")
-		GearUtils.playToolAnim(tool, "Slash")
+		GearUtils.toolAnim(tool, "Slash")
 	else
 		local clickPos = clickCFrame.Position
 		local char = plr.Character
@@ -53,7 +53,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			weld.Part1 = platform
 			weld.Parent = platform
 			
-			GearUtils.playToolAnim(tool, "Slash")
+			GearUtils.toolAnim(tool, "Slash")
 			SoundUtils.playSound(handle, "Gear.PlatformPlace")
 			handle.Transparency = 1
 		end

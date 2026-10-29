@@ -50,7 +50,7 @@ local function unattachAndDeactivate()
 		attConn:Disconnect()
 	end
 
-	GearUtils.playToolAnim(tool, "Slash")
+	GearUtils.toolAnim(tool, "Slash")
 end
 
 local function reelPlayerAndPart(part, playerTargetPos)
@@ -95,7 +95,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 		local withinReach = (root.Position - clickCFrame.Position).Magnitude <= Config.ROPE_LENGTH
 		
 		if withinReach and isPullable(clickTarget) then
-			GearUtils.playToolAnim(tool, "Slash")
+			GearUtils.toolAnim(tool, "Slash")
 			SoundUtils.playSound(tool:WaitForChild("Handle"), "Gear.WrenchBass")
 			
 			attachedPart = clickTarget

@@ -92,7 +92,7 @@ tool.Activated:Connect(function()
 	end
 	
 	isActive = true
-	playAnim()
+	GearUtils.toolAnim(tool, "Slash")
 	shockwaveFx()
 	shockwavePhysics()
 	task.wait(Config.BELL_COOLDOWN)

@@ -1,4 +1,4 @@
-local function playToolAnim(tool, animName)
+local function toolAnim(tool, animName)
 	local anim = Instance.new("StringValue")
 	anim.Name = "toolanim"
 	anim.Value = animName
@@ -8,5 +8,5 @@ local function playToolAnim(tool, animName)
 end
 
 return {
-    playToolAnim = playToolAnim,
+    toolAnim = toolAnim,
 }

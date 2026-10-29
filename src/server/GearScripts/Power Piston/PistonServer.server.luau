@@ -27,7 +27,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 	
 	if isActive then
 		isActive = false
-		GearUtils.playToolAnim(tool, "Slash")
+		GearUtils.toolAnim(tool, "Slash")
 		SoundUtils.playSound(handle, "Gear.PistonUnsummon")
 		pistonModel:Destroy()
 		pistonModel = nil
@@ -41,7 +41,7 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSu
 			isActive = true
 			
 			SoundUtils.playSound(handle, "Gear.PistonSummon")
-			GearUtils.playToolAnim(tool, "Slash")
+			GearUtils.toolAnim(tool, "Slash")
 			
 			local hitPosition = clickCFrame.Position
 			local localNormal = Vector3.fromNormalId(clickSurface)
