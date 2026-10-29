@@ -3,5 +3,3 @@ Removed large chunks of the ceiling in Underground Base to allow large rock to f
 Added HumanoidRootPart to skinny NPCs.
 
 Added Prison Panic.
-
-Added Robloxian High School.
