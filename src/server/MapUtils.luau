@@ -38,10 +38,18 @@ local function cleanMap(map)
 			end
 		end
 		
-		if v:IsA("BasePart") and (not v.CanCollide) then
-			v.CanCollide = true
+		if v:IsA("BasePart") then
+			if (not v.CanCollide) then
+				v.CanCollide = true
+			end
+
+			if v.Transparency == 1 then
+				v:Destroy()
+			end
+
 		elseif v:IsA("Seat") or v:IsA("VehicleSeat") then
 			v.Disabled = true
+			
 		elseif v:IsA("Humanoid") and v.Parent then
 			v.Parent:Destroy()
 		end
