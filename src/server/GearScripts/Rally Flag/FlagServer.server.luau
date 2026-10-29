@@ -10,6 +10,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
+local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
@@ -61,6 +62,7 @@ local function placeFlag()
     BrickUtils.breakJoints(flag)
 
     setHandleVisible(false)
+    GearUtils.toolAnim(tool, "Slash")
 
     local raycastResult = BrickUtils.raycast(
         handle.Position,
