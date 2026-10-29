@@ -34,7 +34,6 @@ local function destroyPart(part)
 	part.Transparency = 0.5
 	part.BrickColor = BrickColor.new("Brick yellow")
 	part.Material = Enum.Material.Slate
-	SoundUtils.playSound(handle, "Gear.PickCrush", false, Config.PICK_PITCH_SHIFT)
 end
 
 local function breakPart(part)
@@ -48,19 +47,24 @@ local function breakPart(part)
 end
 
 local function pickInteractWithDynamicCooldown(part)
-	SoundUtils.playSound(handle, "Gear.PickBreak", false, Config.PICK_PITCH_SHIFT)
 	if isPickable(part) then
+		SoundUtils.playSound(handle, "Gear.PickBreak", false, Config.PICK_PITCH_SHIFT)
+
 		if BrickUtils.isTiny(part) then
 			destroyPart(part)
+			SoundUtils.playSound(handle, "Gear.PickCrush", false, Config.PICK_PITCH_SHIFT)
 			task.wait(Config.PICK_COOLDOWN / 2)
 		else
 			breakPart(part)
 			task.wait(Config.PICK_COOLDOWN)
 		end
+
 	elseif BrickUtils.isTempUnanchorable(part) then
 		BrickUtils.breakJoints(part)
 		BrickUtils.tempUnanchor(part)
+		SoundUtils.playSound(handle, "Gear.PickBreak", false, Config.PICK_PITCH_SHIFT)
 		task.wait(Config.PICK_COOLDOWN)
+
 	else
 		SoundUtils.playSound(handle, "Gear.PickMiss")
 		task.wait(Config.PICK_COOLDOWN)
