@@ -61,6 +61,9 @@ local function pickInteractWithDynamicCooldown(part)
 		BrickUtils.breakJoints(part)
 		BrickUtils.tempUnanchor(part)
 		task.wait(Config.PICK_COOLDOWN)
+	else
+		SoundUtils.playSound(handle, "Gear.PickMiss")
+		task.wait(Config.PICK_COOLDOWN)
 	end
 end
 
