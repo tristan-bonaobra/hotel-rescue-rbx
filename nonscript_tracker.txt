@@ -1,5 +1,3 @@
 Removed large chunks of the ceiling in Underground Base to allow large rock to fall to the ground and make the map more challenging.
 
 Added HumanoidRootPart to skinny NPCs.
-
-Added Stickmasterluke's Glass Office.
