@@ -410,8 +410,11 @@ local function isBreakable(part)
 		return
 	end
 
-	return (part.Shape == Enum.PartType.Block)
-		or (part.Shape == Enum.PartType.Wedge)
+	return (part:IsA("Part")
+		and (
+			(part.Shape == Enum.PartType.Block)
+			or (part.Shape == Enum.PartType.Wedge)
+		))
 		or (part:IsA("WedgePart"))
 end
 
