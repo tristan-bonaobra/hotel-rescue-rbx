@@ -104,106 +104,6 @@ local function randTint(part)
 	part.Color = Color3.fromHSV(h, s, v)
 end
 
--- This function was vibe-coded based on what I wrote previously, which
--- was a really laggy and spaghetti blueprint approach with garbage
--- collection overload. All other functions are mine unless stated other
--- wise.
-local function breakPart(part, breakParams: BreakParams)
-	local threshold = breakParams.Threshold
-	local currentSizes = {part.Size}
-	local currentCframes = {part.CFrame}
-	
-	local function passOnce(sizes, cframes)
-		local nextSizesX, nextCframesX = {}, {}
-		for i = 1, #sizes do
-			local sz, cf = sizes[i], cframes[i]
-			if sz.X > threshold then
-				local halfX = sz.X / 2
-				table.insert(nextSizesX, Vector3.new(halfX, sz.Y, sz.Z))
-				table.insert(nextCframesX, cf * CFrame.new(-sz.X / 4, 0, 0))
-				table.insert(nextSizesX, Vector3.new(halfX, sz.Y, sz.Z))
-				table.insert(nextCframesX, cf * CFrame.new(sz.X / 4, 0, 0))
-			else
-				table.insert(nextSizesX, sz)
-				table.insert(nextCframesX, cf)
-			end
-		end
-		
-		local nextSizesY, nextCframesY = {}, {}
-		for i = 1, #nextSizesX do
-			local sz, cf = nextSizesX[i], nextCframesX[i]
-			if sz.Y > threshold then
-				local halfY = sz.Y / 2
-				table.insert(nextSizesY, Vector3.new(sz.X, halfY, sz.Z))
-				table.insert(nextCframesY, cf * CFrame.new(0, -sz.Y / 4, 0))
-				table.insert(nextSizesY, Vector3.new(sz.X, halfY, sz.Z))
-				table.insert(nextCframesY, cf * CFrame.new(0, sz.Y / 4, 0))
-			else
-				table.insert(nextSizesY, sz)
-				table.insert(nextCframesY, cf)
-			end
-		end
-		
-		local nextSizesZ, nextCframesZ = {}, {}
-		for i = 1, #nextSizesY do
-			local sz, cf = nextSizesY[i], nextCframesY[i]
-			if sz.Z > threshold then
-				local halfZ = sz.Z / 2
-				table.insert(nextSizesZ, Vector3.new(sz.X, sz.Y, halfZ))
-				table.insert(nextCframesZ, cf * CFrame.new(0, 0, -sz.Z / 4))
-				table.insert(nextSizesZ, Vector3.new(sz.X, sz.Y, halfZ))
-				table.insert(nextCframesZ, cf * CFrame.new(0, 0, sz.Z / 4))
-			else
-				table.insert(nextSizesZ, sz)
-				table.insert(nextCframesZ, cf)
-			end
-		end
-		
-		return nextSizesZ, nextCframesZ
-	end
-	
-	currentSizes, currentCframes = passOnce(currentSizes, currentCframes)
-	
-	if breakParams.IsRecursive then
-		local prevCount = 0
-		while #currentSizes > prevCount do
-			prevCount = #currentSizes
-			currentSizes, currentCframes = passOnce(currentSizes, currentCframes)
-		end
-	end
-	
-	if #currentSizes == 1 then
-		return
-	end
-	
-	local oldParent = part.Parent
-	local newFragments = {}
-	for i = 1, #currentSizes do
-		local newFragment = part:Clone()
-		newFragment.Size = currentSizes[i]
-		newFragment.CFrame = currentCframes[i]
-		newFragment.Parent = oldParent
-		
-		if breakParams.Unanchor then
-			tempUnanchor(newFragment)
-		end
-		if breakParams.Tint then
-			randTint(newFragment)
-		end
-		breakJoints(newFragment)
-		
-		fragmentYieldCounter += 1
-		if fragmentYieldCounter % Config.FRAGMENTS_PER_TICK == 0 then
-			task.wait()
-		end
-		
-		table.insert(newFragments, newFragment)
-	end
-	
-	part:Destroy()
-	return newFragments
-end
-
 local function weldToAdjacent(part)
 	weldIndex[part] = weldIndex[part] or {}
 	
@@ -229,6 +129,223 @@ local function weldToAdjacent(part)
 	end
 	
 	return nCreatedWelds
+end
+
+----------------------------------------------------------------------------------------------
+-- PART BREAKING
+----------------------------------------------------------------------------------------------
+
+-- This section pre-debugs was vibe-coded based on what I wrote previously,
+-- which was a really laggy and spaghetti blueprint approach with garbage
+-- collection overload. All other code is mine unless stated otherwise.
+
+local function isWedge(part: Instance): boolean
+	return part:IsA("WedgePart")
+	or (
+		(part:IsA("Part")
+		and (part.Shape == Enum.PartType.Wedge))
+	)
+end
+
+local function passOnceBlock(sizes: {Vector3}, cframes: {CFrame}, threshold: number)
+	local nextSizesX, nextCframesX = {}, {}
+	for i = 1, #sizes do
+		local sz, cf = sizes[i], cframes[i]
+		if sz.X > threshold then
+			local halfX = sz.X / 2
+			table.insert(nextSizesX, Vector3.new(halfX, sz.Y, sz.Z))
+			table.insert(nextCframesX, cf * CFrame.new(-sz.X / 4, 0, 0))
+			table.insert(nextSizesX, Vector3.new(halfX, sz.Y, sz.Z))
+			table.insert(nextCframesX, cf * CFrame.new(sz.X / 4, 0, 0))
+		else
+			table.insert(nextSizesX, sz)
+			table.insert(nextCframesX, cf)
+		end
+	end
+	
+	local nextSizesY, nextCframesY = {}, {}
+	for i = 1, #nextSizesX do
+		local sz, cf = nextSizesX[i], nextCframesX[i]
+		if sz.Y > threshold then
+			local halfY = sz.Y / 2
+			table.insert(nextSizesY, Vector3.new(sz.X, halfY, sz.Z))
+			table.insert(nextCframesY, cf * CFrame.new(0, -sz.Y / 4, 0))
+			table.insert(nextSizesY, Vector3.new(sz.X, halfY, sz.Z))
+			table.insert(nextCframesY, cf * CFrame.new(0, sz.Y / 4, 0))
+		else
+			table.insert(nextSizesY, sz)
+			table.insert(nextCframesY, cf)
+		end
+	end
+	
+	local nextSizesZ, nextCframesZ = {}, {}
+	for i = 1, #nextSizesY do
+		local sz, cf = nextSizesY[i], nextCframesY[i]
+		if sz.Z > threshold then
+			local halfZ = sz.Z / 2
+			table.insert(nextSizesZ, Vector3.new(sz.X, sz.Y, halfZ))
+			table.insert(nextCframesZ, cf * CFrame.new(0, 0, -sz.Z / 4))
+			table.insert(nextSizesZ, Vector3.new(sz.X, sz.Y, halfZ))
+			table.insert(nextCframesZ, cf * CFrame.new(0, 0, sz.Z / 4))
+		else
+			table.insert(nextSizesZ, sz)
+			table.insert(nextCframesZ, cf)
+		end
+	end
+	
+	return nextSizesZ, nextCframesZ
+end
+
+local function passOnceWedge(items: { {Size: Vector3, CFrame: CFrame, Type: string} }, threshold: number)
+	local nextX = {}
+	for _, item in ipairs(items) do
+		local sz, cf, itemType = item.Size, item.CFrame, item.Type
+		if sz.X > threshold then
+			local halfX = sz.X / 2
+			table.insert(nextX, { Size = Vector3.new(halfX, sz.Y, sz.Z), CFrame = cf * CFrame.new(-sz.X / 4, 0, 0), Type = itemType })
+			table.insert(nextX, { Size = Vector3.new(halfX, sz.Y, sz.Z), CFrame = cf * CFrame.new(sz.X / 4, 0, 0), Type = itemType })
+		else
+			table.insert(nextX, item)
+		end
+	end
+
+	local nextYZ = {}
+	for _, item in ipairs(nextX) do
+		local sz, cf, itemType = item.Size, item.CFrame, item.Type
+		local splitY = sz.Y > threshold
+		local splitZ = sz.Z > threshold
+
+		if itemType == "Block" then
+			local yOffsets = splitY and { -sz.Y / 4, sz.Y / 4 } or { 0 }
+			local zOffsets = splitZ and { -sz.Z / 4, sz.Z / 4 } or { 0 }
+			local newY = splitY and sz.Y / 2 or sz.Y
+			local newZ = splitZ and sz.Z / 2 or sz.Z
+			for _, oy in ipairs(yOffsets) do
+				for _, oz in ipairs(zOffsets) do
+					table.insert(nextYZ, {
+						Size = Vector3.new(sz.X, newY, newZ),
+						CFrame = cf * CFrame.new(0, oy, oz),
+						Type = "Block",
+					})
+				end
+			end
+		elseif splitY or splitZ then
+			local qSize = Vector3.new(sz.X, sz.Y / 2, sz.Z / 2)
+			local qy, qz = sz.Y / 4, sz.Z / 4
+
+			table.insert(nextYZ, { Size = qSize, CFrame = cf * CFrame.new(0, -qy, -qz), Type = "Wedge" })
+			table.insert(nextYZ, { Size = qSize, CFrame = cf * CFrame.new(0, -qy, qz), Type = "Block" })
+			table.insert(nextYZ, { Size = qSize, CFrame = cf * CFrame.new(0, qy, qz), Type = "Wedge" })
+		else
+			table.insert(nextYZ, item)
+		end
+	end
+
+	return nextYZ
+end
+
+local function calculateSplit(part: BasePart, breakParams: BreakParams)
+	local threshold = breakParams.Threshold
+	local isWedgePart = isWedge(part)
+	
+	if not isWedgePart then
+		local currentSizes = {part.Size}
+		local currentCframes = {part.CFrame}
+		
+		currentSizes, currentCframes = passOnceBlock(currentSizes, currentCframes, threshold)
+		if breakParams.IsRecursive then
+			local prevCount = 0
+			while #currentSizes > prevCount do
+				prevCount = #currentSizes
+				currentSizes, currentCframes = passOnceBlock(currentSizes, currentCframes, threshold)
+			end
+		end
+		
+		local results = {}
+		for i = 1, #currentSizes do
+			table.insert(results, { Size = currentSizes[i], CFrame = currentCframes[i], Type = "Block" })
+		end
+		return results
+	else
+		local items = { { Size = part.Size, CFrame = part.CFrame, Type = "Wedge" } }
+		
+		items = passOnceWedge(items, threshold)
+		if breakParams.IsRecursive then
+			local prevCount = 0
+			while #items > prevCount do
+				prevCount = #items
+				items = passOnceWedge(items, threshold)
+			end
+		end
+		
+		return items
+	end
+end
+
+local function spawnFragments(
+	originalPart: BasePart,
+	fragmentsData: { {Size: Vector3, CFrame: CFrame, Type: string} },
+	breakParams: any
+)
+	if #fragmentsData <= 1 then
+		return
+	end
+	
+	local oldParent = originalPart.Parent
+	local newFragments = {}
+	
+	for _, data in ipairs(fragmentsData) do
+		local newFragment: BasePart
+		local isWedgeOriginal = isWedge(originalPart)
+
+		if data.Type == "Wedge" and not isWedgeOriginal then
+			newFragment = Instance.new("WedgePart")
+			newFragment.Material = originalPart.Material
+			newFragment.Color = originalPart.Color
+		elseif data.Type == "Block" and isWedgeOriginal then
+			newFragment = Instance.new("Part")
+			newFragment.Material = originalPart.Material
+			newFragment.Color = originalPart.Color
+
+			if newFragment:IsA("Part") then
+				newFragment.Shape = Enum.PartType.Block
+			end
+		else
+			newFragment = originalPart:Clone()
+		end
+		
+		newFragment.Size = data.Size
+		newFragment.CFrame = data.CFrame
+		newFragment.Parent = oldParent
+		
+		if breakParams.Unanchor then
+			tempUnanchor(newFragment)
+		end
+		if breakParams.Tint then
+			randTint(newFragment)
+		end
+		breakJoints(newFragment)
+		
+		fragmentYieldCounter += 1
+		if fragmentYieldCounter % Config.FRAGMENTS_PER_TICK == 0 then
+			task.wait()
+		end
+		
+		table.insert(newFragments, newFragment)
+	end
+	
+	originalPart:Destroy()
+	return newFragments
+end
+
+local function breakPart(part: BasePart, breakParams: BreakParams)
+	if not part or (not part.Parent) then
+		return
+	end
+	
+	local fragmentsData = calculateSplit(part, breakParams)
+	
+	return spawnFragments(part, fragmentsData, breakParams)
 end
 
 ----------------------------------------------------------------------------------------------
@@ -340,9 +457,10 @@ return {
 	tween = tween,
 	-- Debris
     tempUnanchor = tempUnanchor,
-    breakPart = breakPart,
 	breakJoints = breakJoints,
 	weldToAdjacent = weldToAdjacent,
+	-- Breaking
+	breakPart = breakPart,
 	-- Bool
 	isTempUnanchorable = isTempUnanchorable,
 	isGearAttachable = isGearAttachable,
