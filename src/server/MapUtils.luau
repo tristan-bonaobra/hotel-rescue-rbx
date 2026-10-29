@@ -57,8 +57,8 @@ local function anchorMap(map)
 end
 
 local function breakMap(map)
-	for _,v in pairs(map:GetDescendants()) do
-		if v:IsA("Part") then
+	for _, v in pairs(map:GetDescendants()) do
+		if BrickUtils.isBreakable(v) then
 			local breakParams = {
 				Threshold = Config.BREAK_THRESHOLD_MAP,
 				IsRecursive = true,
