@@ -20,7 +20,7 @@ local function isPickable(part)
 	local currentMap = workspace:FindFirstChild("CurrentMap")
 	return part
 		and part:IsA("BasePart")
-		and 
+		and BrickUtils.isBreakable(part)
 		and (
 			(currentMap and part:IsDescendantOf(currentMap))
 			or (playgroundBin and part:IsDescendantOf(playgroundBin))
