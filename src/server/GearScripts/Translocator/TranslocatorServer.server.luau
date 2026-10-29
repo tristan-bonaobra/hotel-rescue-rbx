@@ -10,6 +10,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
+local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
@@ -48,6 +49,7 @@ local function placeTranslocator()
     SoundUtils.playSound(translocator, "Gear.TranslocatorEngage")
     BrickUtils.stabilize(translocator)
 
+    GearUtils.toolAnim(tool, "Slash")
     handle.Transparency = 1
 end
 
