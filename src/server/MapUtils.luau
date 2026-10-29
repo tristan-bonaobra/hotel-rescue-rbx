@@ -185,6 +185,7 @@ end
 
 return {
 	loadMap = loadMap,
+	weldMap = weldMap,
 	crumbleMap = crumbleMap,
     spawnNpcsOnMap = spawnNpcsOnMap,
     slowDestroy = slowDestroy,
