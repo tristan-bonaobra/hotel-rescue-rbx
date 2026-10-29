@@ -59,7 +59,7 @@ local function fallDamageHeartbeat()
 				entityScriptsLib:WaitForChild("NpcRagdollScript"):Clone().Parent = npc
 				untrackTorso(torso)
 			elseif (velocityChange >= Config.NPC_IMPACT_THRESHOLD * Config.NPC_TRIP_IMPACT_PCT) and (not isTripped) then
-				entityScriptsLib:WaitForChild("NpcRagdollScript"):Clone().Parent = npc
+				entityScriptsLib:WaitForChild("NpcTripScript"):Clone().Parent = npc
 			end
 		end
 	end
