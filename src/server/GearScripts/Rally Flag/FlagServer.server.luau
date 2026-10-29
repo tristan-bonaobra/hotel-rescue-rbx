@@ -89,6 +89,7 @@ local function placeFlag()
         SoundUtils.playSound(handle, "Gear.FlagPlace")
     else
         flag.CanCollide = true
+        SoundUtils.playSound(handle, "Gear.FlagDrop")
     end
 
     flag.Parent = toolDebrisBin
