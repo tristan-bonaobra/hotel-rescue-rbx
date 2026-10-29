@@ -406,6 +406,10 @@ local function isTiny(part)
 end
 
 local function isBreakable(part)
+	if not part:IsA("BasePart") then
+		return
+	end
+
 	return (part.Shape == Enum.PartType.Block)
 		or (part.Shape == Enum.PartType.Wedge)
 		or (part:IsA("WedgePart"))
