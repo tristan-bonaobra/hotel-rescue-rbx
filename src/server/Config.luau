@@ -1,4 +1,4 @@
-Config = {
+return {
 	-- Game
 	
 	INTERMISSION_TIME = 5,
@@ -79,5 +79,3 @@ Config = {
 	FLAG_BOOST_DURATION = 2,
 	FLAG_BOOST_PITCH_SHIFT = 0.2,
 }
-
-return Config
