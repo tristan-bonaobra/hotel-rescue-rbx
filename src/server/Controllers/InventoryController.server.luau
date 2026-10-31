@@ -1,4 +1,3 @@
-local ServerStorage = game:GetService("ServerStorage")
 local Players = game:GetService("Players")
 local ServerScriptService = game:GetService("ServerScriptService")
 
