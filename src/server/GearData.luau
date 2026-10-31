@@ -25,6 +25,10 @@ return {
         Price = 10,
     },
     {
+        GearObject = getGear("Translocator"),
+        Price = 10,
+    },
+    {
         GearObject = getGear("Power Bell"),
         Price = 30,
     },
@@ -38,10 +42,6 @@ return {
     },
     {
         GearObject = getGear("Rally Flag"),
-        Price = 30,
-    },
-    {
-        GearObject = getGear("Translocator"),
         Price = 30,
     },
     {
