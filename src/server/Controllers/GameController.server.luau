@@ -11,14 +11,13 @@ local MapData = require(ServerScriptService:WaitForChild("MapData"))
 local MapUtils = require(ServerScriptService:WaitForChild("MapUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
-local soundsLib = ServerStorage:WaitForChild("Sounds")
-local musicLib = soundsLib:WaitForChild("Music")
 local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
 
 local globalSoundsBin = workspace:WaitForChild("GlobalSounds")
 local npcsBin = workspace:WaitForChild("Npcs")
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
+local music = globalSoundsBin:WaitForChild("Music")
 local teleporter = workspace:WaitForChild("Teleporter")
 
 local currentMapData
@@ -26,9 +25,6 @@ local currentMapData
 ------------------------------------------------------------------------------
 -- NEW OBJECTS
 ------------------------------------------------------------------------------
-
-local music = musicLib:WaitForChild("UrbanDescent"):Clone()
-music.Parent = globalSoundsBin
 
 local message = Instance.new("Message")
 local hint = Instance.new("Hint")
@@ -165,9 +161,12 @@ local function storyGameBegin()
 end
 
 local function gameBegin()
+	music.SoundId = currentMapData.MusicObject.SoundId
+
 	winZone = ServerStorage:WaitForChild("WinZone"):Clone()
 	entityScriptsLib:WaitForChild("WinScript"):Clone().Parent = winZone
 	winZone.Parent = workspace
+	
 	enableTeleporter()
 	npcsAtStart = #npcsBin:GetChildren()
 	SoundUtils.playSound(globalSoundsBin, "Game.GameBegin")
