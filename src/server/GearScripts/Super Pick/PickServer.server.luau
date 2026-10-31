@@ -53,7 +53,7 @@ local function pickInteractWithDynamicCooldown(part)
 		if BrickUtils.isTiny(part) then
 			destroyPart(part)
 			SoundUtils.playSound(handle, "Gear.PickCrush", false, Config.PICK_PITCH_SHIFT)
-			task.wait(Config.PICK_COOLDOWN / 2)
+			task.wait(Config.PICK_COOLDOWN)
 		else
 			breakPart(part)
 			task.wait(Config.PICK_COOLDOWN)
