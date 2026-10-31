@@ -7,6 +7,7 @@ local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
+local MapData = require(ServerScriptService:WaitForChild("MapData"))
 local MapUtils = require(ServerScriptService:WaitForChild("MapUtils"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
@@ -19,6 +20,8 @@ local npcsBin = workspace:WaitForChild("Npcs")
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local teleporter = workspace:WaitForChild("Teleporter")
+
+local currentMapData
 
 ------------------------------------------------------------------------------
 -- NEW OBJECTS
@@ -104,8 +107,9 @@ local function intermission()
 end
 
 local function loadMap()
+	currentMapData = MapData[math.random(#MapData)]
 	message.Text = "Loading"
-	local map = MapUtils.loadMap()
+	local map = MapUtils.loadMap(currentMapData)
 	message.Text = ""
 	task.wait(5)
 	return map
@@ -170,7 +174,7 @@ local function gameBegin()
 end
 
 local function gameCountdown()
-	for timeRemaining = Config.GAME_TIME, 0, -1 do
+	for timeRemaining = currentMapData.RoundTime, 0, -1 do
 		hint.Text = "Time left: " .. formatTime(timeRemaining)
 		task.wait(1)
 	end

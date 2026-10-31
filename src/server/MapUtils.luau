@@ -3,13 +3,10 @@
 -------------------------------------------------------------------------------------------
 
 local ServerScriptService = game:GetService("ServerScriptService")
-local ServerStorage = game:GetService("ServerStorage")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local NpcUtils = require(ServerScriptService:WaitForChild("NpcUtils"))
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
-
-local mapsLib = ServerStorage:WaitForChild("Maps")
 
 local npcsBin = workspace:WaitForChild("Npcs")
 
@@ -93,34 +90,31 @@ local function weldMap(map)
 	end
 end
 
-local function getRandomMap()
-	if #mapsLib:GetChildren() == 0 then
-		mapsLib.ChildAdded:Wait()
-	end
-	
-	local maps = mapsLib:GetChildren()
-	return maps[math.random(#maps)]:Clone()
-end
-
 -------------------------------------------------------------------------------------------
 -- MAIN FUNCTIONS
 -------------------------------------------------------------------------------------------
 
-local function loadMap()
-	local currentMap = getRandomMap()
+local function loadMap(currentMapData)
+	local mapName = currentMapData.MapObject.Name
+	local currentMap = currentMapData.MapObject:Clone()
 	currentMap.Name = "CurrentMap"
 	
 	task.wait(1)
-	if not currentMap:GetAttribute("IsProcessed") then
+	if not currentMapData.IsPreprocessed then
 		cleanMap(currentMap)
 		anchorMap(currentMap)
 		currentMap.Parent = workspace
 		breakMap(currentMap)
 
-		if currentMap:GetAttribute("ForWelding") then
+		-- Delete these debug messages later
+		if currentMapData.IsForWelding then
+			print(`Welding {mapName}`)
 			weldMap(currentMap)
+		else
+			print(`Loaded {mapName} normally`)
 		end
 	else
+		print(`{mapName} is preprocessed, skipping`)
 		currentMap.Parent = workspace
 	end
 

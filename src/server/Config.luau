@@ -2,13 +2,17 @@ return {
 	-- Game
 	
 	INTERMISSION_TIME = 5,
-	GAME_TIME = 8 * 60,
 	STARTER_POINTS = 10,
 	REWARD_CONSCIOUS = 3,
 	REWARD_UNCONSCIOUS = 1,
 	DEFAULT_WALKSPEED = 16, -- Shared by players and NPCs
+
+	-- MapData
+
+	DEFAULT_ROUND_TIME = 8 * 60,
+	DEFAULT_MUSIC = "UrbanDescent",
 	
-	-- Map
+	-- Map (world)
 	
 	CLEAN_OBJECTS = {
 		"BaseScript",
