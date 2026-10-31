@@ -3,21 +3,34 @@ local Players = game:GetService("Players")
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
+local GearData = require(ServerScriptService:WaitForChild("GearData"))
 
 local playerSpawnFolder = workspace:WaitForChild("PlayerSpawn")
 local shopFolder = playerSpawnFolder:WaitForChild("Shop")
 local giversFolder = shopFolder:WaitForChild("Givers")
 
-local gearLib = ServerStorage:WaitForChild("Gear")
-
 local playerInventories = {}
 
 ---------------------------------------------------------------------------------------------------
--- FUNCTIONS
+-- HELPER FUNCTIONS
+---------------------------------------------------------------------------------------------------
+
+local function getGearData(name)
+	for _, data in GearData do
+		if data.GearObject.Name == name then
+			return data
+		end
+	end
+	return
+end
+
+---------------------------------------------------------------------------------------------------
+-- MAIN FUNCTIONS
 ---------------------------------------------------------------------------------------------------
 
 local function standardizeItems()
-	for _, item in gearLib:GetChildren() do
+	for _, data in GearData do
+		local item = data.GearObject
 		if item:IsA("Tool") then
 			item.CanBeDropped = false
 			item.ToolTip = item.Name
@@ -36,35 +49,38 @@ local function loadGearScripts(gear)
 end
 
 local function initGiver(giverModel)
-	local item = gearLib:FindFirstChild(giverModel.Name)
-	local priceObject = item and item:FindFirstChild("Price")
-	local price = priceObject and priceObject.Value
+	local data = getGearData(giverModel.Name)
 	local head = giverModel:FindFirstChild("Head")
 	local decal = head and head:FindFirstChildOfClass("Decal")
-	local originalBrickColor = head and head.BrickColor
-	local isActive = false
 	
-	if (not item)
-		or (not price)
+	if (not data)
 		or (not head)
 		or (not decal)
 	then
 		return
 	end
+
+	local price = data.Price
+	local gearObject = data.GearObject
+
+	local originalBrickColor = head and head.BrickColor
+	local isActive = false
 	
-	giverModel.Name = item.Name.. " - "..price.." points"
-	decal.ColorMapContent = Content.fromUri(item.TextureId)
+	giverModel.Name = gearObject.Name.. " - "..price.." points"
+	decal.ColorMapContent = Content.fromUri(gearObject.TextureId)
 	
 	head.Touched:Connect(function(hit)
 		local char = hit.Parent
 		local plr = Players:GetPlayerFromCharacter(char)
 		local leaderstats = plr and plr:FindFirstChild("leaderstats")
+		local backpack = plr and plr.Backpack
+
 		local pointsObject = leaderstats and leaderstats:FindFirstChild("Points")
 		local currentPoints = pointsObject and pointsObject.Value
 		local canAffordItem = currentPoints and (currentPoints >= price)
-		local backpack = plr and plr.Backpack
-		local hasItemInBackpack = backpack and backpack:FindFirstChild(item.Name)
-		local hasItemInChar = char:FindFirstChild(item.Name)
+
+		local hasItemInBackpack = backpack and backpack:FindFirstChild(gearObject.Name)
+		local hasItemInChar = char:FindFirstChild(gearObject.Name)
 		local hasItem = hasItemInBackpack or hasItemInChar
 		
 		if canAffordItem and (not isActive) and (not hasItem) then
@@ -73,12 +89,12 @@ local function initGiver(giverModel)
 			SoundUtils.playSound(head, "World.ShopBuy")
 			pointsObject.Value -= price
 
-			local newItem = item:Clone()
+			local newItem = gearObject:Clone()
 			newItem.Parent = plr.Backpack
 			loadGearScripts(newItem)
 			
 			if playerInventories[plr] then
-				table.insert(playerInventories[plr], item:Clone())
+				table.insert(playerInventories[plr], gearObject:Clone())
 			end
 			
 			task.wait(1)
@@ -96,19 +112,18 @@ local function grantPlayerItems(plr)
 	end
 end
 
+local function grantFreeItems(plr)
+	for _, data in GearData do
+		if data.Price == 0 then
+			table.insert(playerInventories[plr], data.GearObject:Clone())
+		end
+	end
+end
+
 local function beginTrackingPlayer(plr)
 	playerInventories[plr] = {}
 	
-	for _, item in gearLib:GetChildren() do
-		local priceObject = item:FindFirstChild("Price")
-		local price = priceObject and priceObject.Value
-		local isFree = price == 0
-		
-		if isFree then
-			table.insert(playerInventories[plr], item:Clone())
-		end
-	end
-	
+	grantFreeItems(plr)
 	grantPlayerItems(plr)
 
 	plr.CharacterAdded:Connect(function()
