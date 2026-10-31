@@ -59,6 +59,7 @@ end
 local function placeFlag()
     flag = handle:Clone()
     flag.Name = "RallyFlag"
+    flag:SetAttribute("IsGearAttachable", true)
 
     BrickUtils.breakJoints(flag)
     BrickUtils.stabilize(flag)
