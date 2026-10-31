@@ -68,7 +68,7 @@ return {
     {
         MapObject = getMap("Cindering's Robloxian High School"),
         MusicObject = getMusic("GroundworksComplex"),
-        RoundTime = 12 * 60,
+        RoundTime = 10 * 60,
         IsPreprocessed = false,
         IsForWelding = true,
     },
