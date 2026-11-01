@@ -36,6 +36,9 @@ local function cleanMap(map)
 		end
 		
 		if v:IsA("BasePart") then
+			v.AssemblyLinearVelocity = Vector3.new()
+			v.AssemblyAngularVelocity = Vector3.new()
+
 			if (not v.CanCollide) then
 				v.CanCollide = true
 			end
