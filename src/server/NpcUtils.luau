@@ -17,6 +17,8 @@ local shirtColorsLib = npcAssetsLib:WaitForChild("ShirtColors")
 local skinColorsLib = npcAssetsLib:WaitForChild("SkinColors")
 local rareSkinColorsLib = npcAssetsLib:WaitForChild("RareSkinColors")
 local winPosesLib = npcAssetsLib:WaitForChild("WinPoses")
+local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
+local personalityScripts = entityScriptsLib:WaitForChild("Personality"):GetChildren()
 
 -------------------------------------------------------------------------------------------
 -- HELPER FUNCTIONS: SPAWNING
@@ -58,6 +60,10 @@ local function createNpc()
 	hum.JumpPower = Config.NPC_JUMP_POWER
 	char.PrimaryPart = torso
 	npcAssetsLib:WaitForChild("NpcAnimator"):Clone().Parent = char
+
+	if math.random(Config.NPC_PERSONALITY_DIE) == 1 then
+		personalityScripts[math.random(#personalityScripts)]:Clone().Parent = char
+	end
 	
 	if math.random(Config.NPC_RARE_SKIN_DIE) == 1 then
 		skinColor = rareSkinColor
