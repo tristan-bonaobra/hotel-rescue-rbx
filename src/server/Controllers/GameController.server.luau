@@ -162,6 +162,7 @@ end
 
 local function gameBegin()
 	music.SoundId = currentMapData.MusicObject.SoundId
+	music.PlaybackSpeed = currentMapData.MusicObject.PlaybackSpeed
 
 	winZone = ServerStorage:WaitForChild("WinZone"):Clone()
 	entityScriptsLib:WaitForChild("WinScript"):Clone().Parent = winZone
