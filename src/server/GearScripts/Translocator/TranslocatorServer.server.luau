@@ -48,8 +48,8 @@ local function placeTranslocator()
     translocator = handle:Clone()
     translocator.Name = "Translocator"
     translocator.CanCollide = true
-    BrickUtils.breakJoints(translocator)
     translocator.Parent = toolDebrisBin
+    BrickUtils.breakJoints(translocator)
     SoundUtils.playSound(translocator, "Gear.TranslocatorEngage")
     BrickUtils.stabilize(translocator)
 
