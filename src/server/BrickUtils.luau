@@ -135,9 +135,9 @@ local function randTint(part)
 	part.Color = Color3.fromHSV(h, s, v)
 end
 
-local function removeFaceInstances(part)
+local function cleanPart(part)
 	for _, v in pairs(part:GetChildren()) do
-		if v:IsA("FaceInstance") then
+		if v:IsA("FaceInstance") or v:IsA("DataModelMesh") then
 			v:Destroy()
 		end
 	end
@@ -324,7 +324,7 @@ local function spawnFragments(
 			end
 		else
 			newFragment = originalPart:Clone()
-			removeFaceInstances(newFragment)
+			cleanPart(newFragment)
 		end
 		
 		newFragment.Size = data.Size
