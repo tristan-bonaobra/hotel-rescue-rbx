@@ -6,6 +6,10 @@ end
 -- DEPENDENCIES AND VARIABLES
 ------------------------------------------------------------------------------------------
 
+local THEME = BrickColor.new("Magenta")
+local EXIT_FADE_TIME = 2
+
+local Debris = game:GetService("Debris")
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
@@ -61,7 +65,7 @@ local function retrieveTranslocator()
     handle.Transparency = 0
 end
 
-local function teleportEffect(root)
+local function teleportEnterEffect(root)
     local part = Instance.new("Part")
     part.Name = "TeleportEffect"
     part.Anchored = true
@@ -70,7 +74,7 @@ local function teleportEffect(root)
     part.Shape = "Ball"
     part.CFrame = root.CFrame
     part.Material = "SmoothPlastic"
-    part.BrickColor = BrickColor.new("Magenta")
+    part.BrickColor = THEME
     part.Parent = toolDebrisBin
 
     task.spawn(function()
@@ -79,7 +83,37 @@ local function teleportEffect(root)
         part:Destroy()
     end)
 
-    SoundUtils.playSound(root, "Gear.TranslocatorTeleport")
+    SoundUtils.playSound(root, "Gear.TranslocatorEnter")
+end
+
+local function teleportExitEffect(char)
+    for _, v in pairs(char:GetChildren()) do
+        if v:IsA("BasePart") then
+            local part = Instance.new("Part")
+            part.Name = "TeleporterGhostPart"
+            part.Size = v.Size
+            part.CFrame = v.CFrame
+            part.BrickColor = THEME
+            part.Material = "SmoothPlastic"
+            part.Anchored = true
+            part.CanCollide = false
+
+            local mesh = v:FindFirstChildWhichIsA("DataModelMesh")
+            if mesh then
+                mesh:Clone().Parent = part
+            end
+
+            part.Parent = toolDebrisBin
+
+            if v.Name == "HumanoidRootPart" then
+                SoundUtils.playSound(part, "Gear.TranslocatorExit")
+            end
+
+            Debris:AddItem(part, EXIT_FADE_TIME)
+
+            BrickUtils.tween(part, {Transparency = 1}, EXIT_FADE_TIME)
+        end
+    end
 end
 
 local function teleport()
@@ -88,8 +122,9 @@ local function teleport()
         local root = char and char:FindFirstChild("HumanoidRootPart")
 
         if root then
+            teleportExitEffect(char)
             root.CFrame = CFrame.new(translocator.Position) * CFrame.new(0, 2.5, 0)
-            teleportEffect(root)
+            teleportEnterEffect(root)
         end
 
         retrieveTranslocator()
