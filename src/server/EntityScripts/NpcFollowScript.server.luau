@@ -1,12 +1,12 @@
-if not script.Parent:IsA("Humanoid") then
+if not script.Parent:IsA("Model") then
 	return
 end
 
 local ServerScriptService = game:GetService("ServerScriptService")
 local Config = require(ServerScriptService:WaitForChild("Config"))
 
-local myHum = script.Parent
-local myChar = myHum.Parent
+local myChar = script.Parent
+local myHum = myChar:WaitForChild("Humanoid")
 local myHead = myChar:WaitForChild("Head")
 local leaderHead
 local leaderHum

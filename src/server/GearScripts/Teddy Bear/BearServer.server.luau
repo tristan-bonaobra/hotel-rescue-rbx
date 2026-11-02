@@ -64,7 +64,7 @@ tool.Activated:Connect(function()
 				if (mode == "StopFollowing") and existingFollowScript and (not npc:GetAttribute("IsClingy")) then
 					existingFollowScript:Destroy()
 				elseif (mode == "StartFollowing") and (not existingFollowScript) then
-					entityScriptsLib:WaitForChild("NpcFollowScript"):Clone().Parent = hum
+					entityScriptsLib:WaitForChild("NpcFollowScript"):Clone().Parent = npc
 				end
 			end
 		end
