@@ -43,9 +43,10 @@ tool.Activated:Connect(function()
 		local detectedOne = false
 		
 		for _, part in ipairs(affectedParts) do
-			local hum = part.Parent:FindFirstChildOfClass("Humanoid")
+			local npc = part.Parent
+			local hum = npc:FindFirstChildOfClass("Humanoid")
 			if hum and (not table.find(detectedHumanoids, hum)) then
-				local existingFollowScript = hum:FindFirstChild("NpcFollowScript")
+				local existingFollowScript = npc:FindFirstChild("NpcFollowScript")
 				if (mode ~= "StartFollowing") and (not existingFollowScript) then
 					mode = "StartFollowing"
 				end
@@ -59,7 +60,7 @@ tool.Activated:Connect(function()
 		else
 			for _, hum in pairs(detectedHumanoids) do
 				local npc = hum.Parent
-				local existingFollowScript = hum:FindFirstChild("NpcFollowScript")
+				local existingFollowScript = npc:FindFirstChild("NpcFollowScript")
 
 				if (mode == "StopFollowing") and existingFollowScript and (not npc:GetAttribute("IsClingy")) then
 					existingFollowScript:Destroy()

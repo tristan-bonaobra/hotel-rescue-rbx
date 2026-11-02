@@ -52,7 +52,7 @@ local function playSound(instance, pathString, isLooped, pitchShift)
 
         return sound
     else
-        print(`Sound {pathString} not found`)
+        print(`Sound path {pathString} not found`)
         return
     end
 end
