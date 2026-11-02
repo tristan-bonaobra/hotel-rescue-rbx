@@ -59,9 +59,30 @@ local function rewardAllPlayersForRescue(isUnconscious)
 	end
 end
 
+local function clearDebris()
+	local currentMap = workspace:FindFirstChild("CurrentMap")
+
+	if not currentMap then
+		return
+	end
+
+	local overlapParams = OverlapParams.new()
+    overlapParams.FilterType = Enum.RaycastFilterType.Include
+    overlapParams.FilterDescendantsInstances = {currentMap}
+
+    local zoneCFrame, zoneSize = winZone:GetBoundingBox()
+    local hitDebris = workspace:GetPartBoundsInBox(zoneCFrame, zoneSize, overlapParams)
+  
+    for _, hit in hitDebris do
+        hit:Destroy()
+    end
+end
+
 ------------------------------------------------------------------------------------------
 -- ORCHESTRATION
 ------------------------------------------------------------------------------------------
+
+clearDebris()
 
 winPart.Touched:Connect(function(hit)
 	local npc = hit.Parent
