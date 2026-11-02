@@ -60,7 +60,7 @@ return {
     {
         MapObject = getMap("Stickmasterluke's Prison Panic"),
         MusicObject = getMusic(DEFAULT_MUSIC),
-        RoundTime = DEFAULT_ROUND_TIME,
+        RoundTime = 7 * 60,
         IsPreprocessed = false,
         IsForWelding = false,
     },
