@@ -15,7 +15,7 @@ local newFace = NpcUtils.personalityFacesLib:WaitForChild("Panicked"):Clone()
 
 npc:SetAttribute("IsPanicked", true)
 NpcUtils.replaceFace(npc, newFace)
-NpcUtils.playUtterances(npc, "Laughter")
+NpcUtils.playUtterances(npc, "Panicked")
 
 while RunService.Heartbeat:Wait() do
     if npc:GetAttribute("IsUnconscious") or npc:GetAttribute("IsRescued") then
