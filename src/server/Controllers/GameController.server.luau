@@ -150,7 +150,8 @@ local function storyGameBegin()
 	task.wait(5)
 	hint.Text = "President: Players, I have a new mission for you! >:|"
 	task.wait(5)
-	hint.Text = "President: You must evacuate the survivors of the earthquake!"
+	hint.Text = "President: You must escort the survivors to safety! DEAD OR ALIVE!"
+	SoundUtils.playSound(globalSoundsBin, "Game.Ping")
 	task.wait(5)
 	hint.Text = "Players: SIR YES SIR!"
 	task.wait(5)
