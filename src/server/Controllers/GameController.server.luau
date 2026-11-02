@@ -5,6 +5,7 @@
 local Players = game:GetService("Players")
 local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
+local ToastNotificationService = game:GetService("ToastNotificationService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local MapData = require(ServerScriptService:WaitForChild("MapData"))
@@ -37,7 +38,6 @@ hint.Parent = workspace
 
 local currentMap
 local winZone
-local npcsAtStart
 
 ------------------------------------------------------------------------------
 -- MISC FUNCTIONS
@@ -170,14 +170,32 @@ local function gameBegin()
 	winZone.Parent = workspace
 	
 	enableTeleporter()
-	npcsAtStart = #npcsBin:GetChildren()
 	SoundUtils.playSound(globalSoundsBin, "Game.GameBegin")
+end
+
+local function getTotalRescued()
+	local totalRescued = 0
+
+	for _, npc in npcsBin:GetChildren() do
+		if npc:GetAttribute("IsRescued") then
+			totalRescued += 1
+		end
+	end
+
+	return totalRescued
+end
+
+local function getTotalNpcs()
+	return #npcsBin:GetChildren()
 end
 
 local function gameCountdown()
 	for timeRemaining = currentMapData.RoundTime, 0, -1 do
-		hint.Text = "Time left: " .. formatTime(timeRemaining)
-		task.wait(1)
+		if getTotalRescued() < getTotalNpcs() then
+			print(getTotalRescued(), getTotalNpcs())
+			hint.Text = "Time left: " .. formatTime(timeRemaining)
+			task.wait(1)
+		end
 	end
 end
 
@@ -189,17 +207,13 @@ local function destroyWinPart()
 end
 
 local function recap()
-	local totalRescued = 0
-	for _, npc in npcsBin:GetChildren() do
-		if npc:GetAttribute("IsRescued") then
-			totalRescued += 1
-		end
-	end
+	local totalRescued = getTotalRescued()
+	local totalNpcs = getTotalNpcs()
 	
 	hint.Text = "Times up!"
 	SoundUtils.playSound(globalSoundsBin, "Game.Victory")
 	task.wait(5)
-	hint.Text = "You evacuated "..totalRescued.." out of "..npcsAtStart.." survivors!"
+	hint.Text = "You evacuated "..totalRescued.." out of "..totalNpcs.." survivors!"
 	SoundUtils.playSound(globalSoundsBin, "Game.Applause")
 	task.wait(5)
 	hint.Text = "Thanks for playing!"
