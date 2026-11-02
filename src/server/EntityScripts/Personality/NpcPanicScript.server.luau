@@ -13,6 +13,7 @@ local root = npc:WaitForChild("HumanoidRootPart")
 local hum = npc:WaitForChild("Humanoid")
 local newFace = NpcUtils.personalityFacesLib:WaitForChild("Panicked"):Clone()
 
+npc:SetAttribute("IsPanicked", true)
 NpcUtils.replaceFace(npc, newFace)
 NpcUtils.playUtterances(npc, "Laughter")
 
