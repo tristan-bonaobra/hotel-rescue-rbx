@@ -5,7 +5,6 @@
 local Players = game:GetService("Players")
 local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
-local ToastNotificationService = game:GetService("ToastNotificationService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local MapData = require(ServerScriptService:WaitForChild("MapData"))
