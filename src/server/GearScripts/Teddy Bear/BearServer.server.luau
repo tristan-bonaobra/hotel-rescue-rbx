@@ -58,8 +58,10 @@ tool.Activated:Connect(function()
 			mode = nil
 		else
 			for _, hum in pairs(detectedHumanoids) do
+				local npc = hum.Parent
 				local existingFollowScript = hum:FindFirstChild("NpcFollowScript")
-				if (mode == "StopFollowing") and existingFollowScript then
+
+				if (mode == "StopFollowing") and existingFollowScript and (not npc:GetAttribute("IsClingy")) then
 					existingFollowScript:Destroy()
 				elseif (mode == "StartFollowing") and (not existingFollowScript) then
 					entityScriptsLib:WaitForChild("NpcFollowScript"):Clone().Parent = hum

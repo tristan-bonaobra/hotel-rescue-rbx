@@ -11,6 +11,7 @@ local myHead = myChar:WaitForChild("Head")
 local leaderHead
 local leaderHum
 local shortestDistance = math.huge
+local followThreshold
 
 for _, player in ipairs(game.Players:GetPlayers()) do
 	local character = player.Character
@@ -41,9 +42,15 @@ myChar.AttributeChanged:Connect(function()
 	end
 end)
 
+if myChar:GetAttribute("IsClingy") then
+	followThreshold = 0
+else
+	followThreshold = Config.NPC_FOLLOW_DISTANCE_THRESHOLD
+end
+
 while task.wait(0.5) do
-	if (leaderHead.Position - myHead.Position).Magnitude >= Config.NPC_FOLLOW_DISTANCE_THRESHOLD then
-		local walkToCFrame = CFrame.new(leaderHead.Position, myHead.Position) * CFrame.new(0, 0, -Config.NPC_FOLLOW_DISTANCE_THRESHOLD)
+	if (leaderHead.Position - myHead.Position).Magnitude >= followThreshold then
+		local walkToCFrame = CFrame.new(leaderHead.Position, myHead.Position) * CFrame.new(0, 0, -followThreshold)
 		myHum:MoveTo(walkToCFrame.Position)
 	end
 end

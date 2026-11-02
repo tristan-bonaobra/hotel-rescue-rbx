@@ -66,10 +66,6 @@ local function createNpc()
 	hum.JumpPower = Config.NPC_JUMP_POWER
 	char.PrimaryPart = torso
 	npcAssetsLib:WaitForChild("NpcAnimator"):Clone().Parent = char
-
-	if math.random(Config.NPC_PERSONALITY_DIE) == 1 then
-		personalityScripts[math.random(#personalityScripts)]:Clone().Parent = char
-	end
 	
 	if math.random(Config.NPC_RARE_SKIN_DIE) == 1 then
 		skinColor = rareSkinColor
@@ -107,6 +103,11 @@ local function createNpc()
 		rightArm.Color = shirtColor
 		leftLeg.Color = skinColor
 		rightLeg.Color = skinColor
+	end
+
+	-- Moving it down here because NpcClingyScript modifies skin color
+	if math.random(Config.NPC_PERSONALITY_DIE) == 1 then
+		personalityScripts[math.random(#personalityScripts)]:Clone().Parent = char
 	end
 	
 	return char
