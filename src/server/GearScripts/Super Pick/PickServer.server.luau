@@ -46,28 +46,24 @@ local function breakPart(part)
 	BrickUtils.breakPart(part, breakParams)
 end
 
-local function pickInteractWithDynamicCooldown(part)
+local function pickInteract(part)
 	if isPickable(part) then
 		SoundUtils.playSound(handle, "Gear.PickBreak", false, Config.PICK_PITCH_SHIFT)
 
 		if BrickUtils.isTiny(part) then
 			destroyPart(part)
 			SoundUtils.playSound(handle, "Gear.PickCrush", false, Config.PICK_PITCH_SHIFT)
-			task.wait(Config.PICK_COOLDOWN)
 		else
 			breakPart(part)
-			task.wait(Config.PICK_COOLDOWN)
 		end
 
 	elseif BrickUtils.isTempUnanchorable(part) then
 		BrickUtils.breakJoints(part)
 		BrickUtils.tempUnanchor(part)
 		SoundUtils.playSound(handle, "Gear.PickBreak", false, Config.PICK_PITCH_SHIFT)
-		task.wait(Config.PICK_COOLDOWN)
 
 	else
 		SoundUtils.playSound(handle, "Gear.PickMiss")
-		task.wait(Config.PICK_COOLDOWN)
 	end
 end
 
@@ -88,11 +84,12 @@ toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
 		local withinReach = (root.Position - clickCFrame.Position).Magnitude <= Config.PICK_DISTANCE
 		
 		if withinReach then
-			pickInteractWithDynamicCooldown(clickTarget)
+			pickInteract(clickTarget)
 		else
 			SoundUtils.playSound(handle, "Gear.PickMiss")
-			task.wait(Config.PICK_COOLDOWN)
 		end
+
+		task.wait(Config.PICK_COOLDOWN)
 
 		isActive = false
 	end
