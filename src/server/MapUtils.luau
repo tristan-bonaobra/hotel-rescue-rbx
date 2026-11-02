@@ -47,8 +47,9 @@ local function cleanMap(map)
 				v:Destroy()
 			end
 
-		elseif v:IsA("Seat") or v:IsA("VehicleSeat") then
-			v.Disabled = true
+			if v:IsA("Seat") or v:IsA("VehicleSeat") then
+				v.Disabled = true
+			end
 			
 		elseif v:IsA("Humanoid") and v.Parent then
 			v.Parent:Destroy()
