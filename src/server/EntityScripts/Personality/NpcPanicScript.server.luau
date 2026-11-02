@@ -6,6 +6,7 @@ local RunService = game:GetService("RunService")
 local ServerScriptService = game:GetService("ServerScriptService")
 local ServerStorage = game:GetService("ServerStorage")
 
+local NpcUtils = require(ServerScriptService:WaitForChild("NpcUtils"))
 local Config = require(ServerScriptService:WaitForChild("Config"))
 
 local npcAssetsLib = ServerStorage:WaitForChild("NpcAssets")
@@ -23,6 +24,7 @@ if face then
 end
 
 personalityFacesLib:WaitForChild("Panicked"):Clone().Parent = head
+NpcUtils.playUtterances(npc, "Laughter")
 
 while RunService.Heartbeat:Wait() do
     if npc:GetAttribute("IsUnconscious") or npc:GetAttribute("IsRescued") then

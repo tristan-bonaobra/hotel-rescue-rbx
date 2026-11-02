@@ -6,7 +6,8 @@ local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
-local BrickUtils = require(ServerScriptService.BrickUtils)
+local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local npcAssetsLib = ServerStorage:WaitForChild("NpcAssets")
 local bodiesLib = npcAssetsLib:WaitForChild("Bodies")
@@ -18,6 +19,9 @@ local skinColorsLib = npcAssetsLib:WaitForChild("SkinColors")
 local rareSkinColorsLib = npcAssetsLib:WaitForChild("RareSkinColors")
 local winPosesLib = npcAssetsLib:WaitForChild("WinPoses")
 local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
+local soundsLib = ServerStorage:WaitForChild("Sounds")
+local utterancesLib = soundsLib:WaitForChild("Utterances")
+
 local personalityScripts = entityScriptsLib:WaitForChild("Personality"):GetChildren()
 
 -------------------------------------------------------------------------------------------
@@ -264,6 +268,40 @@ local function poseNpcAtSpot(npc, spot)
 end
 
 -------------------------------------------------------------------------------------------
+-- SOUNDS
+-------------------------------------------------------------------------------------------
+
+local function playUtterances(npc, utterancesFolderName)
+    local lib = utterancesLib:FindFirstChild(utterancesFolderName)
+    local sounds
+
+    if not lib then
+        print(`Utterances folder {utterancesFolderName} not found`)
+        return
+    else
+        sounds = lib:GetChildren()
+    end
+
+	local intervalMin = Config.NPC_UTTERANCE_INTERVAL_MIN
+	local intervalMax = Config.NPC_UTTERANCE_INTERVAL_MAX
+
+    task.spawn(function()
+        while task.wait(math.random(intervalMin, intervalMax)) do
+			local head = npc:FindFirstChild("Head")
+
+			if npc:GetAttribute("IsUnconscious") or (not head) then
+				break
+			else
+				local sound = sounds[math.random(#sounds)]:Clone()
+				sound.Parent = head
+				sound:Play()
+				SoundUtils.debrisSound(sound)
+			end
+        end
+    end)
+end
+
+-------------------------------------------------------------------------------------------
 -- RETURN MODULE
 -------------------------------------------------------------------------------------------
 
@@ -271,4 +309,5 @@ return {
     createNpc = createNpc,
 	getSpaceAbovePartForNpc = getSpaceAbovePartForNpc,
 	poseNpcAtSpot = poseNpcAtSpot,
+	playUtterances = playUtterances,
 }

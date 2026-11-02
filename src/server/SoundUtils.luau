@@ -26,6 +26,10 @@ local function stopSounds(instance, soundName)
     end
 end
 
+local function debrisSound(sound)
+    Debris:AddItem(sound, (sound.TimeLength / sound.PlaybackSpeed) + 2)
+end
+
 local function playSound(instance, pathString, isLooped, pitchShift)
     local sound = copySound(pathString)
     if sound then
@@ -43,15 +47,18 @@ local function playSound(instance, pathString, isLooped, pitchShift)
         sound:Play()
 
         if not isLooped then
-            Debris:AddItem(sound, (sound.TimeLength / sound.PlaybackSpeed) + 2)
+            debrisSound(sound)
         end
 
         return sound
+    else
+        print(`Sound {pathString} not found`)
+        return
     end
-    return
 end
 
 return {
     playSound = playSound,
-    copySound = copySound
+    copySound = copySound,
+    debrisSound = debrisSound,
 }
