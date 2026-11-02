@@ -12,6 +12,8 @@ local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 local npcAssetsLib = ServerStorage:WaitForChild("NpcAssets")
 local bodiesLib = npcAssetsLib:WaitForChild("Bodies")
 local classicFacesLib = npcAssetsLib:WaitForChild("ClassicFaces")
+local awakeFacesLib = classicFacesLib:WaitForChild("Awake")
+local personalityFacesLib = classicFacesLib:WaitForChild("Personality")
 local hatsLib = npcAssetsLib:WaitForChild("Hats")
 local pantsColorsLib = npcAssetsLib:WaitForChild("PantsColors")
 local shirtColorsLib = npcAssetsLib:WaitForChild("ShirtColors")
@@ -33,14 +35,14 @@ local function getRandomChild(instance)
 end
 
 -------------------------------------------------------------------------------------------
--- MAIN FUNCTIONS: SPAWNING
+-- SPAWNING
 -------------------------------------------------------------------------------------------
 
 local function createNpc()
 	local pantsColorCategory = getRandomChild(pantsColorsLib)
 	local shirtColorCategory = getRandomChild(shirtColorsLib)
 	local skinColorCategory = getRandomChild(skinColorsLib)
-	local faceCategory = classicFacesLib:WaitForChild("Awake")
+	local faceCategory = awakeFacesLib
 	
 	local char = getRandomChild(bodiesLib):Clone()
 	local face = getRandomChild(faceCategory):Clone()
@@ -232,7 +234,7 @@ local function refreshAccessories(npc)
 end
 
 -------------------------------------------------------------------------------------------
--- MAIN FUNCTIONS: WINZONE
+-- WINZONE
 -------------------------------------------------------------------------------------------
 
 local function poseNpcAtSpot(npc, spot)
@@ -302,6 +304,21 @@ local function playUtterances(npc, utterancesFolderName)
 end
 
 -------------------------------------------------------------------------------------------
+-- OTHER
+-------------------------------------------------------------------------------------------
+
+local function replaceFace(npc, newFace)
+	local head = npc:WaitForChild("Head")
+	local face = head:FindFirstChildOfClass("Decal")
+	
+	if face then
+		face:Destroy()
+	end
+
+	newFace.Parent = head
+end
+
+-------------------------------------------------------------------------------------------
 -- RETURN MODULE
 -------------------------------------------------------------------------------------------
 
@@ -310,4 +327,6 @@ return {
 	getSpaceAbovePartForNpc = getSpaceAbovePartForNpc,
 	poseNpcAtSpot = poseNpcAtSpot,
 	playUtterances = playUtterances,
+	personalityFacesLib = personalityFacesLib,
+	replaceFace = replaceFace,
 }

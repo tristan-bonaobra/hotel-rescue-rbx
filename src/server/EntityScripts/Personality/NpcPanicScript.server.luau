@@ -4,26 +4,16 @@ end
 
 local RunService = game:GetService("RunService")
 local ServerScriptService = game:GetService("ServerScriptService")
-local ServerStorage = game:GetService("ServerStorage")
 
 local NpcUtils = require(ServerScriptService:WaitForChild("NpcUtils"))
 local Config = require(ServerScriptService:WaitForChild("Config"))
 
-local npcAssetsLib = ServerStorage:WaitForChild("NpcAssets")
-local classicFacesLib = npcAssetsLib:WaitForChild("ClassicFaces")
-local personalityFacesLib = classicFacesLib:WaitForChild("Personality")
-
 local npc = script.Parent
 local root = npc:WaitForChild("HumanoidRootPart")
 local hum = npc:WaitForChild("Humanoid")
-local head = npc:WaitForChild("Head")
-local face = head:FindFirstChildOfClass("Decal")
+local newFace = NpcUtils.personalityFacesLib:WaitForChild("Panicked"):Clone()
 
-if face then
-    face:Destroy()
-end
-
-personalityFacesLib:WaitForChild("Panicked"):Clone().Parent = head
+NpcUtils.replaceFace(npc, newFace)
 NpcUtils.playUtterances(npc, "Laughter")
 
 while RunService.Heartbeat:Wait() do
