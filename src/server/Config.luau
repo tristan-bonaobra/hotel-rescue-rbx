@@ -5,6 +5,7 @@ return {
 	STARTER_POINTS = 10,
 	REWARD_CONSCIOUS = 3,
 	REWARD_UNCONSCIOUS = 1,
+	REWARD_PANICKED = 5,
 	DEFAULT_WALKSPEED = 16, -- Shared by players and NPCs
 
 	-- MapData

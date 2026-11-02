@@ -42,15 +42,29 @@ local function chooseSpot(isUnconscious)
 	return spot
 end
 
-local function rewardAllPlayersForRescue(isUnconscious)
-	local points = (isUnconscious and Config.REWARD_UNCONSCIOUS) or Config.REWARD_CONSCIOUS
+local function rewardAllPlayersForRescue(npc)
+	local isUnconscious = npc:GetAttribute("IsUnconscious")
+	local isPanicked = npc:GetAttribute("IsPanicked")
+
+	local pointsRewarded
+
+	if isUnconscious then
+		pointsRewarded = Config.REWARD_UNCONSCIOUS
+	else
+		if isPanicked then
+			pointsRewarded = Config.REWARD_PANICKED
+		else
+			pointsRewarded = Config.REWARD_CONSCIOUS
+		end
+	end
+
 	for _, plr in Players:GetPlayers() do
 		local leaderstats = plr:WaitForChild("leaderstats")
 		local pointsObject = leaderstats:WaitForChild("Points")
-		pointsObject.Value += points
+		pointsObject.Value += pointsRewarded
 	end
 	local hint = Instance.new("Hint", workspace)
-	hint.Text = "Survivor #"..npcsRescued.." was rescued for "..points.." point"..(((points > 1) and "s") or "").."!"
+	hint.Text = "Survivor #"..npcsRescued.." was rescued for "..pointsRewarded.." point"..(((pointsRewarded > 1) and "s") or "").."!"
 	game.Debris:AddItem(hint, 3)
 	if isUnconscious then
 		SoundUtils.playSound(globalSoundsBin, "Game.ShortSpringSound")
@@ -93,7 +107,7 @@ winPart.Touched:Connect(function(hit)
 	if hum and isInNpcFolder and (not isRescued) then
 		npcsRescued += 1
 		npc:SetAttribute("IsRescued", true)
-		rewardAllPlayersForRescue(isUnconscious)
+		rewardAllPlayersForRescue(npc)
 		
 		local spot = chooseSpot(isUnconscious)
 		if spot then
