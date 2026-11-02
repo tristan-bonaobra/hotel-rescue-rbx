@@ -112,13 +112,9 @@ local function loadMap(currentMapData)
 
 		-- Delete these debug messages later
 		if currentMapData.IsForWelding then
-			print(`Welding {mapName}`)
 			weldMap(currentMap)
-		else
-			print(`Loaded {mapName} normally`)
 		end
 	else
-		print(`{mapName} is preprocessed, skipping`)
 		currentMap.Parent = workspace
 	end
 

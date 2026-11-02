@@ -191,7 +191,6 @@ end
 local function gameCountdown()
 	for timeRemaining = currentMapData.RoundTime, 0, -1 do
 		if getTotalRescued() < getTotalNpcs() then
-			print(getTotalRescued(), getTotalNpcs())
 			hint.Text = "Time left: " .. formatTime(timeRemaining)
 			task.wait(1)
 		end
