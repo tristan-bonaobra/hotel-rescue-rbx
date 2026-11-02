@@ -99,7 +99,6 @@ end
 -------------------------------------------------------------------------------------------
 
 local function loadMap(currentMapData)
-	local mapName = currentMapData.MapObject.Name
 	local currentMap = currentMapData.MapObject:Clone()
 	currentMap.Name = "CurrentMap"
 	
