@@ -46,6 +46,6 @@ return {
     },
     {
         GearObject = getGear("Gravity Coil"),
-        Price = 90,
+        Price = 10,
     },
 }
