@@ -11,8 +11,6 @@ local Config = require(ServerScriptService:WaitForChild("Config"))
 local npcsBin = workspace:WaitForChild("Npcs")
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
-local boostedWalkSpeed = Config.DEFAULT_WALKSPEED + Config.FLAG_BOOST_AMOUNT
-
 local ralliedHumanoidsDict = {}
 
 ------------------------------------------------------------------------------------------
@@ -162,6 +160,13 @@ local function addHumanoidsToRally()
 end
 
 local function setHumanoidRallied(hum, isRallied)
+    local isNpc = hum:IsDescendantOf(npcsBin)
+    local boostedWalkSpeed = Config.DEFAULT_WALKSPEED + Config.FLAG_BOOST_AMOUNT
+
+    if isNpc then
+        boostedWalkSpeed += Config.FLAG_BOOST_NPC_BONUS
+    end
+
     hum:SetAttribute("IsRallied", isRallied)
     hum.WalkSpeed = (isRallied and boostedWalkSpeed) or Config.DEFAULT_WALKSPEED
 end
