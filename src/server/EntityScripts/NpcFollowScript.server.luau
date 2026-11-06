@@ -48,7 +48,7 @@ else
 	followThreshold = Config.NPC_FOLLOW_DISTANCE_THRESHOLD
 end
 
-while task.wait(0.25) do
+while task.wait(0.5) do
 	if (leaderHead.Position - myHead.Position).Magnitude >= followThreshold then
 		local walkToCFrame = CFrame.new(leaderHead.Position, myHead.Position) * CFrame.new(0, 0, -followThreshold)
 		myHum:MoveTo(walkToCFrame.Position)
