@@ -123,16 +123,25 @@ end
 -- RALLYING
 ------------------------------------------------------------------------------------------
 
-local function isNearFlag(root)
+local function isNearFlag(root, toEnter)
     local flagsList = getFlags()
+    local effectDiameter
+    local effectRadius
+
+    if toEnter then
+        effectDiameter = Config.FLAG_ENTRY_DIAMETER
+    else
+        effectDiameter = Config.FLAG_EXIT_DIAMETER
+    end
+
+    effectRadius = effectDiameter / 2
 
     for _, flag in flagsList do
         local rootPos = root.Position
         local flagPos = flag.Position
         local mag = (rootPos - flagPos).Magnitude
-        local flagRadius = Config.FLAG_EFFECT_DIAMETER / 2
 
-        if mag <= flagRadius then
+        if mag <= effectRadius then
             return true
         end
     end
@@ -147,7 +156,7 @@ local function addHumanoidsToRally()
         if (not hum:GetAttribute("IsUnconscious"))
             and (not hum:GetAttribute("IsRescued"))
             and (not ralliedHumanoidsDict[hum])
-            and isNearFlag(root)
+            and isNearFlag(root, true)
         then
             ralliedHumanoidsDict[hum] = {
                 LastRallied = os.clock(),
@@ -160,13 +169,7 @@ local function addHumanoidsToRally()
 end
 
 local function setHumanoidRallied(hum, isRallied)
-    local isNpc = hum:IsDescendantOf(npcsBin)
     local boostedWalkSpeed = Config.DEFAULT_WALKSPEED + Config.FLAG_BOOST_AMOUNT
-
-    if isNpc then
-        boostedWalkSpeed += Config.FLAG_BOOST_NPC_BONUS
-    end
-
     hum:SetAttribute("IsRallied", isRallied)
     hum.WalkSpeed = (isRallied and boostedWalkSpeed) or Config.DEFAULT_WALKSPEED
 end
@@ -178,7 +181,7 @@ local function updateRalliedHumanoids()
         local inWorkspace = hum:IsDescendantOf(workspace)
         local rallyElapsed = os.clock() - known.LastRallied > Config.FLAG_BOOST_DURATION
 
-        if inWorkspace and (justUpdated or isNearFlag(known.HumanoidRootPart)) then
+        if inWorkspace and (justUpdated or isNearFlag(known.HumanoidRootPart, false)) then
             setHumanoidRallied(hum, true)
             ralliedHumanoidsDict[hum].LastRallied = os.clock()
         elseif rallyElapsed or hum:GetAttribute("IsUnconscious") then
