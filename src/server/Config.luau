@@ -7,6 +7,7 @@ return {
 	REWARD_UNCONSCIOUS = 1,
 	REWARD_PANICKED = 5,
 	DEFAULT_WALKSPEED = 16, -- Shared by players and NPCs
+	DEFAULT_JUMP_POWER = 50,
 
 	-- MapData
 
@@ -89,4 +90,6 @@ return {
 	FLAG_BOOST_NPC_BONUS = 5,
 	FLAG_BOOST_DURATION = 2,
 	FLAG_BOOST_PITCH_SHIFT = 0.2,
+
+	COIL_JUMP_POWER = 90,
 }
