@@ -52,7 +52,7 @@ return {
     {
         MapObject = getMap("IcyFresh's Underground Base"),
         MusicObject = getMusic(DEFAULT_MUSIC),
-        RoundTime = DEFAULT_ROUND_TIME,
+        RoundTime = 7 * 60,
         IsPreprocessed = true,
         IsForWelding = false,
     },
