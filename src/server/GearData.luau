@@ -25,7 +25,7 @@ return {
         Price = 10,
     },
     {
-        GearObject = getGear("Translocator"),
+        GearObject = getGear("Gravity Coil"),
         Price = 10,
     },
     {
@@ -45,7 +45,7 @@ return {
         Price = 30,
     },
     {
-        GearObject = getGear("Gravity Coil"),
-        Price = 10,
+        GearObject = getGear("Translocator"),
+        Price = 30,
     },
 }
