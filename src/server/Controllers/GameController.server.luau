@@ -20,8 +20,6 @@ local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 local music = globalSoundsBin:WaitForChild("Music")
 local teleporter = workspace:WaitForChild("Teleporter")
 
-local currentMapData
-
 ------------------------------------------------------------------------------
 -- NEW OBJECTS
 ------------------------------------------------------------------------------
@@ -35,17 +33,28 @@ hint.Parent = workspace
 -- STATE VARIABLES
 ------------------------------------------------------------------------------
 
+local currentMapData
+local previousMapData
 local currentMap
 local winZone
 
 ------------------------------------------------------------------------------
--- MISC FUNCTIONS
+-- HELPER FUNCTIONS
 ------------------------------------------------------------------------------
 
 local function formatTime(totalSeconds)
 	local minutes = math.floor(totalSeconds / 60)
 	local seconds = totalSeconds % 60
 	return string.format("%02d:%02d", minutes, seconds)
+end
+
+local function setCurrentMapData()
+	while currentMapData == previousMapData do
+		task.wait()
+		currentMapData = MapData[math.random(#MapData)]
+	end
+
+	previousMapData = currentMapData
 end
 
 ------------------------------------------------------------------------------
@@ -102,7 +111,7 @@ local function intermission()
 end
 
 local function loadMap()
-	currentMapData = MapData[math.random(#MapData)]
+	setCurrentMapData()
 	message.Text = "Loading"
 	local map = MapUtils.loadMap(currentMapData)
 	message.Text = ""
