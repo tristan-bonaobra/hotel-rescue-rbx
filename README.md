@@ -24,7 +24,7 @@ This part is optional. Roblox hosts all audio on their servers and do not let ot
 
 To play with music and dialog:
 
-1. Upload the sound files in `assets` through the [Roblox Creator Dashboard](https://create.roblox.com/dashboard/creations?activeTab=Audio&inventoryAssetTypes=All) and take note of the **Asset ID** in the sound's URL.
+1. Upload the sound files in `assets/sounds/` through the [Roblox Creator Dashboard](https://create.roblox.com/dashboard/creations?activeTab=Audio&inventoryAssetTypes=All) and take note of the **Asset ID** in the sound's URL.
 2. Set the `SoundId` of the Sound instances accordingly using the **Explorer** and **Properties** windows. [see paths](#sound-instance-paths)
 
 #### Sound instance paths
@@ -44,6 +44,8 @@ ServerStorage/
 
 ## Local development
 
+To mod the game's code:
+
 1. Clone the repo and open the latest `.rbxl`. [see guide](#how-to-play)
-1. Install **Rojo** in your [environment](https://rojo.space/docs/v7/getting-started/installation/) and in [Roblox Studio](https://create.roblox.com/store/asset/13916111004/Rojo).
-2. Connect your environment to Roblox Studio by executing `rojo serve` in-terminal and clicking **Connect** (and **Accept**, if changes are made) in the Rojo plugin window.
+2. Install **Rojo** in your [environment](https://rojo.space/docs/v7/getting-started/installation/) and in [Roblox Studio](https://create.roblox.com/store/asset/13916111004/Rojo).
+3. Connect your environment to Roblox Studio by executing `rojo serve` in-terminal and navigate: `Roblox Studio > Plugins > Rojo > Connect`.
