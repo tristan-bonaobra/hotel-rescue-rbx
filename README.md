@@ -11,7 +11,7 @@ A heroic twist on disaster survival.
 # How to play
 
 1. Install Roblox Studio via [Roblox Creator Hub](https://create.roblox.com/docs/tutorials/curriculums/studio/install-studio).
-2. Download and open the latest `.rbxl` release on the [Releases](https://github.com/tristan-bonaobra/hotel-rescue-rbx/releases) page.
+2. Download and open the latest `.rbxl` on the [Releases](https://github.com/tristan-bonaobra/hotel-rescue-rbx/releases) page.
 3. In the **Home** tab, set the dropdown menu to **Test** and click the play button.
 
 ## Custom audio
@@ -40,7 +40,6 @@ ServerStorage/
 
 # Local development
 
-1. Install [Rojo](https://rojo.space/docs/v7/getting-started/installation/).
-1. Clone the repo.
-2. Serve the project: `rojo serve`
-3. Connect the Rojo plugin inside Roblox Studio.
+1. Clone the repo and open the latest `.rbxl`. [see guide](#how-to-play)
+1. Install **Rojo** in your [environment](https://rojo.space/docs/v7/getting-started/installation/) and in [Roblox Studio](https://create.roblox.com/store/asset/13916111004/Rojo).
+2. Connect your environment to Roblox Studio by executing `rojo serve` in-terminal and clicking **Connect** (and **Accept**, if changes are made) in the Rojo plugin window.
