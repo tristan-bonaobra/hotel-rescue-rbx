@@ -21,9 +21,9 @@ This part is optional. Roblox hosts all audio on their servers and do not let ot
 To play with music and dialog:
 
 1. Upload the sound files in `assets` through the [Roblox Creator Dashboard](https://create.roblox.com/dashboard/creations?activeTab=Audio&inventoryAssetTypes=All) and take note of the **Asset ID** in the sound's URL.
-2. Set the `SoundId` of the Sound instances accordingly using the **Explorer** and **Properties** windows. [see paths](#Sound instance paths)
+2. Set the `SoundId` of the Sound instances accordingly using the **Explorer** and **Properties** windows. [see paths](#sound-instance-paths)
 
-### Sound object paths
+### Sound instance paths
 
 ```text
 ServerStorage/
