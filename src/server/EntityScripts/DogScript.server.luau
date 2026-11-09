@@ -13,10 +13,10 @@ local torso = dog:WaitForChild("Torso")
 local neckWeld = torso:WaitForChild("NeckWeld")
 
 local myHead = dog:WaitForChild("Head")
-local shortestDistance = math.huge
 
 local function getLeaderHead()
 	local leaderHead
+	local shortestDistance = math.huge
 
 	for _, npc in npcFolder:GetChildren() do
 		local npcHum = npc:FindFirstChildOfClass("Humanoid")
