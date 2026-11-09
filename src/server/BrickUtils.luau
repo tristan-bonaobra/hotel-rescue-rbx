@@ -84,6 +84,10 @@ local function tempUnanchor(part)
 end
 
 local function breakJoints(part)
+	if (not part) or part:GetAttribute("PreventBreakJoints") then
+		return
+	end
+
 	for _, joint in part:GetJoints() do
 		joint:Destroy()
 	end
