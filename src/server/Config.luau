@@ -21,7 +21,8 @@ return {
 		"Tool",
 		"ClickDetector",
 		"SpawnPoint",
-		"Light"
+		"Light",
+		"Humanoid",
 	},
 	DEBRIS_ANCHOR_THRESHOLD = 0.5,
 	DEBRIS_TINT = 0.1,
