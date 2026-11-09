@@ -18,6 +18,10 @@ local handle = tool:WaitForChild("Handle")
 local isActive
 
 local function isBellable(part)
+	if part:GetAttribute("PreventUnanchoring") then
+		part:Destroy()
+	end
+
 	local currentMap = workspace:FindFirstChild("CurrentMap")
 	local npc
 	
