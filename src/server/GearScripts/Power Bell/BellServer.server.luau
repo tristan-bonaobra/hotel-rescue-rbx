@@ -19,7 +19,7 @@ local isActive
 
 local function isBellable(part)
 	if part:GetAttribute("PreventUnanchoring") then
-		part:Destroy()
+		return false
 	end
 
 	local currentMap = workspace:FindFirstChild("CurrentMap")
@@ -33,14 +33,16 @@ local function isBellable(part)
 			end
 		end
 	end
-	
-	return part
+
+	local result = part
 		and part:IsA("BasePart")
 		and (
 			(currentMap and part:IsDescendantOf(currentMap))
 			or (npc and (not npc:GetAttribute("IsRescued")))
 			or (playgroundBin and part:IsDescendantOf(playgroundBin))
 		)
+	
+	return result == true
 end
 
 local function shockwaveFx()
