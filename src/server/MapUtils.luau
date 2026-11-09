@@ -98,19 +98,22 @@ end
 -- MAIN FUNCTIONS
 -------------------------------------------------------------------------------------------
 
-local function loadMap(currentMapData)
-	local currentMap = currentMapData.MapObject:Clone()
+local function loadMap(mapData)
+	local currentMap = mapData.MapObject:Clone()
 	currentMap.Name = "CurrentMap"
 	
-	task.wait(1)
-	if not currentMapData.IsPreprocessed then
+	if mapData.Init then
+		mapData.Init(currentMap)
+	end
+	
+	if not mapData.IsPreprocessed then
 		cleanMap(currentMap)
 		anchorMap(currentMap)
 		currentMap.Parent = workspace
 		breakMap(currentMap)
 
 		-- Delete these debug messages later
-		if currentMapData.IsForWelding then
+		if mapData.IsForWelding then
 			weldMap(currentMap)
 		end
 	else

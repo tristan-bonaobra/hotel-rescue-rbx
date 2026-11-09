@@ -33,7 +33,7 @@ end
 -------------------------------------------------------------------------------------------
 
 return {
-    {
+    --[[{
         MapObject = getMap("Radioaktiivinen's Disaster Hotel"),
         MusicObject = getMusic(DEFAULT_MUSIC),
         RoundTime = DEFAULT_ROUND_TIME,
@@ -71,5 +71,26 @@ return {
         RoundTime = 10 * 60,
         IsPreprocessed = false,
         IsForWelding = true,
+    },]]
+
+    {
+        MapObject = getMap("1dev2's Town of Robloxia"),
+        MusicObject = getMusic("GroundworksComplex"),
+        RoundTime = 10 * 60,
+        IsPreprocessed = false,
+        IsForWelding = true,
+
+        Init = function(map)
+            local gamePartsModel = map:WaitForChild("GameParts")
+            local gameParts = gamePartsModel:GetDescendants()
+
+            for _, v in gameParts do
+                if v:IsA("BasePart") then
+                    v:SetAttribute("PreventBreaking", true)
+                    v:SetAttribute("PreventUnanchoring", true)
+                    v:SetAttribute("PreventBreakJoints", true)
+                end
+            end
+        end,
     },
 }

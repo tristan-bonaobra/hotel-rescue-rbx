@@ -113,6 +113,7 @@ end
 local function loadMap()
 	setCurrentMapData()
 	message.Text = "Loading"
+	task.wait(1)
 	local map = MapUtils.loadMap(currentMapData)
 	message.Text = ""
 	task.wait(5)
