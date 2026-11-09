@@ -366,6 +366,12 @@ end
 ----------------------------------------------------------------------------------------------
 
 local function isTempUnanchorable(part)
+	local hasAttribute = part and part:GetAttribute("PreventUnanchoring")
+
+	if hasAttribute then
+		return false
+	end
+
 	local currentMap = getCurrentMap()
 	local isPart = part and part:IsA("BasePart")
 	local isMap = (currentMap and part:IsDescendantOf(currentMap))
