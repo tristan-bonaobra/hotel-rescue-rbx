@@ -483,6 +483,14 @@ local function stabilize(part)
 	alignOrientation.Parent = part
 end
 
+local function grantImmunity(part)
+	part:SetAttribute("PreventSpawning", true)
+	part:SetAttribute("PreventBreaking", true)
+	part:SetAttribute("PreventUnanchoring", true)
+	part:SetAttribute("PreventBreakJoints", true)
+	part:SetAttribute("PreventCrumbling", true)
+end
+
 ----------------------------------------------------------------------------------------------
 -- RETURN MODULE
 ----------------------------------------------------------------------------------------------
@@ -506,4 +514,5 @@ return {
 	-- Other
     getTopPosition = getTopPosition,
 	stabilize = stabilize,
+	grantImmunity = grantImmunity,
 }

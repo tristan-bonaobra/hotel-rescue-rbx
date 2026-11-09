@@ -6,6 +6,7 @@ local ServerStorage = game:GetService("ServerStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
+local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 
 local DEFAULT_ROUND_TIME = Config.DEFAULT_ROUND_TIME
 local DEFAULT_MUSIC = Config.DEFAULT_MUSIC
@@ -81,14 +82,12 @@ return {
         IsForWelding = true,
 
         Init = function(map)
-            local gamePartsModel = map:WaitForChild("GameParts")
-            local gameParts = gamePartsModel:GetDescendants()
+            local filteredDescendantsModel = map:WaitForChild("NongameParts")
+            local filteredDescendants = filteredDescendantsModel:GetDescendants()
 
-            for _, v in gameParts do
+            for _, v in filteredDescendants do
                 if v:IsA("BasePart") then
-                    v:SetAttribute("PreventBreaking", true)
-                    v:SetAttribute("PreventUnanchoring", true)
-                    v:SetAttribute("PreventBreakJoints", true)
+                    BrickUtils.grantImmunity(v)
                 end
             end
         end,
