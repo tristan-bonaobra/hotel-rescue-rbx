@@ -126,6 +126,10 @@ end
 local function crumbleMap(map)
 	local sortedParts = getSortedParts(map)
 	for _, v in pairs(sortedParts) do
+		if v:GetAttribute("PreventCrumbling") then
+			continue
+		end
+
 		if (math.random(Config.CRUMBLE_DIE) == 1)
 			and (not BrickUtils.isBuried(v))
 			and (not v:GetAttribute("PreventCrumbling"))
