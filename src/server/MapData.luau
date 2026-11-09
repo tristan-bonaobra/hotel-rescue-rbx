@@ -84,10 +84,15 @@ return {
         Init = function(map)
             local filteredDescendantsModel = map:WaitForChild("NongameParts")
             local filteredDescendants = filteredDescendantsModel:GetDescendants()
+            local baseExtensionModel = filteredDescendantsModel:WaitForChild("BaseExtension")
 
             for _, v in filteredDescendants do
                 if v:IsA("BasePart") then
-                    BrickUtils.grantImmunity(v)
+                    v:SetAttribute("PreventSpawning", true)
+
+                    if v:IsDescendantOf(baseExtensionModel) then
+                        BrickUtils.grantImmunity(v)
+                    end
                 end
             end
         end,

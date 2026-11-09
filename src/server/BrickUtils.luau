@@ -484,7 +484,6 @@ local function stabilize(part)
 end
 
 local function grantImmunity(part)
-	part:SetAttribute("PreventSpawning", true)
 	part:SetAttribute("PreventBreaking", true)
 	part:SetAttribute("PreventUnanchoring", true)
 	part:SetAttribute("PreventBreakJoints", true)
