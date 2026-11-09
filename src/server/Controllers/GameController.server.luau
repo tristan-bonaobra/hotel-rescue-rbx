@@ -143,7 +143,7 @@ local function earthquake()
 	local newSound = SoundUtils.playSound(globalSoundsBin, "Game.EarthquakeLoop", true)
 	hint.Text = "The earth is shaking... >_>"
 	MapUtils.spawnNpcsOnMap(currentMap)
-	MapUtils.crumbleMap(currentMap)
+	MapUtils.crumbleMap(currentMap, currentMapData)
 	newSound:Stop()
 	task.wait(5)
 	hint.Text = ""

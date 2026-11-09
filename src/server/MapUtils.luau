@@ -123,8 +123,10 @@ local function loadMap(mapData)
 	return currentMap
 end
 
-local function crumbleMap(map)
+local function crumbleMap(map, mapData)
+	local partsCrumbled = 0
 	local sortedParts = getSortedParts(map)
+
 	for _, v in pairs(sortedParts) do
 		if v:GetAttribute("PreventCrumbling") then
 			continue
@@ -136,7 +138,18 @@ local function crumbleMap(map)
 		then
 			BrickUtils.tempUnanchor(v)
 			BrickUtils.breakJoints(v)
-			task.wait()
+
+			if mapData.FasterEarthquake then
+				partsCrumbled += 1
+
+				if partsCrumbled % Config.FAST_EARTHQUAKE_CRUMBLES_PER_FRAME == 0 then
+					task.wait()
+				end
+
+			else
+				task.wait()
+			end
+			
 			v.CFrame *= CFrame.Angles(math.random(), math.random(), math.random())
 		end
 	end

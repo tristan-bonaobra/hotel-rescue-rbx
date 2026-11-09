@@ -13,6 +13,7 @@ return {
 
 	DEFAULT_ROUND_TIME = 8 * 60,
 	DEFAULT_MUSIC = "UrbanDescent",
+	FAST_EARTHQUAKE_CRUMBLES_PER_FRAME = 3,
 	
 	-- Map (world)
 	
