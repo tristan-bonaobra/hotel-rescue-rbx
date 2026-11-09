@@ -13,39 +13,46 @@ local torso = dog:WaitForChild("Torso")
 local neckWeld = torso:WaitForChild("NeckWeld")
 
 local myHead = dog:WaitForChild("Head")
-local leaderHead
 local shortestDistance = math.huge
 
-for _, npc in npcFolder:GetChildren() do
-	local npcHum = npc:FindFirstChildOfClass("Humanoid")
-	local npcHead = npc:FindFirstChild("Head")
-	local followScript = npc:FindFirstChild("NpcFollowScript")
-	local isUnconscious = npc:GetAttribute("IsUnconscious")
-	local isRescued = npc:GetAttribute("IsRescued")
+local function getLeaderHead()
+	local leaderHead
 
-	if npcHum and npcHead and (not followScript) and (not isUnconscious) and (not isRescued) then
-		local distance = (npcHead.Position - myHead.Position).Magnitude
-		if distance < shortestDistance then
-			shortestDistance = distance
-			leaderHead = npcHead
-			leaderHum = npcHum
+	for _, npc in npcFolder:GetChildren() do
+		local npcHum = npc:FindFirstChildOfClass("Humanoid")
+		local npcHead = npc:FindFirstChild("Head")
+		local followScript = npc:FindFirstChild("NpcFollowScript")
+		local isUnconscious = npc:GetAttribute("IsUnconscious")
+		local isRescued = npc:GetAttribute("IsRescued")
+
+		if npcHum and npcHead and (not followScript) and (not isUnconscious) and (not isRescued) then
+			local distance = (npcHead.Position - myHead.Position).Magnitude
+			if distance < shortestDistance then
+				shortestDistance = distance
+				leaderHead = npcHead
+			end
 		end
 	end
-end
 
-if not leaderHead then
-	return
+	return leaderHead
 end
 
 while task.wait(1 / 30) do
-	local targetPos = leaderHead.Position
+	local leaderHead = getLeaderHead()
 
-	humanoid:MoveTo(targetPos)
-	humanoid.Jump = true
+	if leaderHead then
+		local targetPos = leaderHead.Position
 
-	local localTarget = torso.CFrame:PointToObjectSpace(targetPos)
-	if (localTarget - DEFAULT_NECK_POS).Magnitude > 0.001 then
-		local lookCFrame = CFrame.lookAt(DEFAULT_NECK_POS, localTarget)
-		neckWeld.C0 = lookCFrame * DEFAULT_NECK_ROT
+		humanoid:MoveTo(targetPos)
+		humanoid.Jump = true
+
+		local localTarget = torso.CFrame:PointToObjectSpace(targetPos)
+		if (localTarget - DEFAULT_NECK_POS).Magnitude > 0.001 then
+			local lookCFrame = CFrame.lookAt(DEFAULT_NECK_POS, localTarget)
+			neckWeld.C0 = lookCFrame * DEFAULT_NECK_ROT
+		end
+
+	else
+		task.wait(1)
 	end
 end
