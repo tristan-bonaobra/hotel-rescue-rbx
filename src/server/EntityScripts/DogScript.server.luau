@@ -37,9 +37,11 @@ if not leaderHead then
 	return
 end
 
-while task.wait(0.5) do
+while task.wait(1 / 30) do
 	local targetPos = leaderHead.Position
+
 	humanoid:MoveTo(targetPos)
+	humanoid.Jump = true
 
 	local localTarget = torso.CFrame:PointToObjectSpace(targetPos)
 	if (localTarget - DEFAULT_NECK_POS).Magnitude > 0.001 then
