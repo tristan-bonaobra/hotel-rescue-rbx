@@ -419,7 +419,7 @@ local function isTiny(part)
 end
 
 local function isBreakable(part)
-	if not part:IsA("BasePart") then
+	if (not part:IsA("BasePart")) or part:GetAttribute("PreventBreaking") then
 		return
 	end
 
