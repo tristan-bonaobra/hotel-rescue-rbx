@@ -5,7 +5,6 @@ end
 local DEFAULT_NECK_POS = Vector3.new(0, 0.235, 0)
 local DEFAULT_NECK_ROT = CFrame.Angles(math.rad(90), math.rad(180), 0)
 
-local RunService = game:GetService("RunService")
 local npcFolder = workspace:WaitForChild("Npcs")
 
 local dog = script.Parent
@@ -38,7 +37,7 @@ if not leaderHead then
 	return
 end
 
-RunService.Heartbeat:Connect(function()
+while task.wait(0.5) do
 	local targetPos = leaderHead.Position
 	humanoid:MoveTo(targetPos)
 
@@ -47,4 +46,4 @@ RunService.Heartbeat:Connect(function()
 		local lookCFrame = CFrame.lookAt(DEFAULT_NECK_POS, localTarget)
 		neckWeld.C0 = lookCFrame * DEFAULT_NECK_ROT
 	end
-end)
+end
