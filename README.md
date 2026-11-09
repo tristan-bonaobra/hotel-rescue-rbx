@@ -20,7 +20,7 @@ This section explains how to play the game and mod its code.
 
 ### Custom audio
 
-This part is optional. Roblox hosts all audio on their servers and do not let other users use audio from non-verified publishers.
+This part is optional. Roblox hosts all audio on their servers and does not let other users use audio from non-verified publishers.
 
 To play with music and dialog:
 
