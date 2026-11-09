@@ -20,7 +20,10 @@ local shortestDistance = math.huge
 for _, npc in npcFolder:GetChildren() do
 	local npcHum = npc:FindFirstChildOfClass("Humanoid")
 	local npcHead = npc:FindFirstChild("Head")
-	if npcHum and npcHead then
+	local followScript = npc:FindFirstChild("NpcFollowScript")
+	local isUnconscious = npc:GetAttribute("IsUnconscious")
+
+	if npcHum and npcHead and (not followScript) and (not isUnconscious) then
 		local distance = (npcHead.Position - myHead.Position).Magnitude
 		if distance < shortestDistance then
 			shortestDistance = distance
