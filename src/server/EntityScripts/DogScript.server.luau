@@ -22,8 +22,9 @@ for _, npc in npcFolder:GetChildren() do
 	local npcHead = npc:FindFirstChild("Head")
 	local followScript = npc:FindFirstChild("NpcFollowScript")
 	local isUnconscious = npc:GetAttribute("IsUnconscious")
+	local isRescued = npc:GetAttribute("IsRescued")
 
-	if npcHum and npcHead and (not followScript) and (not isUnconscious) then
+	if npcHum and npcHead and (not followScript) and (not isUnconscious) and (not isRescued) then
 		local distance = (npcHead.Position - myHead.Position).Magnitude
 		if distance < shortestDistance then
 			shortestDistance = distance
