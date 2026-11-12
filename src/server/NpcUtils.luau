@@ -308,12 +308,6 @@ end
 -- HELPER FUNCTIONS: OTHER
 -------------------------------------------------------------------------------------------
 
-local function waitForJump(hum)
-	repeat
-		hum:GetPropertyChangedSignal("Jump"):Wait()
-	until hum.Jump == true
-end
-
 local function weldParts(part0, part1)
 	local weld = Instance.new("WeldConstraint")
 	weld.Part0 = part0
@@ -347,35 +341,55 @@ local function replaceFace(npc, newFace)
 end
 
 local function seat(npc, seatPart)
-	local root = npc:WaitForChild("HumanoidRootPart")
-	local hum = npc:WaitForChild("Humanoid")
-	local weld
+    local root = npc:WaitForChild("HumanoidRootPart")
+    local hum = npc:WaitForChild("Humanoid")
 
-	local rootSize = root.Size
-	local seatSize = seatPart.Size
-	local seatOffset = 0.5
-	local seatHeight = (rootSize.Y / 2) + (seatSize.Y / 2) + seatOffset
+    local rootSize = root.Size
+    local seatSize = seatPart.Size
+    local seatOffset = 0.5
+    local seatHeight = (rootSize.Y / 2) + (seatSize.Y / 2) + seatOffset
 
-	root.CFrame = seatPart.CFrame * CFrame.new(0, seatHeight, 0)
-	weld = weldParts(seatPart, root)
+    root.CFrame = seatPart.CFrame * CFrame.new(0, seatHeight, 0)
+    local weld = weldParts(seatPart, root)
 
-	hum.Sit = true
-	npc:SetAttribute("IsSeated", true)
-	destroyFollowScript(npc)
+    hum.Sit = true
+    npc:SetAttribute("IsSeated", true)
+    destroyFollowScript(npc)
 
-	seatPart:SetAttribute("NpcOccupant", hum)
-	seatPart.Disabled = true
+    seatPart:SetAttribute("NpcOccupant", hum)
+    seatPart.Disabled = true
 
-	task.spawn(function()
-		waitForJump(hum)
+	local stateListener
+	local ancestryListener
 
-		seatPart:SetAttribute("NpcOccupant", nil)
-		seatPart.Disabled = false
+    local function updateOnUnsit()
+		local falseAlarm = (
+			(not hum.Jump)
+			and (hum.Health > 0)
+			and (hum.Sit)
+			and (weld:IsDescendantOf(workspace))
+		)
 		
-		if weld:IsDescendantOf(workspace) then
-			weld:Destroy()
+		if falseAlarm then
+			return
 		end
-	end)
+
+        seatPart:SetAttribute("NpcOccupant", nil)
+        seatPart.Disabled = false
+        
+        if weld:IsDescendantOf(workspace) then
+            weld:Destroy()
+        end
+
+        npc:SetAttribute("IsSeated", false)
+        hum:SetAttribute("LastUnseated", os.clock())
+
+		stateListener:Disconnect()
+		ancestryListener:Disconnect()
+    end
+
+	stateListener = hum.StateChanged:Connect(updateOnUnsit)
+	ancestryListener = weld.AncestryChanged:Connect(updateOnUnsit)
 end
 
 -------------------------------------------------------------------------------------------
