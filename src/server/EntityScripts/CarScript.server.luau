@@ -81,22 +81,12 @@ local function updateSteering()
 	end
 end
 
-local function reprogramSeat(seat)
-	seat.Disabled = true
-
-	seat.Touched:Connect(function(hit)
-		local char = hit.Parent
-		local hum = char and char:FindFirstChild("Humanoid")
-		local isSeated = hum and hum:GetState() == Enum.HumanoidStateType.Seated
-
-		if hum and (not isSeated) then
-			task.wait(0.5)
-
-			if arePartsTouching(seat, hit) and (not seat.Occupant) then
-				seat:Sit(hum)
-			end
+local function forceServerOwnership()
+	for _, v in car:GetDescendants() do
+		if v:IsA("BasePart") then
+			v:SetNetworkOwner(nil)
 		end
-	end)
+	end
 end
 
 --------------------------------------------------------------------------------------------
@@ -107,11 +97,12 @@ vehicleSeat.MaxSpeed = Config.CAR_MAX_SPEED
 vehicleSeat.TurnSpeed = Config.CAR_TURN_SPEED
 vehicleSeat.Torque = Config.CAR_TORQUE
 
-for _, v in seatsModel:GetChildren() do
-	if v:IsA("Seat") and (not v:IsA("VehicleSeat")) then
-		reprogramSeat(v)
-	end
-end
+forceServerOwnership()
+
+vehicleSeat:GetPropertyChangedSignal("Occupant"):Connect(function()
+	task.wait()
+	forceServerOwnership()
+end)
 
 vehicleSeat:GetPropertyChangedSignal("Steer"):Connect(updateSteering)
 updateSteering()
