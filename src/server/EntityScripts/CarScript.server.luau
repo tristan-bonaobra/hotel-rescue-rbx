@@ -67,6 +67,10 @@ end
 -- EVENTS
 --------------------------------------------------------------------------------------------
 
+vehicleSeat.MaxSpeed = Config.CAR_MAX_SPEED
+vehicleSeat.TurnSpeed = Config.CAR_TURN_SPEED
+vehicleSeat.Torque = Config.CAR_TORQUE
+
 for _, v in seatsModel:GetChildren() do
 	if v:IsA("Seat") and (not v:IsA("VehicleSeat")) then
 		SeatUtils.reprogramSeat(v)
