@@ -29,7 +29,7 @@ local car
 -------------------------------------------------------------------------------------------
 
 local function slowDestroy(instance)
-	for _, v in pairs(car:GetChildren()) do
+	for _, v in pairs(instance:GetChildren()) do
 		if v:IsA("BasePart") then
 			v:Destroy()
 		end
