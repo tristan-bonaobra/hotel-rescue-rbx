@@ -45,7 +45,7 @@ local function seatCharacter(npc, seatPart)
     local weld = weldParts(seatPart, root)
 
     hum.Sit = true
-    npc:SetAttribute("IsSeated", true)
+    npc:SetAttribute("IsForceSeated", true)
     destroyFollowScript(npc)
 
     seatPart:SetAttribute("NpcOccupant", hum)
@@ -87,7 +87,7 @@ local function seatCharacter(npc, seatPart)
             weld:Destroy()
         end
 
-        npc:SetAttribute("IsSeated", false)
+        npc:SetAttribute("IsForceSeated", false)
         hum:SetAttribute("LastUnseated", os.clock())
 		hum.Sit = false
 
