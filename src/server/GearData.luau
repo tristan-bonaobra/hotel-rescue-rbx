@@ -29,6 +29,10 @@ return {
         Price = 10,
     },
     {
+        GearObject = getGear("Brickmobile"),
+        Price = 10,
+    },
+    {
         GearObject = getGear("Power Bell"),
         Price = 30,
     },
