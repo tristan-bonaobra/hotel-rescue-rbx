@@ -305,27 +305,6 @@ local function playUtterances(npc, utterancesFolderName)
 end
 
 -------------------------------------------------------------------------------------------
--- HELPER FUNCTIONS: OTHER
--------------------------------------------------------------------------------------------
-
-local function weldParts(part0, part1)
-	local weld = Instance.new("WeldConstraint")
-	weld.Part0 = part0
-	weld.Part1 = part1
-	weld.Parent = part0
-
-	return weld
-end
-
-local function destroyFollowScript(npc)
-	local followScript = npc:FindFirstChild("NpcFollowScript")
-
-	if followScript then
-		followScript:Destroy()
-	end
-end
-
--------------------------------------------------------------------------------------------
 -- OTHER
 -------------------------------------------------------------------------------------------
 
@@ -338,58 +317,6 @@ local function replaceFace(npc, newFace)
 	end
 
 	newFace.Parent = head
-end
-
-local function seat(npc, seatPart)
-    local root = npc:WaitForChild("HumanoidRootPart")
-    local hum = npc:WaitForChild("Humanoid")
-
-    local rootSize = root.Size
-    local seatSize = seatPart.Size
-    local seatOffset = 0.5
-    local seatHeight = (rootSize.Y / 2) + (seatSize.Y / 2) + seatOffset
-
-    root.CFrame = seatPart.CFrame * CFrame.new(0, seatHeight, 0)
-    local weld = weldParts(seatPart, root)
-
-    hum.Sit = true
-    npc:SetAttribute("IsSeated", true)
-    destroyFollowScript(npc)
-
-    seatPart:SetAttribute("NpcOccupant", hum)
-    seatPart.Disabled = true
-
-	local stateListener
-	local ancestryListener
-
-    local function updateOnUnsit()
-		local falseAlarm = (
-			(not hum.Jump)
-			and (hum.Health > 0)
-			and (hum.Sit)
-			and (weld:IsDescendantOf(workspace))
-		)
-		
-		if falseAlarm then
-			return
-		end
-
-        seatPart:SetAttribute("NpcOccupant", nil)
-        seatPart.Disabled = false
-        
-        if weld:IsDescendantOf(workspace) then
-            weld:Destroy()
-        end
-
-        npc:SetAttribute("IsSeated", false)
-        hum:SetAttribute("LastUnseated", os.clock())
-
-		stateListener:Disconnect()
-		ancestryListener:Disconnect()
-    end
-
-	stateListener = hum.StateChanged:Connect(updateOnUnsit)
-	ancestryListener = weld.AncestryChanged:Connect(updateOnUnsit)
 end
 
 -------------------------------------------------------------------------------------------
@@ -406,5 +333,4 @@ return {
 	-- Other
 	personalityFacesLib = personalityFacesLib,
 	replaceFace = replaceFace,
-	seat = seat,
 }
