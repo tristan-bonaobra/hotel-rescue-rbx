@@ -32,7 +32,7 @@ end
 leaderHum.StateChanged:Connect(function(oldState, newState)
 	if newState == Enum.HumanoidStateType.Jumping then
 		task.wait(math.random(0, 5) * 0.1)
-		myHum:ChangeState(Enum.HumanoidStateType.Jumping)
+		myHum.Jump = true
 	end
 end)
 
