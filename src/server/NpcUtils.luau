@@ -305,6 +305,33 @@ local function playUtterances(npc, utterancesFolderName)
 end
 
 -------------------------------------------------------------------------------------------
+-- HELPER FUNCTIONS: OTHER
+-------------------------------------------------------------------------------------------
+
+local function waitForJump(hum)
+	repeat
+		hum:GetPropertyChangedSignal("Jump"):Wait()
+	until hum.Jump == true
+end
+
+local function weldParts(part0, part1)
+	local weld = Instance.new("WeldConstraint")
+	weld.Part0 = part0
+	weld.Part1 = part1
+	weld.Parent = part0
+
+	return weld
+end
+
+local function destroyFollowScript(npc)
+	local followScript = npc:FindFirstChild("NpcFollowScript")
+
+	if followScript then
+		followScript:Destroy()
+	end
+end
+
+-------------------------------------------------------------------------------------------
 -- OTHER
 -------------------------------------------------------------------------------------------
 
@@ -319,15 +346,51 @@ local function replaceFace(npc, newFace)
 	newFace.Parent = head
 end
 
+local function seat(npc, seatPart)
+	local root = npc:WaitForChild("HumanoidRootPart")
+	local hum = npc:WaitForChild("Humanoid")
+	local weld
+
+	local rootSize = root.Size
+	local seatSize = seatPart.Size
+	local seatOffset = 0.5
+	local seatHeight = (rootSize.Y / 2) + (seatSize.Y / 2) + seatOffset
+
+	root.CFrame = seatPart.CFrame * CFrame.new(0, seatHeight, 0)
+	weld = weldParts(seat, root)
+
+	hum.Sit = true
+	npc:SetAttribute("IsSeated", true)
+	destroyFollowScript(npc)
+
+	seatPart:SetAttribute("NpcOccupant", hum)
+	seatPart.Disabled = true
+
+	task.spawn(function()
+		waitForJump(hum)
+
+		seatPart:SetAttribute("NpcOccupant", nil)
+		seatPart.Disabled = false
+		
+		if weld:IsDescendantOf(workspace) then
+			weld:Destroy()
+		end
+	end)
+end
+
 -------------------------------------------------------------------------------------------
 -- RETURN MODULE
 -------------------------------------------------------------------------------------------
 
 return {
+	-- Spawning
     createNpc = createNpc,
 	getSpaceAbovePartForNpc = getSpaceAbovePartForNpc,
+	-- Winzone
 	poseNpcAtSpot = poseNpcAtSpot,
 	playUtterances = playUtterances,
+	-- Other
 	personalityFacesLib = personalityFacesLib,
 	replaceFace = replaceFace,
+	seat = seat,
 }
