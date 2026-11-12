@@ -56,13 +56,21 @@ local function seatCharacter(npc, seatPart)
 
 	local stateListener
 	local ancestryListener
+	local childListener
+	local attributeListener
 
-    local function updateOnUnsit()
+    local function unsit()
 		local falseAlarm = (
 			(not hum.Jump)
+			and (hum:GetState() ~= Enum.HumanoidStateType.Jumping)
+			and (hum:GetState() ~= Enum.HumanoidStateType.Freefall)
 			and (hum.Health > 0)
 			and (hum.Sit)
 			and (weld:IsDescendantOf(workspace))
+			and (not npc:FindFirstChild("NpcFollowScript"))
+			and (not npc:GetAttribute("IsUnconscious"))
+			and (not npc:GetAttribute("IsTripped"))
+			and (not npc:GetAttribute("IsRescued"))
 		)
 		
 		if falseAlarm then
@@ -85,10 +93,14 @@ local function seatCharacter(npc, seatPart)
 
 		stateListener:Disconnect()
 		ancestryListener:Disconnect()
+		childListener:Disconnect()
+		attributeListener:Disconnect()
     end
 
-	stateListener = hum.StateChanged:Connect(updateOnUnsit)
-	ancestryListener = weld.AncestryChanged:Connect(updateOnUnsit)
+	stateListener = hum.StateChanged:Connect(unsit)
+	ancestryListener = weld.AncestryChanged:Connect(unsit)
+	childListener = npc.ChildAdded:Connect(unsit)
+	attributeListener = npc.AttributeChanged:Connect(unsit)
 end
 
 local function reprogramSeat(seat)
