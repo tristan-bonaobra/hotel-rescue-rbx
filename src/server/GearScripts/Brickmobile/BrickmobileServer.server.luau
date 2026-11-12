@@ -49,8 +49,11 @@ tool.Activated:Connect(function()
 		car:PivotTo(root.CFrame * CFrame.new(0, 1, 0))
 		car.Parent = toolDebrisBin
 
-        car:WaitForChild("VehicleSeat"):Sit(hum)
 		entityScriptsLib:WaitForChild("CarScript"):Clone().Parent = car
+
+		task.wait(0.25)
+
+		car:WaitForChild("VehicleSeat"):Sit(hum)
 	end
 	
 	task.wait(Config.CAR_SUMMON_COOLDOWN)
