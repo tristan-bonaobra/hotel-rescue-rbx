@@ -77,12 +77,14 @@ local function seatCharacter(npc, seatPart)
 			return
 		end
 
-        seatPart:SetAttribute("NpcOccupant", nil)
+		if seatPart:IsDescendantOf(workspace) then
+        	seatPart:SetAttribute("NpcOccupant", nil)
 
-		if wasSeatEnabled then
+			if wasSeatEnabled then
        		 seatPart.Disabled = false
+			end
 		end
-        
+		
         if weld:IsDescendantOf(workspace) then
             weld:Destroy()
         end
