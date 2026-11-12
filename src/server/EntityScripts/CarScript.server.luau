@@ -82,24 +82,9 @@ local function updateSteering()
 end
 
 local function reprogramSeat(seat)
-	local relativeCFrame = body.CFrame:ToObjectSpace(seat.CFrame)
+	seat.Disabled = true
 
-	local fakeSeat = seat
-	fakeSeat.Disabled = true
-	fakeSeat.CanCollide = false
-
-	local trueSeat = seat:Clone()
-	trueSeat.Disabled = false
-	trueSeat.Anchored = true
-	trueSeat.Transparency = 1
-	trueSeat.Parent = toolDebrisBin
-	BrickUtils.breakJoints(trueSeat)
-
-	RunService.Heartbeat:Connect(function()
-		trueSeat.CFrame = body.CFrame * relativeCFrame
-	end)
-
-	trueSeat.Touched:Connect(function(hit)
+	seat.Touched:Connect(function(hit)
 		local char = hit.Parent
 		local hum = char and char:FindFirstChild("Humanoid")
 		local isSeated = hum and hum:GetState() == Enum.HumanoidStateType.Seated
@@ -107,8 +92,8 @@ local function reprogramSeat(seat)
 		if hum and (not isSeated) then
 			task.wait(0.5)
 
-			if arePartsTouching(trueSeat, hit) then
-				trueSeat:Sit(hum)
+			if arePartsTouching(seat, hit) and (not seat.Occupant) then
+				seat:Sit(hum)
 			end
 		end
 	end)
