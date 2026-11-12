@@ -81,6 +81,7 @@ local function seatCharacter(npc, seatPart)
 
         npc:SetAttribute("IsSeated", false)
         hum:SetAttribute("LastUnseated", os.clock())
+		hum.Sit = false
 
 		stateListener:Disconnect()
 		ancestryListener:Disconnect()
