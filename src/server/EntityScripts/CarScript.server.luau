@@ -1,5 +1,5 @@
 if not script.Parent:IsA("Model") then
-    return
+	return
 end
 
 --------------------------------------------------------------------------------------------
@@ -46,33 +46,18 @@ local function setupSeat(seat)
 		if (not hum)
 			or seat.Occupant
 			or seat:GetAttribute("NpcOccupant")
+			or (hum.Health <= 0)
+			or hum.Sit
 		then
 			return
 		end
 
-		local now = os.time()
-		local lastUnseated = hum:GetAttribute("LastUnseated")
-
-		if not lastUnseated then
-			hum:SetAttribute("LastUnseated", 0)
-		end
-
+		local now = os.clock()
+		local lastUnseated = hum:GetAttribute("LastUnseated") or 0
 		local timeSinceUnseat = now - lastUnseated
 
-		if (timeSinceUnseat >= Config.CAR_SEAT_COOLDOWN)
-			and hum
-			and (hum.Health > 0)
-			and (not hum.Sit)
-		then
+		if timeSinceUnseat >= Config.CAR_SEAT_COOLDOWN then
 			NpcUtils.seat(char, seat)
-
-			task.spawn(function()
-				repeat
-					hum:GetPropertyChangedSignal("SeatPart"):Wait()
-				until not hum.SeatPart
-
-				hum:SetAttribute("LastUnseated", os.time())
-			end)
 		end
 	end)
 end
@@ -95,18 +80,18 @@ local function updateSteering()
 
 		task.delay(Config.CAR_STABILIZE_TIMER, function()
 			if (vehicleSeat.Steer == 0)
-            and (
-                (lastSteerTime == activationCheckTime)
-                or (not vehicleSeat.Occupant)
-            ) then
+			and (
+				(lastSteerTime == activationCheckTime)
+				or (not vehicleSeat.Occupant)
+			) then
 				local _, yRotation, _ = body.CFrame:ToOrientation()
 
 				alignOrientation.CFrame = CFrame.Angles(0, yRotation, 0)
 				alignOrientation.Enabled = true
 
-                if not alignOrientation.Parent then
-                    alignOrientation.Parent = body
-                end
+				if not alignOrientation.Parent then
+					alignOrientation.Parent = body
+				end
 			end
 		end)
 	end
