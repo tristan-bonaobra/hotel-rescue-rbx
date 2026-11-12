@@ -7,8 +7,12 @@ end
 --------------------------------------------------------------------------------------------
 
 local ServerScriptService = game:GetService("ServerScriptService")
-local SeatUtils = require(ServerScriptService:WaitForChild("SeatUtils"))
+local RunService = game:GetService("RunService")
+
 local Config = require(ServerScriptService:WaitForChild("Config"))
+local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
+
+local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local car = script.Parent
 local seatsModel = car:WaitForChild("Seats")
@@ -30,7 +34,21 @@ alignOrientation.Name = "YAlignOrientation"
 alignOrientation.Mode = Enum.OrientationAlignmentMode.OneAttachment
 alignOrientation.RigidityEnabled = true
 alignOrientation.Attachment0 = attachment
-alignOrientation.PrimaryAxisOnly = true 
+alignOrientation.PrimaryAxisOnly = true
+
+--------------------------------------------------------------------------------------------
+-- HELPER FUNCTIONS
+--------------------------------------------------------------------------------------------
+
+local function arePartsTouching(part0, part1)
+	for _, hit in part0:GetTouchingParts() do
+		if hit == part1 then
+			return true
+		end
+	end
+
+	return false
+end
 
 --------------------------------------------------------------------------------------------
 -- FUNCTIONS
@@ -38,8 +56,8 @@ alignOrientation.PrimaryAxisOnly = true
 
 local function updateSteering()
 	if vehicleSeat.Steer ~= 0 then
-		alignOrientation.Enabled = false
-		lastSteerTime = os.time()
+	alignOrientation.Enabled = false
+	lastSteerTime = os.time()
 
 	else
 		local activationCheckTime = lastSteerTime
@@ -63,6 +81,39 @@ local function updateSteering()
 	end
 end
 
+local function reprogramSeat(seat)
+	local relativeCFrame = body.CFrame:ToObjectSpace(seat.CFrame)
+
+	local fakeSeat = seat
+	fakeSeat.Disabled = true
+	fakeSeat.CanCollide = false
+
+	local trueSeat = seat:Clone()
+	trueSeat.Disabled = false
+	trueSeat.Anchored = true
+	trueSeat.Transparency = 1
+	trueSeat.Parent = toolDebrisBin
+	BrickUtils.breakJoints(trueSeat)
+
+	RunService.Heartbeat:Connect(function()
+		trueSeat.CFrame = body.CFrame * relativeCFrame
+	end)
+
+	trueSeat.Touched:Connect(function(hit)
+		local char = hit.Parent
+		local hum = char and char:FindFirstChild("Humanoid")
+		local isSeated = hum and hum:GetState() == Enum.HumanoidStateType.Seated
+
+		if hum and (not isSeated) then
+			task.wait(0.5)
+
+			if arePartsTouching(trueSeat, hit) then
+				trueSeat:Sit(hum)
+			end
+		end
+	end)
+end
+
 --------------------------------------------------------------------------------------------
 -- EVENTS
 --------------------------------------------------------------------------------------------
@@ -73,7 +124,7 @@ vehicleSeat.Torque = Config.CAR_TORQUE
 
 for _, v in seatsModel:GetChildren() do
 	if v:IsA("Seat") and (not v:IsA("VehicleSeat")) then
-		SeatUtils.reprogramSeat(v)
+		reprogramSeat(v)
 	end
 end
 
