@@ -357,7 +357,7 @@ local function seat(npc, seatPart)
 	local seatHeight = (rootSize.Y / 2) + (seatSize.Y / 2) + seatOffset
 
 	root.CFrame = seatPart.CFrame * CFrame.new(0, seatHeight, 0)
-	weld = weldParts(seat, root)
+	weld = weldParts(seatPart, root)
 
 	hum.Sit = true
 	npc:SetAttribute("IsSeated", true)
