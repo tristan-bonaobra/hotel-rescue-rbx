@@ -7,6 +7,7 @@ end
 --------------------------------------------------------------------------------------------
 
 local ServerScriptService = game:GetService("ServerScriptService")
+local NpcUtils = require(ServerScriptService.NpcUtils)
 local Config = require(ServerScriptService:WaitForChild("Config"))
 
 local car = script.Parent
@@ -14,7 +15,6 @@ local seatsModel = car:WaitForChild("Seats")
 local vehicleSeat = car:WaitForChild("VehicleSeat")
 local body = car:WaitForChild("Body")
 
-local seatCooldowns = {}
 local lastSteerTime = os.time()
 
 --------------------------------------------------------------------------------------------
@@ -38,21 +38,41 @@ alignOrientation.PrimaryAxisOnly = true
 
 local function setupSeat(seat)
 	seat.Disabled = true
-	seatCooldowns[seat] = 0
 
 	seat.Touched:Connect(function(hit)
-		if seat.Occupant then
+		local char = hit.Parent
+		local hum = char and char:FindFirstChildOfClass("Humanoid")
+
+		if (not hum)
+			or seat.Occupant
+			or seat:GetAttribute("NpcOccupant")
+		then
 			return
 		end
 
 		local now = os.time()
-		local timeSinceSeat = now - seatCooldowns[seat]
-		local char = hit.Parent
-		local hum = char and char:FindFirstChildOfClass("Humanoid")
+		local lastUnseated = hum:GetAttribute("LastUnseated")
 
-		if (timeSinceSeat >= Config.CAR_SEAT_COOLDOWN) and hum and (hum.Health > 0) and (not hum.Sit) then
-			seatCooldowns[seat] = now
-			seat:Sit(hum)
+		if not lastUnseated then
+			hum:SetAttribute("LastUnseated", 0)
+		end
+
+		local timeSinceUnseat = now - lastUnseated
+
+		if (timeSinceUnseat >= Config.CAR_SEAT_COOLDOWN)
+			and hum
+			and (hum.Health > 0)
+			and (not hum.Sit)
+		then
+			NpcUtils.seat(char, seat)
+
+			task.spawn(function()
+				repeat
+					hum:GetPropertyChangedSignal("SeatPart"):Wait()
+				until not hum.SeatPart
+
+				hum:SetAttribute("LastUnseated", os.time())
+			end)
 		end
 	end)
 end
