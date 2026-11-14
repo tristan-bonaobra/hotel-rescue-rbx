@@ -19,6 +19,7 @@ local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local music = globalSoundsBin:WaitForChild("Music")
 local teleporter = workspace:WaitForChild("Teleporter")
+local mapVoteArea = workspace:WaitForChild("MapVoteArea")
 
 ------------------------------------------------------------------------------
 -- NEW OBJECTS
@@ -34,7 +35,6 @@ hint.Parent = workspace
 ------------------------------------------------------------------------------
 
 local currentMapData
-local previousMapData
 local currentMap
 local winZone
 
@@ -49,12 +49,18 @@ local function formatTime(totalSeconds)
 end
 
 local function setCurrentMapData()
-	while currentMapData == previousMapData do
-		task.wait()
-		currentMapData = MapData[math.random(#MapData)]
+	local winningMapId = mapVoteArea:GetAttribute("WinningMapId")
+	local randomMapId = math.random(#MapData)
+	
+	if winningMapId then
+		currentMapData = MapData[winningMapId]
+	else
+		currentMapData = MapData[randomMapId]
 	end
+end
 
-	previousMapData = currentMapData
+local function beginMapVote()
+	mapVoteArea:WaitForChild("BeginVoteTrigger"):Fire()
 end
 
 ------------------------------------------------------------------------------
@@ -112,6 +118,7 @@ end
 
 local function loadMap()
 	setCurrentMapData()
+	beginMapVote()
 	message.Text = "Loading"
 	task.wait(1)
 	local map = MapUtils.loadMap(currentMapData)

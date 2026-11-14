@@ -35,7 +35,7 @@ end
 
 return {
     {
-        MapObject = getMap("Radioaktiivinen's Disaster Hotel"),
+        MapObject = getMap("Disaster Hotel by Radioaktiivinen"),
         MusicObject = getMusic(DEFAULT_MUSIC),
         RoundTime = DEFAULT_ROUND_TIME,
         FasterEarthquake = false,
@@ -44,7 +44,7 @@ return {
     },
 
     {
-        MapObject = getMap("TheAmazeman's End of Roblox"),
+        MapObject = getMap("End of Roblox by TheAmazeman"),
         MusicObject = getMusic(DEFAULT_MUSIC),
         RoundTime = DEFAULT_ROUND_TIME,
         FasterEarthquake = false,
@@ -53,7 +53,7 @@ return {
     },
 
     {
-        MapObject = getMap("IcyFresh's Underground Base"),
+        MapObject = getMap("Underground Base by IcyFresh"),
         MusicObject = getMusic(DEFAULT_MUSIC),
         RoundTime = 7 * 60,
         FasterEarthquake = false,
@@ -62,7 +62,7 @@ return {
     },
 
     {
-        MapObject = getMap("Stickmasterluke's Prison Panic"),
+        MapObject = getMap("Prison Panic by Stickmasterluke"),
         MusicObject = getMusic(DEFAULT_MUSIC),
         RoundTime = 7 * 60,
         FasterEarthquake = false,
@@ -71,7 +71,7 @@ return {
     },
 
     {
-        MapObject = getMap("Cindering's Robloxian High School"),
+        MapObject = getMap("Robloxian High School by Cindering"),
         MusicObject = getMusic("GroundworksComplex"),
         RoundTime = 10 * 60,
         FasterEarthquake = false,
@@ -80,7 +80,7 @@ return {
     },
 
     {
-        MapObject = getMap("1dev2's Town of Robloxia"),
+        MapObject = getMap("Town of Robloxia by 1dev2"),
         MusicObject = getMusic("GroundworksComplex"),
         RoundTime = 10 * 60,
         FasterEarthquake = true,
