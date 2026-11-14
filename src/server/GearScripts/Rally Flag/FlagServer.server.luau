@@ -14,8 +14,11 @@ local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 local tool = script.Parent
 local handle = tool:WaitForChild("Handle")
 
-local flagPlaced, flagRetrieved = GearUtils.placeMode(tool)
 local isActive
+
+------------------------------------------------------------------------------------------
+-- HELPER FUNCTIONS
+------------------------------------------------------------------------------------------
 
 local function setEffectsEnabled(isEnabled)
     local sparkles = handle:WaitForChild("Sparkles")
@@ -24,6 +27,12 @@ local function setEffectsEnabled(isEnabled)
     sparkles.Enabled = isEnabled
     light.Enabled = isEnabled
 end
+
+------------------------------------------------------------------------------------------
+-- EVENTS
+------------------------------------------------------------------------------------------
+
+local flagPlaced, flagRetrieved = GearUtils.placeMode(tool)
 
 flagPlaced:Connect(function(placedHandle, weld)
     placedHandle.Name = "RallyFlag"

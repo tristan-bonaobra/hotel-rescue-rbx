@@ -19,10 +19,7 @@ local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
-
-local translocatorPlaced, translocatorRetrieved = GearUtils.placeMode(tool)
 local translocator
-local isActive
 
 ------------------------------------------------------------------------------------------
 -- FUNCTIONS
@@ -95,6 +92,8 @@ end
 ------------------------------------------------------------------------------------------
 -- EVENTS
 ------------------------------------------------------------------------------------------
+
+local translocatorPlaced, translocatorRetrieved = GearUtils.placeMode(tool)
 
 translocatorPlaced:Connect(function(placedHandle)
     translocator = placedHandle
