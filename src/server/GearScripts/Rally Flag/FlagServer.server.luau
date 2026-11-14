@@ -9,117 +9,43 @@ end
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
-local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
-
-local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
 local handle = tool:WaitForChild("Handle")
-local sparkles = handle:WaitForChild("Sparkles")
-local light = handle:WaitForChild("PointLight")
 
-local flag
+local flagPlaced, flagRetrieved = GearUtils.placeMode(tool)
 local isActive
 
-------------------------------------------------------------------------------------------
--- FUNCTIONS
-------------------------------------------------------------------------------------------
+local function setEffectsEnabled(isEnabled)
+    local sparkles = handle:WaitForChild("Sparkles")
+    local light = handle:WaitForChild("PointLight")
 
-local function getChar()
-    if tool.Parent:IsA("Model") then
-        return tool.Parent
-    elseif tool.Parent:IsA("Backpack") then
-        local backpack = tool.Parent
-        local plr = backpack.Parent
-        return plr.Character
-    end
-    return
+    sparkles.Enabled = isEnabled
+    light.Enabled = isEnabled
 end
 
-local function setHandleVisible(isVisible)
-    handle.Transparency = (isVisible and 0) or 1
-    sparkles.Enabled = isVisible
-    light.Enabled = isVisible
-end
+flagPlaced:Connect(function(prop, weld)
+    prop.Name = "RallyFlag"
+    isActive = true
+    setEffectsEnabled(false)
 
-local function awaitUnweld(weld)
-    if not weld.Part0 then
-        return
-    end
-
-    task.spawn(function()
-        weld.Part0.AncestryChanged:Wait()
-        if flag then
-            flag.CanCollide = true
-        end
-    end)
-end
-
-local function placeFlag()
-    flag = handle:Clone()
-    flag.Name = "RallyFlag"
-    flag:SetAttribute("IsGearAttachable", true)
-
-    BrickUtils.breakJoints(flag)
-    BrickUtils.stabilize(flag)
-
-    setHandleVisible(false)
-    GearUtils.toolAnim(tool, "Slash")
-
-    local raycastResult = BrickUtils.raycast(
-        handle.Position,
-        handle.Position + Vector3.new(0, -10, 0),
-        Enum.RaycastFilterType.Exclude,
-        {getChar()}
-    )
-
-    if raycastResult then
-        local base = raycastResult.Instance
-        local rayHit = raycastResult.Position
-
-        flag.CFrame = CFrame.new(rayHit) * CFrame.new(-flag.Size.X / 2, flag.Size.Y / 2, 0)
-        flag.CanCollide = false
-
-        local weld = Instance.new("WeldConstraint")
-        weld.Part0 = base
-        weld.Part1 = flag
-        weld.Parent = flag
-        awaitUnweld(weld)
-
+    if weld then
         SoundUtils.playSound(handle, "Gear.FlagPlace")
     else
-        flag.CanCollide = true
         SoundUtils.playSound(handle, "Gear.FlagDrop")
     end
+        
+end)
 
-    flag.Parent = toolDebrisBin
-end
-
-local function retrieveFlag()
-    setHandleVisible(true)
+flagRetrieved:Connect(function()
     SoundUtils.playSound(handle, "Gear.FlagPlace").PlaybackSpeed = 0.85
-    
-    if flag:IsDescendantOf(workspace) then
-        flag:Destroy()
-    end
-end
-
-------------------------------------------------------------------------------------------
--- EVENTS
-------------------------------------------------------------------------------------------
-
-tool.Activated:Connect(function()
-    isActive = not isActive
-    if isActive then
-        placeFlag()
-    else
-        retrieveFlag()
-    end
+    isActive = false
+    setEffectsEnabled(true)
 end)
 
 tool.Equipped:Connect(function()
-    if not isActive then
+    if (not isActive) then
         SoundUtils.playSound(handle, "Gear.FlagWhistle")
     end
 end)
