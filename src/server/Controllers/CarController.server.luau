@@ -68,7 +68,7 @@ local function pushNpcAwayFromPosition(npc, position)
         return
     end
 
-    local direction = (root.Position - position).Unit
+    local direction = CFrame.new(position, root.Position).LookVector
     local impulseVector = direction * Config.CAR_EJECT_POWER * root.AssemblyMass
 
     root:ApplyImpulse(impulseVector)
