@@ -32,20 +32,13 @@ local function getOwner(tool)
     end
 end
 
---------------------------------------------------------------------------------------------
--- HELPER FUNCTIONS
---------------------------------------------------------------------------------------------
-
 local function getChar(tool)
-    if tool.Parent:IsA("Model") then
-        return tool.Parent
-    elseif tool.Parent:IsA("Backpack") then
-        local backpack = tool.Parent
-        local plr = backpack.Parent
-        return plr.Character
-    end
-    return
+    local plr = getOwner(tool)
+	local char = plr and plr.Character
+
+    return char
 end
+
 --------------------------------------------------------------------------------------------
 -- BIG FUNCTIONS
 --------------------------------------------------------------------------------------------
@@ -136,5 +129,6 @@ end
 return {
     toolAnim = toolAnim,
 	getOwner = getOwner,
+	getChar = getChar,
 	placeMode = placeMode,
 }
