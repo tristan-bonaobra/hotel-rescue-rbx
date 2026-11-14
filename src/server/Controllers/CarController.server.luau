@@ -117,6 +117,8 @@ local function programCarDriving(car)
             setLightsBrickColor(car, nil)
 
         else
+            setLightsBrickColor(car, BrickColor.new("Bright red"))
+
             -- Snap after a delay
             local activationCheckTime = lastSteerTime
             
@@ -131,7 +133,7 @@ local function programCarDriving(car)
 
                 alignOrientation.CFrame = CFrame.Angles(0, yRotation, 0)
                 alignOrientation.Enabled = true
-                setLightsBrickColor(car, BrickColor.new("Bright red"))
+                setLightsBrickColor(car, nil)
 
                 -- Prevent the car snapping forwards on spawn
                 if not alignOrientation.Parent then
