@@ -90,6 +90,25 @@ end
 -- MAIN FUNCTIONS
 --------------------------------------------------------------------------------------------
 
+local function lockSeatFromNpcs(seat)
+    seat:GetPropertyChangedSignal("Occupant"):Connect(function()
+        local hum = seat.Occupant
+        local char = hum and hum.Parent
+        local plr = char and Players:GetPlayerFromCharacter(char)
+
+        if hum and (not plr) then
+            task.wait(0.25)
+
+            hum.Sit = false
+
+            local seatWeld = seat:FindFirstChild("SeatWeld")
+            if seatWeld then
+                seatWeld:Destroy()
+            end
+        end
+    end)
+end
+
 local function programCarDriving(car)
     local vehicleSeat = car:WaitForChild("VehicleSeat")
     local body = car:WaitForChild("Body")
@@ -137,23 +156,6 @@ local function programCarDriving(car)
                 if not alignOrientation.Parent then
                     alignOrientation.Parent = body
                 end
-            end
-        end
-    end)
-
-    vehicleSeat:GetPropertyChangedSignal("Occupant"):Connect(function()
-        local hum = vehicleSeat.Occupant
-        local char = hum and hum.Parent
-        local plr = char and Players:GetPlayerFromCharacter(char)
-
-        if hum and (not plr) then
-            task.wait()
-
-            hum.Sit = false
-
-            local seatWeld = vehicleSeat:FindFirstChild("SeatWeld")
-            if seatWeld then
-                seatWeld:Destroy()
             end
         end
     end)
@@ -293,6 +295,9 @@ end
 
 toolDebrisBin.ChildAdded:Connect(function(v)
     if v.Name == "Car" then
+        lockSeatFromNpcs(v:WaitForChild("VehicleSeat"))
+        lockSeatFromNpcs(v:WaitForChild("PlayerSeat"))
+
         makeCarGearAttachable(v)
         programCarDriving(v)
         programCarSeating(v)
