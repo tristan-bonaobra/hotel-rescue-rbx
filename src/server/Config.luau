@@ -105,4 +105,5 @@ return {
 	CAR_STABILIZE_TIMER = 0.25,
 	CAR_BUTTON_COLOR = BrickColor.new("Bright red"),
 	CAR_BUTTON_COLOR_DURATION = 0.25,
+	CAR_EJECT_POWER = 100,
 }
