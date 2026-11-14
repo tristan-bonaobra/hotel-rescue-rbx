@@ -6,7 +6,6 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local RunService = game:GetService("RunService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
-local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 local npcsBin = workspace:WaitForChild("Npcs")
