@@ -56,7 +56,7 @@ local function placeMode(tool)
 	local retrievedListener = Instance.new("BindableEvent")
 
 	local isActive
-	local prop
+	local placedHandle
 	local weld
 
 	local function awaitUnweld()
@@ -66,18 +66,18 @@ local function placeMode(tool)
 
 		task.spawn(function()
 			weld.Part0.AncestryChanged:Wait()
-			if prop then
-				prop.CanCollide = true
+			if placedHandle then
+				placedHandle.CanCollide = true
 			end
 		end)
 	end
 
 	local function placeProp(tool)
-		prop = handle:Clone()
-		prop:SetAttribute("IsGearAttachable", true)
+		placedHandle = handle:Clone()
+		placedHandle:SetAttribute("IsGearAttachable", true)
 
-		BrickUtils.breakJoints(prop)
-		BrickUtils.stabilize(prop)
+		BrickUtils.breakJoints(placedHandle)
+		BrickUtils.stabilize(placedHandle)
 
 		handle.Transparency = 1
 		toolAnim(tool, "Slash")
@@ -93,29 +93,29 @@ local function placeMode(tool)
 			local base = raycastResult.Instance
 			local rayHit = raycastResult.Position
 
-			prop.CFrame = CFrame.new(rayHit) * CFrame.new(-prop.Size.X / 2, prop.Size.Y / 2, 0)
-			prop.CanCollide = false
+			placedHandle.CFrame = CFrame.new(rayHit) * CFrame.new(-placedHandle.Size.X / 2, placedHandle.Size.Y / 2, 0)
+			placedHandle.CanCollide = false
 
 			weld = Instance.new("WeldConstraint")
 			weld.Part0 = base
-			weld.Part1 = prop
-			weld.Parent = prop
+			weld.Part1 = placedHandle
+			weld.Parent = placedHandle
 			awaitUnweld()
 		else
-			prop.CanCollide = true
+			placedHandle.CanCollide = true
 		end
 
-		prop.Parent = toolDebrisBin
+		placedHandle.Parent = toolDebrisBin
 	end
 
-	local function retrieveProp(prop)
+	local function retrieveProp(placedHandle)
 		handle.Transparency = 0
 		
-		if prop:IsDescendantOf(workspace) then
-			prop:Destroy()
+		if placedHandle:IsDescendantOf(workspace) then
+			placedHandle:Destroy()
 		end
 
-		prop = nil
+		placedHandle = nil
 		weld = nil
 	end
 
@@ -123,9 +123,9 @@ local function placeMode(tool)
 		isActive = not isActive
 		if isActive then
 			placeProp(tool)
-			placedListener:Fire(prop, weld)
+			placedListener:Fire(placedHandle, weld)
 		else
-			retrieveProp(prop)
+			retrieveProp(placedHandle)
 			retrievedListener:Fire()
 		end
 	end)
