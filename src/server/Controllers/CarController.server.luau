@@ -259,12 +259,21 @@ local function programCarUnanchoring(car)
     end
 end
 
+local function makeCarGearAttachable(car)
+    for _, v in car:GetDescendants() do
+        if v:IsA("BasePart") then
+            v:SetAttribute("IsGearAttachable", true)
+        end
+    end
+end
+
 --------------------------------------------------------------------------------------------
 -- EVENTS
 --------------------------------------------------------------------------------------------
 
 toolDebrisBin.ChildAdded:Connect(function(v)
     if v.Name == "Car" then
+        makeCarGearAttachable(v)
         programCarDriving(v)
         programCarSeating(v)
         programCarUnanchoring(v)
