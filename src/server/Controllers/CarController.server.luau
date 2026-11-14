@@ -178,6 +178,7 @@ local function programCarSeating(car)
         local ancestryListener
         
         local function dismountNpc(npc)
+            npc:SetAttribute("IsMounted", false)
             passengerIndex[npc]:SetAttribute("IsOccupied", false)
             passengerIndex[npc] = nil
             setNpcCollisionGroup(npc, "Default")
@@ -210,6 +211,7 @@ local function programCarSeating(car)
 
     -- Mounting system
     local function mountNpc(npc, seat)
+        npc:SetAttribute("IsMounted", true)
         seat:SetAttribute("IsOccupied", true)
         passengerIndex[npc] = seat
         setNpcCollisionGroup(npc, "GhostedNpcs")

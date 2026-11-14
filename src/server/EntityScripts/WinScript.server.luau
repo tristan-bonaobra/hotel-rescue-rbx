@@ -104,7 +104,9 @@ winPart.Touched:Connect(function(hit)
 	local isInNpcFolder = npc:IsDescendantOf(npcsBin)
 	local isRescued = npc:GetAttribute("IsRescued")
 	local isUnconscious = npc:GetAttribute("IsUnconscious")
-	if hum and isInNpcFolder and (not isRescued) then
+	local isMounted = npc:GetAttribute("IsMounted")
+
+	if hum and isInNpcFolder and (not isRescued) and (not isMounted) then
 		npcsRescued += 1
 		npc:SetAttribute("IsRescued", true)
 		rewardAllPlayersForRescue(npc)

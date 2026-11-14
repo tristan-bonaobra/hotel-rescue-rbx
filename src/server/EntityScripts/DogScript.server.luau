@@ -30,8 +30,15 @@ local function getLeaderHead()
 		local followScript = npc:FindFirstChild("NpcFollowScript")
 		local isUnconscious = npc:GetAttribute("IsUnconscious")
 		local isRescued = npc:GetAttribute("IsRescued")
+		local isMounted = npc:GetAttribute("IsMounted")
 
-		if npcHum and npcHead and (not followScript) and (not isUnconscious) and (not isRescued) then
+		if npcHum
+			and npcHead
+			and (not followScript)
+			and (not isUnconscious)
+			and (not isRescued)
+			and (not isMounted)
+		then
 			local distance = (npcHead.Position - myHead.Position).Magnitude
 			if distance < shortestDistance then
 				shortestDistance = distance
