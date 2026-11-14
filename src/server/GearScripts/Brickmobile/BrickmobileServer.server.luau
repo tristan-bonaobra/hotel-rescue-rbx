@@ -14,7 +14,6 @@ local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 
 local summonsLib = ServerStorage:WaitForChild("Summons")
-local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
 
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
@@ -40,6 +39,8 @@ tool.Activated:Connect(function()
 	if car and car.Parent then
 		car:Destroy()
 		car = nil
+		SoundUtils.playSound(handle, "Gear.CarBeep")
+		
 	else
 		local char = tool.Parent
         local root = char:WaitForChild("HumanoidRootPart")
@@ -48,6 +49,7 @@ tool.Activated:Connect(function()
 		car = summonsLib:WaitForChild("Car"):Clone()
 		car:PivotTo(root.CFrame * CFrame.new(0, 1, 0))
 		car.Parent = toolDebrisBin
+		SoundUtils.playSound(car:WaitForChild("Body"), "Gear.CarEngine")
 
 		task.wait(0.1)
 
