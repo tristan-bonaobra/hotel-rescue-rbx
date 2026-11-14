@@ -12,7 +12,6 @@ local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 local playgroundBin = workspace:WaitForChild("Playground")
 
 local tool = script.Parent
-local toolRemote = tool:WaitForChild("ToolRemote")
 local handle = tool:WaitForChild("Handle")
 local isActive
 
@@ -67,7 +66,9 @@ local function pickInteract(part)
 	end
 end
 
-toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
+local clientClicked = GearUtils.initClientClick(tool)
+
+clientClicked:Connect(function(plr, clickCFrame, clickTarget)
 	local char = plr.Character
 	local root = char and char:FindFirstChild("HumanoidRootPart")
 	

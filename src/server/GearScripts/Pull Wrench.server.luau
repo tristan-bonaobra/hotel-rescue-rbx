@@ -2,6 +2,10 @@ if not script.Parent:IsA("Tool") then
 	return
 end
 
+----------------------------------------------------------------------------------------------
+-- DEPENDENCIES & VARIABLES
+----------------------------------------------------------------------------------------------
+
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
@@ -13,12 +17,15 @@ local playgroundLib = workspace:WaitForChild("Playground")
 local npcsLib = workspace:WaitForChild("Npcs")
 
 local tool = script.Parent
-local toolRemote = tool:WaitForChild("ToolRemote")
 
 local isActive
 local rope, attachment0, attachment1
 local attachedPart
 local attConn
+
+----------------------------------------------------------------------------------------------
+-- FUNCTIONS
+----------------------------------------------------------------------------------------------
 
 local function isPullable(part)
 	local currentMap = workspace:FindFirstChild("CurrentMap")
@@ -79,7 +86,13 @@ local function reelPlayerAndPart(part, playerTargetPos)
 	part:ApplyImpulse(partImpulse) -- ApplyImpulse is mandatory so we dont make trampolines
 end
 
-toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget)
+----------------------------------------------------------------------------------------------
+-- EVENTS
+----------------------------------------------------------------------------------------------
+
+clientClicked = GearUtils.initClientClick(tool)
+
+clientClicked:Connect(function(plr, clickCFrame, clickTarget)
 	if not tool:IsDescendantOf(plr.Character) then
 		return
 	end

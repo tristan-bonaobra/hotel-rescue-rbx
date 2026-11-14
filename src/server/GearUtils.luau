@@ -4,6 +4,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
+local gearScriptsLib = ServerScriptService:WaitForChild("GearScripts")
 
 --------------------------------------------------------------------------------------------
 -- BASIC FUNCTIONS
@@ -39,8 +40,19 @@ local function getChar(tool)
     return char
 end
 
+local function initClientClick(tool)
+	local remote = Instance.new("RemoteEvent")
+	remote.Name = "ClientClickRemote"
+	remote.Parent = tool
+
+	local clientClickScript = gearScriptsLib:WaitForChild("ClientClick")
+	clientClickScript:Clone().Parent = tool
+
+	return remote.OnServerEvent
+end
+
 --------------------------------------------------------------------------------------------
--- BIG FUNCTIONS
+-- PLACEMODE
 --------------------------------------------------------------------------------------------
 
 local function placeMode(tool)
@@ -131,4 +143,5 @@ return {
 	getOwner = getOwner,
 	getChar = getChar,
 	placeMode = placeMode,
+	initClientClick = initClientClick,
 }

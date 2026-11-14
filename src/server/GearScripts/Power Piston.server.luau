@@ -14,13 +14,14 @@ local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
-local toolRemote = tool:WaitForChild("ToolRemote")
 local handle = tool:WaitForChild("Handle")
 
 local isActive
 local pistonModel
 
-toolRemote.OnServerEvent:Connect(function(plr, clickCFrame, clickTarget, clickSurface)
+local clientClicked = GearUtils.initClientClick(tool)
+
+clientClicked:Connect(function(plr, clickCFrame, clickTarget, clickSurface)
 	if not tool:IsDescendantOf(plr.Character) then
 		return
 	end

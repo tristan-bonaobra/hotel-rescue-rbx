@@ -8,6 +8,8 @@ local playerSpawnFolder = workspace:WaitForChild("PlayerSpawn")
 local shopFolder = playerSpawnFolder:WaitForChild("Shop")
 local giversFolder = shopFolder:WaitForChild("Givers")
 
+local gearScriptsLib = ServerScriptService:WaitForChild("GearScripts")
+
 local playerInventories = {}
 
 ---------------------------------------------------------------------------------------------------
@@ -38,12 +40,10 @@ local function standardizeItems()
 end
 
 local function loadGearScripts(gear)
-	local gearScriptsMainFolder = ServerScriptService:WaitForChild("GearScripts")
-	local gearScriptsSubFolder = gearScriptsMainFolder:FindFirstChild(gear.Name)
-	if gearScriptsSubFolder then
-		for _, v in gearScriptsSubFolder:GetChildren() do
-			v:Clone().Parent = gear
-		end
+	local gearScript = gearScriptsLib:FindFirstChild(gear.Name)
+
+	if gearScript then
+		gearScript:Clone().Parent = gear
 	end
 end
 
