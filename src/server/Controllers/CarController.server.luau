@@ -91,20 +91,18 @@ end
 --------------------------------------------------------------------------------------------
 
 local function lockSeatFromNpcs(seat)
-    seat:GetPropertyChangedSignal("Occupant"):Connect(function()
-        local hum = seat.Occupant
-        local char = hum and hum.Parent
-        local plr = char and Players:GetPlayerFromCharacter(char)
+    seat.Disabled = true
 
-        if hum and (not plr) then
-            task.wait(0.25)
+    seat.Touched:Connect(function(hit)
+        local attributeName = "LastUnseatedFromNpcLockedSeat"
+        local char = hit.Parent
+        local hum = char and char:FindFirstChild("Humanoid")
+        local lastUnseated = char:GetAttribute(attributeName) or 0
+        local isPastCooldown = os.clock() - lastUnseated >= Config.CAR_SEAT_COOLDOWN
 
-            hum.Sit = false
-
-            local seatWeld = seat:FindFirstChild("SeatWeld")
-            if seatWeld then
-                seatWeld:Destroy()
-            end
+        if hum and isPastCooldown then
+            seat:Sit(hum)
+            char:SetAttribute(attributeName, os.clock())
         end
     end)
 end
