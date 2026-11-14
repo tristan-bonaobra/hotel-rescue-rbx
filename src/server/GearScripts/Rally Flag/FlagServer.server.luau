@@ -25,8 +25,8 @@ local function setEffectsEnabled(isEnabled)
     light.Enabled = isEnabled
 end
 
-flagPlaced:Connect(function(prop, weld)
-    prop.Name = "RallyFlag"
+flagPlaced:Connect(function(placedHandle, weld)
+    placedHandle.Name = "RallyFlag"
     isActive = true
     setEffectsEnabled(false)
 
