@@ -16,7 +16,7 @@ local myHead = dog:WaitForChild("Head")
 
 for _, v in dog:GetDescendants() do
 	if v:IsA("BasePart") then
-		v:SetAttribute("GearAttachable", true)
+		v:SetAttribute("IsGearAttachable", true)
 	end
 end
 
