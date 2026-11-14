@@ -4,6 +4,7 @@
 
 local ServerScriptService = game:GetService("ServerScriptService")
 local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 
@@ -94,11 +95,13 @@ local function lockSeatFromNpcs(seat)
     seat.Touched:Connect(function(hit)
         local attributeName = "LastUnseatedFromNpcLockedSeat"
         local char = hit.Parent
-        local hum = char and char:FindFirstChild("Humanoid")
+        local hum = char:FindFirstChild("Humanoid")
+        local plr = Players:GetPlayerFromCharacter(char)
+
         local lastUnseated = char:GetAttribute(attributeName) or 0
         local isPastCooldown = os.clock() - lastUnseated >= Config.CAR_SEAT_COOLDOWN
 
-        if hum and isPastCooldown then
+        if plr and hum and isPastCooldown then
             seat:Sit(hum)
             char:SetAttribute(attributeName, os.clock())
         end
