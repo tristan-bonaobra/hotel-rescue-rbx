@@ -134,7 +134,13 @@ local function programCarDriving(car)
 
         if hum and (not plr) then
             task.wait()
+
             hum.Sit = false
+
+            local seatWeld = vehicleSeat:FindFirstChild("SeatWeld")
+            if seatWeld then
+                seatWeld:Destroy()
+            end
         end
     end)
 end
