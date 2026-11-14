@@ -74,6 +74,18 @@ local function pushNpcAwayFromPosition(npc, position)
     root:ApplyImpulse(impulseVector)
 end
 
+local function setLightsBrickColor(car, brickColor)
+    local lightsModel = car:WaitForChild("Lights")
+
+    for _, light in lightsModel:GetChildren() do
+        if not light:GetAttribute("OriginalBrickColor") then
+            light:SetAttribute("OriginalBrickColor", light.BrickColor)
+        end
+
+        light.BrickColor = brickColor or light:GetAttribute("OriginalBrickColor")
+    end
+end
+
 --------------------------------------------------------------------------------------------
 -- MAIN FUNCTIONS
 --------------------------------------------------------------------------------------------
@@ -102,6 +114,7 @@ local function programCarDriving(car)
             -- Do not snap while the player is steering
             alignOrientation.Enabled = false
             lastSteerTime = os.clock()
+            setLightsBrickColor(car, nil)
 
         else
             -- Snap after a delay
@@ -118,6 +131,7 @@ local function programCarDriving(car)
 
                 alignOrientation.CFrame = CFrame.Angles(0, yRotation, 0)
                 alignOrientation.Enabled = true
+                setLightsBrickColor(car, BrickColor.new("Bright red"))
 
                 -- Prevent the car snapping forwards on spawn
                 if not alignOrientation.Parent then
