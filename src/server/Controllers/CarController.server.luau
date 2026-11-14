@@ -68,7 +68,7 @@ local function pushNpcAwayFromPosition(npc, position)
     end
 
     local direction = (root.Position - position).Unit
-    local impulseVector = direction * Config.NPC_JUMP_POWER
+    local impulseVector = direction * Config.DEFAULT_JUMP_POWER * root.AssemblyMass
 
     root:ApplyImpulse(impulseVector)
 end
