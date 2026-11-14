@@ -114,11 +114,9 @@ local function programCarDriving(car)
             -- Do not snap while the player is steering
             alignOrientation.Enabled = false
             lastSteerTime = os.clock()
-            setLightsBrickColor(car, nil)
+            setLightsBrickColor(car, "Bright yellow")
 
         else
-            setLightsBrickColor(car, BrickColor.new("Bright red"))
-
             -- Snap after a delay
             local activationCheckTime = lastSteerTime
             
