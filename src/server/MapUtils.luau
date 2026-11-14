@@ -45,6 +45,8 @@ local function cleanMap(map)
 
 			if v.Transparency == 1 then
 				v:Destroy()
+			else
+				v.Transparency = math.max(v.Transparency, 0.5)
 			end
 
 			if v:IsA("Seat") or v:IsA("VehicleSeat") then
