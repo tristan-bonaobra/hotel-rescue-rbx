@@ -132,7 +132,7 @@ local function programCarDriving(car)
         local char = hum and hum.Parent
         local plr = char and Players:GetPlayerFromCharacter(char)
 
-        if not plr then
+        if hum and (not plr) then
             task.wait()
             hum.Sit = false
         end
