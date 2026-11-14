@@ -264,20 +264,6 @@ local function programCarSeating(car)
     end)
 end
 
-local function programCarUnanchoring(car)
-    for _, v in car:GetChildren() do
-        if v.Name ~= "Wheel" then
-            continue
-        end
-
-        v.Touched:Connect(function(hit)
-            if BrickUtils.isTempUnanchorable(hit) then
-                BrickUtils.tempUnanchor(hit)
-            end
-        end)
-    end
-end
-
 local function makeCarGearAttachable(car)
     for _, v in car:GetDescendants() do
         if v:IsA("BasePart") then
@@ -298,6 +284,5 @@ toolDebrisBin.ChildAdded:Connect(function(v)
         makeCarGearAttachable(v)
         programCarDriving(v)
         programCarSeating(v)
-        programCarUnanchoring(v)
     end
 end)
