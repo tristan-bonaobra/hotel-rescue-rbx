@@ -19,51 +19,14 @@ local GearUtils = require(ServerScriptService:WaitForChild("GearUtils"))
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
-local handle = tool:WaitForChild("Handle")
 
+local translocatorPlaced, translocatorRetrieved = GearUtils.placeMode(tool)
 local translocator
 local isActive
 
 ------------------------------------------------------------------------------------------
--- HELPER FUNCTIONS
+-- FUNCTIONS
 ------------------------------------------------------------------------------------------
-
--- Move to GearUtils...
-local function getChar()
-    if tool.Parent:IsA("Model") then
-        return tool.Parent
-    elseif tool.Parent:IsA("Backpack") then
-        local backpack = tool.Parent
-        local plr = backpack.Parent
-        return plr.Character
-    end
-    return
-end
-
-------------------------------------------------------------------------------------------
--- GEAR FUNCTIONS
-------------------------------------------------------------------------------------------
-
-local function placeTranslocator()
-    translocator = handle:Clone()
-    translocator.Name = "Translocator"
-    translocator.CanCollide = true
-    translocator.Parent = toolDebrisBin
-    BrickUtils.breakJoints(translocator)
-    SoundUtils.playSound(translocator, "Gear.TranslocatorEngage")
-    BrickUtils.stabilize(translocator)
-
-    GearUtils.toolAnim(tool, "Slash")
-    handle.Transparency = 1
-end
-
-local function retrieveTranslocator()
-    if translocator:IsDescendantOf(workspace) then
-        translocator:Destroy()
-    end
-
-    handle.Transparency = 0
-end
 
 local function teleportEnterEffect(root)
     local part = Instance.new("Part")
@@ -118,7 +81,7 @@ end
 
 local function teleport()
     if translocator then
-        local char = getChar()
+        local char = GearUtils.getChar(tool)
         local root = char and char:FindFirstChild("HumanoidRootPart")
 
         if root then
@@ -126,8 +89,6 @@ local function teleport()
             root.CFrame = CFrame.new(translocator.Position) * CFrame.new(0, 2.5, 0)
             teleportEnterEffect(root)
         end
-
-        retrieveTranslocator()
     end
 end
 
@@ -135,12 +96,9 @@ end
 -- EVENTS
 ------------------------------------------------------------------------------------------
 
-tool.Activated:Connect(function()
-    isActive = not isActive
-
-    if isActive then
-        placeTranslocator()
-    else
-        teleport()
-    end
+translocatorPlaced:Connect(function(placedHandle)
+    translocator = placedHandle
+    SoundUtils.playSound(translocator, "Gear.TranslocatorEngage")
 end)
+
+translocatorRetrieved:Connect(teleport)
