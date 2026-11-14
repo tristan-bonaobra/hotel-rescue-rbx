@@ -28,20 +28,6 @@ local car
 -- SCRIPT
 -------------------------------------------------------------------------------------------
 
-local function slowDestroy(instance)
-	for _, v in pairs(instance:GetChildren()) do
-		if v:IsA("BasePart") then
-			v:Destroy()
-		end
-	end
-
-	task.wait(0.1)
-
-	if instance:IsDescendantOf(workspace) then
-		instance:Destroy()
-	end
-end
-
 tool.Activated:Connect(function()
 	if isActive then
 		return
@@ -52,7 +38,7 @@ tool.Activated:Connect(function()
 	GearUtils.toolAnim(tool, "Slash")
 	
 	if car and car.Parent then
-		slowDestroy(car)
+		car:Destroy()
 		car = nil
 	else
 		local char = tool.Parent
@@ -62,8 +48,6 @@ tool.Activated:Connect(function()
 		car = summonsLib:WaitForChild("Car"):Clone()
 		car:PivotTo(root.CFrame * CFrame.new(0, 1, 0))
 		car.Parent = toolDebrisBin
-
-		entityScriptsLib:WaitForChild("CarScript"):Clone().Parent = car
 
 		task.wait(0.1)
 

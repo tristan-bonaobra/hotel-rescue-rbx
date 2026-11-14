@@ -29,7 +29,7 @@ return {
         Price = 10,
     },
     {
-        GearObject = getGear("Warp Rover"),
+        GearObject = getGear("Brickmobile"),
         Price = 10,
     },
     {
