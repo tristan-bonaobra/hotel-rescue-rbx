@@ -7,6 +7,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local RunService = game:GetService("RunService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
+local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 local npcsBin = workspace:WaitForChild("Npcs")
@@ -244,6 +245,20 @@ local function programCarSeating(car)
     end)
 end
 
+local function programCarUnanchoring(car)
+    for _, v in car:GetChildren() do
+        if v.Name ~= "Wheel" then
+            continue
+        end
+
+        v.Touched:Connect(function(hit)
+            if BrickUtils.isTempUnanchorable(hit) then
+                BrickUtils.tempUnanchor(hit)
+            end
+        end)
+    end
+end
+
 --------------------------------------------------------------------------------------------
 -- EVENTS
 --------------------------------------------------------------------------------------------
@@ -252,5 +267,6 @@ toolDebrisBin.ChildAdded:Connect(function(v)
     if v.Name == "Car" then
         programCarDriving(v)
         programCarSeating(v)
+        programCarUnanchoring(v)
     end
 end)
