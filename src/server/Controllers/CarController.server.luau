@@ -60,14 +60,14 @@ local function stopNpcFollowing(npc)
     end
 end
 
-local function radialTeleport(npc, originCFrame)
+local function ejectTeleport(npc, seat)
     local root = npc:FindFirstChild("HumanoidRootPart")
 
     if not root then
         return
     end
 
-    root.CFrame = CFrame.new(originCFrame.Position, root.Position) * CFrame.new(0, 0, -Config.CAR_EJECT_DISTANCE)
+    root.CFrame = seat.CFrame * CFrame.new(0, 2, -Config.CAR_EJECT_DISTANCE)
 end
 
 local function setLightsBrickColor(car, brickColor)
@@ -163,7 +163,6 @@ end
 local function programCarSeating(car)
     local npcSeatsModel = car:WaitForChild("NpcSeats")
     local dismountButton = car:WaitForChild("DismountButton")
-    local carBody = car:WaitForChild("Body")
     local passengerIndex = {}
 
     local dismountClicker = Instance.new("ClickDetector")
@@ -182,14 +181,16 @@ local function programCarSeating(car)
         local attributeListener
         
         local function dismountNpc(npc)
+            local seat = passengerIndex[npc]
+
             npc:SetAttribute("IsMounted", false)
-            passengerIndex[npc]:SetAttribute("IsOccupied", false)
+            seat:SetAttribute("IsOccupied", false)
             passengerIndex[npc] = nil
             setNpcCollisionGroup(npc, "Default")
             setNpcSit(npc, false)
             setNpcRootAnchored(npc, false)
             npc:SetAttribute("LastDismounted", os.clock())
-            radialTeleport(npc, carBody.CFrame)
+            ejectTeleport(npc, seat)
 
             childListener:Disconnect()
             clickListener:Disconnect()
