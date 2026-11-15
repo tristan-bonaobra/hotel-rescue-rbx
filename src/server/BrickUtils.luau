@@ -142,7 +142,7 @@ end
 local function cleanPart(part)
 	for _, v in pairs(part:GetChildren()) do
 		if v:IsA("FaceInstance") or v:IsA("DataModelMesh") then
-			if v:IsA("BlockMesh") then
+			if v:IsA("BlockMesh") or (v:IsA("SpecialMesh") and (v.MeshType == Enum.MeshType.Brick)) then
 				part.Size *= v.Scale
 			end
 
