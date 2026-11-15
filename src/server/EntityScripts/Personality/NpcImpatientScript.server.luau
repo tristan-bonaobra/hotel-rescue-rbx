@@ -53,6 +53,9 @@ while task.wait(0.5) do
         -- The reason for stopping rush was a mount
         -- The NPC has dismounted and remounted since
         continue
+    else
+        -- The NPC has NOT dismounted since
+        SoundUtils.playSound(head, "Entity.NpcAngry")
     end
 
     if npc:GetAttribute("IsUnconscious") or npc:GetAttribute("IsRescued") then
