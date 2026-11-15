@@ -6,6 +6,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 
+local SoundUtils = require(ServerScriptService.SoundUtils)
 local Config = require(ServerScriptService:WaitForChild("Config"))
 
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
@@ -163,6 +164,7 @@ end
 local function programCarSeating(car)
     local npcSeatsModel = car:WaitForChild("NpcSeats")
     local dismountButton = car:WaitForChild("DismountButton")
+    local carBody = car:WaitForChild("Body")
     local passengerIndex = {}
 
     local dismountClicker = Instance.new("ClickDetector")
@@ -171,6 +173,7 @@ local function programCarSeating(car)
 
     dismountClicker.MouseClick:Connect(function()
         blinkButton(dismountButton)
+        SoundUtils.playSound(carBody, "Gear.CarHorn")
     end)
 
     -- Dismounting system
