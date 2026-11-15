@@ -2,6 +2,10 @@ if script.Parent.Name ~= "Dog" then
 	return
 end
 
+local ServerScriptService = game:GetService("ServerScriptService")
+
+local Config = require(ServerScriptService:WaitForChild("Config"))
+
 local DEFAULT_NECK_POS = Vector3.new(0, 0.235, 0)
 local DEFAULT_NECK_ROT = CFrame.Angles(math.rad(90), math.rad(180), 0)
 
@@ -49,6 +53,8 @@ local function getLeaderHead()
 
 	return leaderHead
 end
+
+task.wait(Config.DOG_WINDUP_TIME)
 
 while task.wait(1 / 30) do
 	local leaderHead = getLeaderHead()

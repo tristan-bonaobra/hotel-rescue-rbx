@@ -42,6 +42,6 @@ tool.Activated:Connect(function()
 		SoundUtils.playSound(dog:WaitForChild("Head"), "Entity.DogBark")
 	end
 	
-	task.wait(Config.TREATS_COOLDOWN)
+	task.wait(Config.DOG_COOLDOWN)
 	isActive = false
 end)
