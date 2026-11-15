@@ -28,22 +28,30 @@ end
 
 while task.wait(0.5) do
     local followScriptA = getFollowScript()
-    if followScriptA then
-        npc:SetAttribute("IsRushing", false)
+    local isMounted = npc:GetAttribute("IsMounted")
+    local lastDismounted = npc:GetAttribute("LastDismounted")
+
+    if followScriptA or isMounted then
         task.wait(Config.NPC_IMPATIENT_RUSH_TIMER)
+    end
 
+    if followScriptA then
+        -- The reason for stopping rush was a follow command
         local followScriptB = getFollowScript()
-        if followScriptB then
-
-            if followScriptB == followScriptA then
-                followScriptB:Destroy()
-                SoundUtils.playSound(head, "Entity.NpcAngry")
-                npc:SetAttribute("IsRushing", true)
-            else
-                -- Refresh rush timer
-                continue
-            end
+        if followScriptB and (followScriptB == followScriptA) then
+            -- The NPC is still following and it's by the same command
+            followScriptB:Destroy()
+            SoundUtils.playSound(head, "Entity.NpcAngry")
+        else
+            -- A new command was given
+            continue
         end
+    end
+
+    if isMounted and (npc:GetAttribute("LastDismounted") == lastDismounted) then
+        -- The reason for stopping rush was a mount
+        -- The NPC has dismounted and remounted since
+        continue
     end
 
     if npc:GetAttribute("IsUnconscious") or npc:GetAttribute("IsRescued") then
