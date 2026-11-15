@@ -41,6 +41,7 @@ return {
         FasterEarthquake = false,
         IsPreprocessed = false,
         IsForWelding = false,
+        ThumbnailId = 126113240806488,
     },
 
     {
@@ -50,6 +51,7 @@ return {
         FasterEarthquake = false,
         IsPreprocessed = false,
         IsForWelding = false,
+        ThumbnailId = 76217310569317,
     },
 
     {
@@ -59,6 +61,7 @@ return {
         FasterEarthquake = false,
         IsPreprocessed = true,
         IsForWelding = false,
+        ThumbnailId = 85301069116136,
     },
 
     {
@@ -68,6 +71,7 @@ return {
         FasterEarthquake = false,
         IsPreprocessed = false,
         IsForWelding = false,
+        ThumbnailId = 128012253459455,
     },
 
     {
@@ -77,6 +81,7 @@ return {
         FasterEarthquake = false,
         IsPreprocessed = false,
         IsForWelding = true,
+        ThumbnailId = 105325110575003,
     },
 
     {
@@ -86,6 +91,7 @@ return {
         FasterEarthquake = true,
         IsPreprocessed = false,
         IsForWelding = true,
+        ThumbnailId = 124516024502685,
 
         Init = function(map)
             local filteredDescendantsModel = map:WaitForChild("NongameParts")

@@ -60,6 +60,7 @@ local function updateBooths()
     for i, booth in booths do
         local mapId = mapIds[i]
         local map = MapData[mapId]
+        local thumbId = map.ThumbnailId
 
         local screen = booth:WaitForChild("Screen")
         local votePad = booth:WaitForChild("VotePad")
@@ -70,7 +71,7 @@ local function updateBooths()
         local hum = votePad:WaitForChild("Humanoid")
 
         titleLabel.Text = map.MapObject.Name
-        thumbnailLabel.Image = map.ThumbnailId or ""
+        thumbnailLabel.Image = (thumbId and "rbxassetid://"..thumbId) or ""
         hum.DisplayName = "Votes: "..getVotes(mapId)
     end
 end
