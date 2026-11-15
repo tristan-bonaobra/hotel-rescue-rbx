@@ -32,7 +32,7 @@ while task.wait(0.5) do
     local lastDismounted = npc:GetAttribute("LastDismounted")
 
     if followScriptA or isMounted then
-        hum:SetAttribute("IsRushing", false)
+        npc:SetAttribute("IsRushing", false)
         task.wait(Config.NPC_IMPATIENT_RUSH_TIMER)
     end
 
@@ -59,7 +59,7 @@ while task.wait(0.5) do
         break
     end
 
-    hum:SetAttribute("IsRushing", true)
+    npc:SetAttribute("IsRushing", true)
     hum:MoveTo(getWinPos())
     hum.Jump = true
 end
