@@ -1,6 +1,6 @@
 # Hotel Rescue
 
-**README version**: Last updated v1.2.1 on November 9, 2026.
+**README version**: Last updated v1.3.0 on November 15, 2026.
 
 [hotel-rescue-rbx on GitHub](https://github.com/tristan-bonaobra/hotel-rescue-rbx)
 
@@ -12,7 +12,7 @@ A heroic twist on disaster survival.
 
 This section explains how to play the game and mod its code.
 
-## How to play
+## How to launch
 
 1. Install Roblox Studio via [Roblox Creator Hub](https://create.roblox.com/docs/tutorials/curriculums/studio/install-studio).
 2. Download and open the latest `.rbxl` on the [Releases](https://github.com/tristan-bonaobra/hotel-rescue-rbx/releases) page.
@@ -41,6 +41,18 @@ ServerStorage/
         ├── GroundworksComplex
         └── UrbanDescent
 ```
+
+## How to play
+
+Escort NPCs to the green finish line, standing or otherwise.
+
+### Recommended starter gear
+
+| Gear | Cost | Function |
+| :--- | :--- | :--- |
+| Teddy Bear | Free (Spawn) | Used near an NPC to direct them to either follow or stay. |
+| Pull Wrench | Free (Spawn) | Used to pull debris and unconscious NPCs. |
+| Dog Treats | 10 Points (Starter) | Used to locate NPCs. |
 
 ## Local development
 
