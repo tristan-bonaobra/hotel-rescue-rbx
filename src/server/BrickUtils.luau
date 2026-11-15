@@ -332,7 +332,6 @@ local function spawnFragments(
 			end
 		else
 			newFragment = originalPart:Clone()
-			cleanPart(newFragment)
 		end
 		
 		newFragment.Size = data.Size
@@ -346,6 +345,7 @@ local function spawnFragments(
 			randTint(newFragment)
 		end
 		breakJoints(newFragment)
+		cleanPart(newFragment)
 		
 		fragmentYieldCounter += 1
 		if fragmentYieldCounter % Config.FRAGMENTS_PER_TICK == 0 then
