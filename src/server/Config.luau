@@ -8,6 +8,7 @@ return {
 	REWARD_PANICKED = 5,
 	DEFAULT_WALKSPEED = 16, -- Shared by players and NPCs
 	DEFAULT_JUMP_POWER = 50,
+	TELEPORT_COOLDOWN_PER_PLAYER = 0.5,
 
 	-- MapData
 
