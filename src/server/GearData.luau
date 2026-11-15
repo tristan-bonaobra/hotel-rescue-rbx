@@ -52,4 +52,8 @@ return {
         GearObject = getGear("Translocator"),
         Price = 30,
     },
+    {
+        GearObject = getGear("Freeze Ray"),
+        Price = 30,
+    },
 }
