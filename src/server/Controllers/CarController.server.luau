@@ -60,17 +60,14 @@ local function stopNpcFollowing(npc)
     end
 end
 
-local function pushNpcAwayFromPosition(npc, position)
+local function radialTeleport(npc, originCFrame)
     local root = npc:FindFirstChild("HumanoidRootPart")
 
     if not root then
         return
     end
 
-    local direction = CFrame.new(position, root.Position).LookVector
-    local impulseVector = direction * Config.CAR_EJECT_POWER * root.AssemblyMass
-
-    root:ApplyImpulse(impulseVector)
+    root.CFrame = CFrame.new(originCFrame.Position, root.Position) * CFrame.new(0, 0, -Config.CAR_EJECT_DISTANCE)
 end
 
 local function setLightsBrickColor(car, brickColor)
@@ -179,6 +176,7 @@ local function programCarSeating(car)
         local childListener
         local clickListener
         local ancestryListener
+        local attributeListener
         
         local function dismountNpc(npc)
             npc:SetAttribute("IsMounted", false)
@@ -188,11 +186,12 @@ local function programCarSeating(car)
             setNpcSit(npc, false)
             setNpcRootAnchored(npc, false)
             npc:SetAttribute("LastDismounted", os.clock())
-            pushNpcAwayFromPosition(npc, carBody.Position)
+            radialTeleport(npc, carBody.CFrame)
 
             childListener:Disconnect()
             clickListener:Disconnect()
             ancestryListener:Disconnect()
+            attributeListener:Disconnect()
         end
 
         childListener = npc.ChildAdded:Connect(function(v)
@@ -207,6 +206,12 @@ local function programCarSeating(car)
 
         ancestryListener = car.AncestryChanged:Connect(function()
             if not car:IsDescendantOf(workspace) then
+                dismountNpc(npc)
+            end
+        end)
+
+        attributeListener = npc.AttributeChanged:Connect(function()
+            if npc:GetAttribute("IsRushing") then
                 dismountNpc(npc)
             end
         end)

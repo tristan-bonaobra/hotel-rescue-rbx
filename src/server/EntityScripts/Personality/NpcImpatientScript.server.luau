@@ -29,12 +29,16 @@ end
 while task.wait(0.5) do
     local followScriptA = getFollowScript()
     if followScriptA then
+        npc:SetAttribute("IsRushing", false)
         task.wait(Config.NPC_IMPATIENT_RUSH_TIMER)
+
         local followScriptB = getFollowScript()
         if followScriptB then
+
             if followScriptB == followScriptA then
                 followScriptB:Destroy()
                 SoundUtils.playSound(head, "Entity.NpcAngry")
+                npc:SetAttribute("IsRushing", true)
             else
                 -- Refresh rush timer
                 continue
