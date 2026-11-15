@@ -97,6 +97,18 @@ local function beginVote()
     updateVoteArea()
 end
 
+local function blinkPadHead(head)
+    local blinkTime = os.clock()
+    head:SetAttribute("LastBlinked", blinkTime)
+    head.BrickColor = BrickColor.new("Black")
+    
+    task.delay(0.5, function()
+        if head:GetAttribute("LastBlinked") == blinkTime then
+            head.BrickColor = BrickColor.new("Plum")
+        end
+    end)
+end
+
 local function programVotePads()
     for i, booth in booths do
         local votePad = booth:WaitForChild("VotePad")
@@ -105,11 +117,12 @@ local function programVotePads()
         head.Touched:Connect(function(hit)
             local char = hit.Parent
             local plr = Players:GetPlayerFromCharacter(char)
+            local mapId = mapIds[i]
 
-            if plr then
-                local mapId = mapIds[i]
+            if plr and (voteData[plr] ~= mapId) then
                 voteData[plr] = mapId
                 updateVoteArea()
+                blinkPadHead(head)
             end
         end)
     end
