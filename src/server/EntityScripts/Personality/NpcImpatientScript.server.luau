@@ -49,7 +49,7 @@ while task.wait(0.5) do
         end
     end
 
-    if isMounted and (npc:GetAttribute("LastDismounted") == lastDismounted) then
+    if isMounted and (npc:GetAttribute("LastDismounted") ~= lastDismounted) then
         -- The reason for stopping rush was a mount
         -- The NPC has dismounted and remounted since
         continue
