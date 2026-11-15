@@ -71,7 +71,10 @@ local function radialTeleport(npc, originCFrame)
 end
 
 local function setLightsBrickColor(car, brickColor)
-    local lightsModel = car:WaitForChild("Lights")
+    local lightsModel = car:FindFirstChild("Lights")
+    if not lightsModel then
+        return
+    end
 
     for _, light in lightsModel:GetChildren() do
         if not light:GetAttribute("OriginalBrickColor") then
