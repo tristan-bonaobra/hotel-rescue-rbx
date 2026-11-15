@@ -61,7 +61,7 @@ return {
         FasterEarthquake = false,
         IsPreprocessed = true,
         IsForWelding = false,
-        ThumbnailId = 85301069116136,
+        ThumbnailId = 98250247777583,
     },
 
     {
@@ -91,7 +91,7 @@ return {
         FasterEarthquake = true,
         IsPreprocessed = false,
         IsForWelding = true,
-        ThumbnailId = 124516024502685,
+        ThumbnailId = 75741733893398,
 
         Init = function(map)
             local filteredDescendantsModel = map:WaitForChild("NongameParts")
