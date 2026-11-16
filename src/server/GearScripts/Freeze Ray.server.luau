@@ -7,6 +7,7 @@ end
 --------------------------------------------------------------------------------------------
 
 local ServerScriptService = game:GetService("ServerScriptService")
+local RunService = game:GetService("RunService")
 
 local Config = require(ServerScriptService:WaitForChild("Config"))
 local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
@@ -15,8 +16,10 @@ local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 local tool = script.Parent
 local handle = tool:WaitForChild("Handle")
 local beam = tool:WaitForChild("Beam")
+local pointer = tool:WaitForChild("Pointer")
 
 local isActive = false
+local relativeCFrame = handle.CFrame:ToObjectSpace(pointer.CFrame)
 
 --------------------------------------------------------------------------------------------
 -- FUNCTIONS
@@ -45,6 +48,10 @@ local function freezePart(part)
 	BrickUtils.breakPart(part, breakParams)
 end
 
+local function repositionPointer()
+    pointer.CFrame = handle.CFrame * relativeCFrame
+end
+
 --------------------------------------------------------------------------------------------
 -- EVENTS
 --------------------------------------------------------------------------------------------
@@ -57,6 +64,7 @@ tool.Activated:Connect(function()
     isActive = true
 
     beam.Transparency = 0.4
+    pointer.Transparency = 1
     SoundUtils.playSound(handle, "Gear.IceMagic")
     
     local currentMap = workspace:WaitForChild("CurrentMap")
@@ -84,6 +92,7 @@ tool.Activated:Connect(function()
     end
 
     beam.Transparency = 1
+    pointer.Transparency = 0
 
     if frozeOnePart then
         SoundUtils.playSound(handle, "Gear.IceFreeze")
@@ -92,3 +101,5 @@ tool.Activated:Connect(function()
     task.wait(Config.FREEZE_RAY_COOLDOWN)
     isActive = false
 end)
+
+RunService.Heartbeat:Connect(repositionPointer)
