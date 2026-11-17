@@ -120,7 +120,8 @@ local function breakNearbyParts(position)
             BrickUtils.breakPart(part, breakParams)
         elseif BrickUtils.isTempUnanchorable(part) then
             BrickUtils.breakJoints(part)
-            BrickUtils.tempUnanchor(part)
+            part.Anchored = false
+            part.CanCollide = false
         end
     end
 end
