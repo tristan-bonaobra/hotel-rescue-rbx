@@ -119,6 +119,7 @@ local function breakNearbyParts(position)
         if BrickUtils.isBreakable(part) then
             BrickUtils.breakPart(part, breakParams)
         elseif BrickUtils.isTempUnanchorable(part) then
+            BrickUtils.breakJoints(part)
             BrickUtils.tempUnanchor(part)
         end
     end
