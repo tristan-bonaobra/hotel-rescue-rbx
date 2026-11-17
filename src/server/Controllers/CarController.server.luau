@@ -6,11 +6,19 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 
-local SoundUtils = require(ServerScriptService.SoundUtils)
 local Config = require(ServerScriptService:WaitForChild("Config"))
+local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
+local BrickUtils = require(ServerScriptService:WaitForChild("BrickUtils"))
 
 local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 local npcsBin = workspace:WaitForChild("Npcs")
+
+local breakParams = {
+    Threshold = Config.BREAK_THRESHOLD_MANUAL,
+    IsRecursive = false,
+    Unanchor = true,
+    Tint = false
+}
 
 --------------------------------------------------------------------------------------------
 -- HELPER FUNCTIONS
@@ -86,9 +94,73 @@ local function setLightsBrickColor(car, brickColor)
     end
 end
 
+local function isAtFailure(velocityHistory)
+    local previousVelocity = velocityHistory[1]
+    local lastVelocity = velocityHistory[#velocityHistory]
+    local magnitude = (lastVelocity - previousVelocity).Magnitude
+    local maxSpeed = Config.CAR_MAX_SPEED
+    local failureThreshold = maxSpeed * Config.CAR_FAILURE_TO_MAXSPEED_RATIO
+    return magnitude >= failureThreshold
+end
+
+local function breakNearbyParts(position)
+    local currentMap = workspace:FindFirstChild("CurrentMap")
+    if not currentMap then
+        return
+    end
+
+    local overlapParams = OverlapParams.new()
+    overlapParams.FilterType = Enum.RaycastFilterType.Include
+    overlapParams.FilterDescendantsInstances = {currentMap}
+
+    local parts = workspace:GetPartBoundsInRadius(position, Config.CAR_EXPLOSION_RADIUS, overlapParams)
+    for _, part in ipairs(parts) do
+        if BrickUtils.isBreakable(part) then
+            BrickUtils.breakPart(part, breakParams)
+        elseif BrickUtils.isTempUnanchorable(part) then
+            BrickUtils.tempUnanchor(part)
+        end
+    end
+end
+
+local function emitExplosionSound(position)
+    local emitter = Instance.new("Part")
+    emitter.Position = position
+    emitter.Transparency = 1
+    emitter.Size = Vector3.zero
+    emitter.CollisionGroup = "NoInteraction"
+    emitter.Parent = toolDebrisBin
+
+    SoundUtils.playSound(emitter, "Gear.CarExplosion")
+end
+
+local function explodeCar(car)
+    local body = car:WaitForChild("Body")
+
+    emitExplosionSound(body.Position)
+    breakNearbyParts(body.Position)
+
+    local explosion = Instance.new("Explosion")
+    explosion.Position = body.Position
+    explosion.BlastRadius = Config.CAR_EXPLOSION_RADIUS
+    explosion.BlastPressure = Config.CAR_EXPLOSION_FORCE
+    explosion.DestroyJointRadiusPercent = 0
+    explosion.Parent = workspace
+
+    car:Destroy()
+end
+
 --------------------------------------------------------------------------------------------
 -- MAIN FUNCTIONS
 --------------------------------------------------------------------------------------------
+
+local function makeCarGearAttachable(car)
+    for _, v in car:GetDescendants() do
+        if v:IsA("BasePart") then
+            v:SetAttribute("IsGearAttachable", true)
+        end
+    end
+end
 
 local function lockSeatFromNpcs(seat)
     seat.Disabled = true
@@ -287,12 +359,30 @@ local function programCarSeating(car)
     end)
 end
 
-local function makeCarGearAttachable(car)
-    for _, v in car:GetDescendants() do
-        if v:IsA("BasePart") then
-            v:SetAttribute("IsGearAttachable", true)
+local function programCarExplosion(car)
+    local body = car:WaitForChild("Body")
+    local velocityHistory = {}
+    local heartbeatListener
+
+    local function updateHistory()
+        local velocity = body.AssemblyLinearVelocity
+        table.insert(velocityHistory, velocity)
+        if #velocityHistory > Config.NPC_IMPACT_FRAMES then
+            table.remove(velocityHistory, 1)
         end
     end
+
+    heartbeatListener = RunService.Heartbeat:Connect(function()
+        if not car:IsDescendantOf(workspace) then
+            heartbeatListener:Disconnect()
+        end
+
+        updateHistory()
+        if isAtFailure(velocityHistory) then
+            explodeCar(car)
+            heartbeatListener:Disconnect()
+        end
+    end)
 end
 
 --------------------------------------------------------------------------------------------
@@ -307,5 +397,6 @@ toolDebrisBin.ChildAdded:Connect(function(v)
         makeCarGearAttachable(v)
         programCarDriving(v)
         programCarSeating(v)
+        programCarExplosion(v)
     end
 end)
