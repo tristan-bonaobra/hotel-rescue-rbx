@@ -21,6 +21,10 @@
 
       "GetServerMusicVolume": {
         "$className": "RemoteFunction"
+      },
+
+      "TeleportPlayerToSpawn": {
+        "$className": "RemoteEvent"
       }
     }
   }
