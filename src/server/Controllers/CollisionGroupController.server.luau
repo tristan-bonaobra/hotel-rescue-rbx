@@ -23,16 +23,18 @@ end
 
 for _, player in Players:GetPlayers() do
 	if player.Character then
-		setModelCollisionGroup(player.Character)
+		setModelCollisionGroup(player.Character, "Players")
 	end
 
 	player.CharacterAdded:Connect(function(char)
-		setModelCollisionGroup(char, "Player")
+		setModelCollisionGroup(char, "Players")
 	end)
 end
 
 Players.PlayerAdded:Connect(function(player)
-	player.CharacterAdded:Connect(setModelCollisionGroup)
+	player.CharacterAdded:Connect(function(char)
+		setModelCollisionGroup(char, "Players")
+	end)
 end)
 
 -----------------------------------------------------------------------------------------
