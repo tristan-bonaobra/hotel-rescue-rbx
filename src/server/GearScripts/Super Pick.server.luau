@@ -19,14 +19,13 @@ local function isPickable(part)
 	local currentMap = workspace:FindFirstChild("CurrentMap")
 	return part
 		and part:IsA("BasePart")
-		and BrickUtils.isBreakable(part)
 		and (
 			(currentMap and part:IsDescendantOf(currentMap))
 			or (playgroundBin and part:IsDescendantOf(playgroundBin))
 		)
 end
 
-local function destroyPart(part)
+local function crushPart(part)
 	BrickUtils.breakJoints(part)
 	part.Anchored = false
 	part.CanCollide = false
@@ -49,17 +48,12 @@ local function pickInteract(part)
 	if isPickable(part) then
 		SoundUtils.playSound(handle, "Gear.PickBreak", false, Config.PICK_PITCH_SHIFT)
 
-		if BrickUtils.isTiny(part) then
-			destroyPart(part)
-			SoundUtils.playSound(handle, "Gear.PickCrush", false, Config.PICK_PITCH_SHIFT)
-		else
+		if BrickUtils.isBreakable(part) then
 			breakPart(part)
+		else
+			crushPart(part)
+			SoundUtils.playSound(handle, "Gear.PickCrush", false, Config.PICK_PITCH_SHIFT)
 		end
-
-	elseif BrickUtils.isTempUnanchorable(part) then
-		BrickUtils.breakJoints(part)
-		BrickUtils.tempUnanchor(part)
-		SoundUtils.playSound(handle, "Gear.PickBreak", false, Config.PICK_PITCH_SHIFT)
 
 	else
 		SoundUtils.playSound(handle, "Gear.PickMiss")
