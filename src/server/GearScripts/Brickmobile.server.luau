@@ -42,15 +42,20 @@ tool.Activated:Connect(function()
 		SoundUtils.playSound(handle, "Gear.CarBeep")
 		
 	else
+		task.delay(Config.CAR_SUMMON_COOLDOWN, function()
+			isActive = false
+		end)
+		
 		local char = tool.Parent
         local root = char:WaitForChild("HumanoidRootPart")
         local hum = char:WaitForChild("Humanoid")
-		local vehicleSeat = car:FindFirstChild("VehicleSeat")
-		local body = car:FindFirstChild("Body")
 
 		car = summonsLib:WaitForChild("Car"):Clone()
 		car:PivotTo(root.CFrame * CFrame.new(0, 1, 0))
 		car.Parent = toolDebrisBin
+
+		local body = car:FindFirstChild("Body")
+		local vehicleSeat = car:FindFirstChild("VehicleSeat")
 
 		if body then
 			SoundUtils.playSound(body, "Gear.CarEngine")
@@ -62,7 +67,4 @@ tool.Activated:Connect(function()
 			vehicleSeat:Sit(hum)
 		end
 	end
-	
-	task.wait(Config.CAR_SUMMON_COOLDOWN)
-	isActive = false
 end)
