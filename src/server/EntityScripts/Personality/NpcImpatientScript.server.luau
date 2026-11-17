@@ -42,7 +42,6 @@ while task.wait(0.5) do
         if followScriptB and (followScriptB == followScriptA) then
             -- The NPC is still following and it's by the same command
             followScriptB:Destroy()
-            SoundUtils.playSound(head, "Entity.NpcAngry")
         else
             -- A new command was given
             continue
@@ -51,15 +50,18 @@ while task.wait(0.5) do
 
     if isMounted and (npc:GetAttribute("LastDismounted") ~= lastDismounted) then
         -- The reason for stopping rush was a mount
-        -- The NPC has dismounted and remounted since
+        -- The NPC has dismounted and/or remounted since
         continue
     else
         -- The NPC has NOT dismounted since
-        SoundUtils.playSound(head, "Entity.NpcAngry")
     end
 
     if npc:GetAttribute("IsUnconscious") or npc:GetAttribute("IsRescued") then
         break
+    end
+
+    if not npc:GetAttribute("IsRushing") then
+        SoundUtils.playSound(head, "Entity.NpcAngry")
     end
 
     npc:SetAttribute("IsRushing", true)
