@@ -45,6 +45,7 @@ tool.Activated:Connect(function()
 		local char = tool.Parent
         local root = char:WaitForChild("HumanoidRootPart")
         local hum = char:WaitForChild("Humanoid")
+		local vehicleSeat = car:FindFirstChild("VehicleSeat")
 
 		car = summonsLib:WaitForChild("Car"):Clone()
 		car:PivotTo(root.CFrame * CFrame.new(0, 1, 0))
@@ -53,7 +54,9 @@ tool.Activated:Connect(function()
 
 		task.wait(0.1)
 
-		car:WaitForChild("VehicleSeat"):Sit(hum)
+		if vehicleSeat then
+			vehicleSeat:Sit(hum)
+		end
 	end
 	
 	task.wait(Config.CAR_SUMMON_COOLDOWN)
