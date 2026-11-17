@@ -46,11 +46,15 @@ tool.Activated:Connect(function()
         local root = char:WaitForChild("HumanoidRootPart")
         local hum = char:WaitForChild("Humanoid")
 		local vehicleSeat = car:FindFirstChild("VehicleSeat")
+		local body = car:FindFirstChild("Body")
 
 		car = summonsLib:WaitForChild("Car"):Clone()
 		car:PivotTo(root.CFrame * CFrame.new(0, 1, 0))
 		car.Parent = toolDebrisBin
-		SoundUtils.playSound(car:WaitForChild("Body"), "Gear.CarEngine")
+
+		if body then
+			SoundUtils.playSound(body, "Gear.CarEngine")
+		end
 
 		task.wait(0.1)
 
