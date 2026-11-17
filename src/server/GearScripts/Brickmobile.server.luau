@@ -37,11 +37,21 @@ tool.Activated:Connect(function()
 	GearUtils.toolAnim(tool, "Slash")
 	
 	if car and car.Parent then
+		-- Destroy the car
+		task.delay(Config.CAR_SUMMON_COOLDOWN, function()
+			isActive = false
+		end)
+
 		car:Destroy()
 		car = nil
 		SoundUtils.playSound(handle, "Gear.CarBeep")
 		
 	else
+		-- Summon the car
+		task.delay(1, function()
+			isActive = false
+		end)
+
 		local char = tool.Parent
         local root = char:WaitForChild("HumanoidRootPart")
         local hum = char:WaitForChild("Humanoid")
@@ -64,7 +74,4 @@ tool.Activated:Connect(function()
 			vehicleSeat:Sit(hum)
 		end
 	end
-	
-	task.wait(Config.CAR_SUMMON_COOLDOWN)
-	isActive = false
 end)
