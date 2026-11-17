@@ -34,7 +34,7 @@ end
 -------------------------------------------------------------------------------------------
 
 return {
-    --[[{
+    {
         MapObject = getMap("Disaster Hotel by Radioaktiivinen"),
         MusicObject = getMusic(DEFAULT_MUSIC),
         RoundTime = DEFAULT_ROUND_TIME,
@@ -42,7 +42,7 @@ return {
         IsPreprocessed = false,
         IsForWelding = false,
         ThumbnailId = 126113240806488,
-    },]]
+    },
 
     {
         MapObject = getMap("End of Roblox by TheAmazeman"),
@@ -66,7 +66,7 @@ return {
         end,
     },
 
-    --[[{
+    {
         MapObject = getMap("Underground Base by IcyFresh"),
         MusicObject = getMusic(DEFAULT_MUSIC),
         RoundTime = 7 * 60,
@@ -120,5 +120,5 @@ return {
                 end
             end
         end,
-    },]]
+    },
 }
