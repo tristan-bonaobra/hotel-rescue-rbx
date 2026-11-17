@@ -100,7 +100,8 @@ local function isAtFailure(velocityHistory)
     local magnitude = (lastVelocity - previousVelocity).Magnitude
     local maxSpeed = Config.CAR_MAX_SPEED
     local failureThreshold = maxSpeed * Config.CAR_FAILURE_TO_MAXSPEED_RATIO
-    return magnitude >= failureThreshold
+    local percentToFailure = magnitude / failureThreshold
+    return magnitude >= failureThreshold, percentToFailure
 end
 
 local function breakNearbyParts(position)
@@ -378,9 +379,12 @@ local function programCarExplosion(car)
         end
 
         updateHistory()
-        if isAtFailure(velocityHistory) then
+        local isAtFailureResult, percentToFailure = isAtFailure(velocityHistory)
+        if isAtFailureResult then
             explodeCar(car)
             heartbeatListener:Disconnect()
+        elseif percentToFailure >= 0.5 then
+            SoundUtils.playSound(body, "Gear.CarImpact")
         end
     end)
 end
