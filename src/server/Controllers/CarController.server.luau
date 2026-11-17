@@ -387,7 +387,7 @@ local function programCarExplosion(car)
             explodeCar(car)
             heartbeatListener:Disconnect()
         elseif percentToFailure >= 0.5 then
-            SoundUtils.playSound(body, "Gear.CarImpact")
+            SoundUtils.playSound(body, "Gear.CarImpact", false, 0.2)
         end
     end)
 end
