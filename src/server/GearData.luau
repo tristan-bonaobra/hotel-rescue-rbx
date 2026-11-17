@@ -33,15 +33,15 @@ return {
         Price = 10,
     },
     {
-        GearObject = getGear("Power Bell"),
-        Price = 30,
-    },
-    {
         GearObject = getGear("Power Piston"),
-        Price = 30,
+        Price = 20,
     },
     {
         GearObject = getGear("Wooden Platform"),
+        Price = 20,
+    },
+    {
+        GearObject = getGear("Power Bell"),
         Price = 30,
     },
     {
