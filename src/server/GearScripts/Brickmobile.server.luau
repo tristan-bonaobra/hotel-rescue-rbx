@@ -54,8 +54,8 @@ tool.Activated:Connect(function()
 		local vehicleSeat = car:FindFirstChild("VehicleSeat")
 
 		if body then
-			SoundUtils.playSound(handle, "Gear.FlagDrop")
-			SoundUtils.playSound(handle, "Gear.CarEngine")
+			SoundUtils.playSound(body, "Gear.FlagDrop")
+			SoundUtils.playSound(body, "Gear.CarEngine")
 		end
 
 		task.wait(0.1)
