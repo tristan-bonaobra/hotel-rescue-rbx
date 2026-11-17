@@ -225,7 +225,7 @@ local function programCarDriving(car)
                 setLightsBrickColor(car, nil)
 
                 -- Prevent the car snapping forwards on spawn
-                if not alignOrientation.Parent then
+                if (not alignOrientation.Parent) and (body:IsDescendantOf(workspace)) then
                     alignOrientation.Parent = body
                 end
             end
