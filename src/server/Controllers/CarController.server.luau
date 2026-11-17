@@ -264,7 +264,8 @@ local function programCarSeating(car)
     end
 
     -- Riding physics
-    RunService.Heartbeat:Connect(function()
+    local heartbeatListener
+    heartbeatListener = RunService.Heartbeat:Connect(function()
         for npc, seat in passengerIndex do
             local root = npc:FindFirstChild("HumanoidRootPart")
 
@@ -278,6 +279,10 @@ local function programCarSeating(car)
             local seatOffset = (rootHeight / 2) + (seatHeight / 2) + seatBuffer
 
             root.CFrame = seat.CFrame * CFrame.new(0, seatOffset, 0)
+        end
+
+        if not car:IsDescendantOf(workspace) then
+            heartbeatListener:Disconnect()
         end
     end)
 end
