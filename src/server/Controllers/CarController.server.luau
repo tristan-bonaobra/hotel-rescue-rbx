@@ -309,7 +309,6 @@ local function programCarSeating(car)
         setNpcRootAnchored(npc, true)
         listenForDismount(npc)
         stopNpcFollowing(npc)
-        SoundUtils.playSound(carBody, "Gear.BearStay", false, 0.1)
     end
 
     -- Add new passengers
