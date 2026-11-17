@@ -70,5 +70,7 @@ tool.Activated:Connect(function()
 		summonCar()
 		task.wait(Config.CAR_SUMMON_COOLDOWN)
 		isOnSpawnCooldown = false
+	else
+		SoundUtils.playSound(handle, "Gear.PickMiss")
 	end
 end)
