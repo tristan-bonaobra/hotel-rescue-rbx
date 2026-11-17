@@ -71,7 +71,6 @@ local function shockwavePhysics()
 
 			if BrickUtils.isTiny(part) and (not part:IsDescendantOf(npcsBin)) then
 				BrickUtils.breakJoints(part)
-				part.Transparency = 0.5
 				part.CanCollide = false
 			end
 			
