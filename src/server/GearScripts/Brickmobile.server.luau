@@ -42,10 +42,6 @@ tool.Activated:Connect(function()
 		SoundUtils.playSound(handle, "Gear.CarBeep")
 		
 	else
-		task.delay(Config.CAR_SUMMON_COOLDOWN, function()
-			isActive = false
-		end)
-		
 		local char = tool.Parent
         local root = char:WaitForChild("HumanoidRootPart")
         local hum = char:WaitForChild("Humanoid")
@@ -67,4 +63,7 @@ tool.Activated:Connect(function()
 			vehicleSeat:Sit(hum)
 		end
 	end
+	
+	task.wait(Config.CAR_SUMMON_COOLDOWN)
+	isActive = false
 end)
