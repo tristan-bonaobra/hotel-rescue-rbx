@@ -1,6 +1,7 @@
 local Players = game:GetService("Players")
 
 local npcsBin = workspace:WaitForChild("Npcs")
+local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local function setModelCollisionGroup(model, groupName)
 	for _, descendant in ipairs(model:GetDescendants()) do
@@ -39,5 +40,17 @@ end)
 -----------------------------------------------------------------------------------------
 
 npcsBin.ChildAdded:Connect(function(npc)
-	setModelCollisionGroup(npc, "Npcs")
+	if npc:IsA("Model") then
+		setModelCollisionGroup(npc, "Npcs")
+	end
+end)
+
+-----------------------------------------------------------------------------------------
+-- CARS
+-----------------------------------------------------------------------------------------
+
+toolDebrisBin.ChildAdded:Connect(function(v)
+	if v.Name == "Car" then
+		setModelCollisionGroup(v, "Cars")
+	end
 end)

@@ -406,3 +406,5 @@ toolDebrisBin.ChildAdded:Connect(function(v)
         programCarExplosion(v)
     end
 end)
+
+-- See CollisionGroupController
