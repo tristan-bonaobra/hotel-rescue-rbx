@@ -45,6 +45,7 @@ end
 local function rewardAllPlayersForRescue(npc)
 	local isUnconscious = npc:GetAttribute("IsUnconscious")
 	local isPanicked = npc:GetAttribute("IsPanicked")
+	local isDizzy = npc:GetAttribute("IsDizzy")
 
 	local pointsRewarded
 
@@ -53,6 +54,8 @@ local function rewardAllPlayersForRescue(npc)
 	else
 		if isPanicked then
 			pointsRewarded = Config.REWARD_PANICKED
+		elseif isDizzy then
+			pointsRewarded = Config.REWARD_DIZZY
 		else
 			pointsRewarded = Config.REWARD_CONSCIOUS
 		end

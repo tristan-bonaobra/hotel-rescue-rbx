@@ -218,7 +218,7 @@ local function programCarSeating(car)
         end)
 
         attributeListener = npc.AttributeChanged:Connect(function()
-            if npc:GetAttribute("IsRushing") then
+            if npc:GetAttribute("IsRushing") or npc:GetAttribute("IsUnconscious") then
                 dismountNpc(npc)
             end
         end)
