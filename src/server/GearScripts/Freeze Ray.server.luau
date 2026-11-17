@@ -21,6 +21,13 @@ local pointer = tool:WaitForChild("Pointer")
 local isActive = false
 local relativeCFrame = handle.CFrame:ToObjectSpace(pointer.CFrame)
 
+local breakParams = {
+    Threshold = Config.BREAK_THRESHOLD_MANUAL,
+    IsRecursive = true,
+    Unanchor = false,
+    Tint = true
+}
+
 --------------------------------------------------------------------------------------------
 -- FUNCTIONS
 --------------------------------------------------------------------------------------------
@@ -37,14 +44,6 @@ end
 local function freezePart(part)
     part.BrickColor = beam.BrickColor
     part.Material = beam.Material
-
-	local breakParams = {
-		Threshold = Config.BREAK_THRESHOLD_MANUAL,
-		IsRecursive = true,
-		Unanchor = false,
-		Tint = true
-	}
-
 	BrickUtils.breakPart(part, breakParams)
 end
 
