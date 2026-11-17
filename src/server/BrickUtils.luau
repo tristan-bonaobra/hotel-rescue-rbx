@@ -435,17 +435,30 @@ local function isTiny(part)
 		and (size.Z <= t)
 end
 
-local function isBreakable(part)
+local function allDimensionsWithinThreshold(part, threshold)
+	local t = threshold
+	local size = part.Size
+	return (size.X <= t)
+		and (size.Y <= t)
+		and (size.Z <= t)
+end
+
+local function isBreakable(part, breakThreshold)
+	breakThreshold = breakThreshold or Config.BREAK_THRESHOLD_MANUAL
+
 	if (not part:IsA("BasePart")) or part:GetAttribute("PreventBreaking") then
 		return
 	end
 
-	return (part:IsA("Part")
-		and (
-			(part.Shape == Enum.PartType.Block)
-			or (part.Shape == Enum.PartType.Wedge)
-		))
-		or (part:IsA("WedgePart"))
+	local isBasicPart = part:IsA("Part")
+	local isBasicPartOfBlockShape = isBasicPart and (part.Shape == Enum.PartType.Block)
+	local isBasicPartOfWedgeShape = isBasicPart and (part.Shape == Enum.PartType.Wedge)
+	local isBasicPartOfShape = isBasicPartOfBlockShape or isBasicPartOfWedgeShape
+	local isWedgePart = part:IsA("WedgePart")
+	local isOfBreakableType = isBasicPartOfShape or isWedgePart
+	local isOfBreakableSize = not allDimensionsWithinThreshold(part, breakThreshold)
+
+	return isOfBreakableType and isOfBreakableSize
 end
 
 ----------------------------------------------------------------------------------------------
