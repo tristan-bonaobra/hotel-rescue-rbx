@@ -43,7 +43,7 @@ local function cleanMap(map)
 				v.CanCollide = true
 			end
 
-			if v.Transparency == 1 then
+			if (v.Transparency == 1) and (not v:FindFirstChildWhichIsA("FaceInstance")) then
 				v:Destroy()
 			else
 				v.Transparency = math.min(v.Transparency, 0.5)
