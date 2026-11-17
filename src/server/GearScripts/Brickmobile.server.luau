@@ -19,7 +19,7 @@ local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local tool = script.Parent
 local handle = tool:WaitForChild("Handle")
-local char = tool.Parent
+local char = GearUtils.getChar(tool)
 local root = char:WaitForChild("HumanoidRootPart")
 local hum = char:WaitForChild("Humanoid")
 
