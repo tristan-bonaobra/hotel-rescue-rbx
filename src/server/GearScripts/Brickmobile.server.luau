@@ -55,7 +55,7 @@ tool.Activated:Connect(function()
 
 		if body then
 			SoundUtils.playSound(handle, "Gear.FlagDrop")
-			SoundUtils.playSound(body, "Gear.CarEngine")
+			SoundUtils.playSound(handle, "Gear.CarEngine")
 		end
 
 		task.wait(0.1)
