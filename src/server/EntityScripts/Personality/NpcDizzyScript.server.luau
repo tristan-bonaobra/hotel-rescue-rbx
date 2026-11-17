@@ -16,10 +16,8 @@ local SoundUtils = require(ServerScriptService:WaitForChild("SoundUtils"))
 
 local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
 local effectsLib = ServerStorage:WaitForChild("Effects")
-local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 local npc = script.Parent
-local root = npc:WaitForChild("HumanoidRootPart")
 local head = npc:WaitForChild("Head")
 
 local dizzyFace = NpcUtils.personalityFacesLib:WaitForChild("Dizzy"):Clone()
@@ -32,27 +30,12 @@ local isDoomed
 -- FUNCTIONS
 ------------------------------------------------------------------------------------------
 
-local function getNearbyVehicleSeat()
-    local overlapParams = OverlapParams.new()
-    overlapParams.FilterType = Enum.RaycastFilterType.Include
-    overlapParams.FilterDescendantsInstances = {toolDebrisBin}
-
-    local parts = workspace:GetPartBoundsInRadius(root.Position, 10, overlapParams)
-    for _, part in parts do
-        if part:IsA("VehicleSeat") then
-            return part
-        end
-    end
-
-    return nil
-end
-
 local function rideSpeedCheck()
     if isDoomed or (not npc:GetAttribute("IsMounted")) then
         return false
     end
 
-    local seat = getNearbyVehicleSeat()
+    local seat = NpcUtils.getNearbyVehicleSeat(npc)
     if not seat then
         return false
     else

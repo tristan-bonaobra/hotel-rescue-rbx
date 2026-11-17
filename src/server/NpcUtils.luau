@@ -23,8 +23,9 @@ local winPosesLib = npcAssetsLib:WaitForChild("WinPoses")
 local entityScriptsLib = ServerScriptService:WaitForChild("EntityScripts")
 local soundsLib = ServerStorage:WaitForChild("Sounds")
 local utterancesLib = soundsLib:WaitForChild("Utterances")
+local personalityScriptsLib = entityScriptsLib:WaitForChild("Personality"):GetChildren()
 
-local personalityScripts = entityScriptsLib:WaitForChild("Personality"):GetChildren()
+local toolDebrisBin = workspace:WaitForChild("ToolDebris")
 
 -------------------------------------------------------------------------------------------
 -- HELPER FUNCTIONS: SPAWNING
@@ -107,7 +108,7 @@ local function createNpc()
 
 	-- Moving it down here because NpcClingyScript modifies skin color
 	if math.random(Config.NPC_PERSONALITY_DIE) == 1 then
-		personalityScripts[math.random(#personalityScripts)]:Clone().Parent = char
+		personalityScriptsLib[math.random(#personalityScriptsLib)]:Clone().Parent = char
 	end
 	
 	return char
@@ -319,6 +320,26 @@ local function replaceFace(npc, newFace)
 	newFace.Parent = head
 end
 
+local function getNearbyVehicleSeat(npc)
+	local root = npc:WaitForChild("HumanoidRootPart")
+	if not root then
+		return
+	end
+
+    local overlapParams = OverlapParams.new()
+    overlapParams.FilterType = Enum.RaycastFilterType.Include
+    overlapParams.FilterDescendantsInstances = {toolDebrisBin}
+
+    local parts = workspace:GetPartBoundsInRadius(root.Position, 10, overlapParams)
+    for _, part in parts do
+        if part:IsA("VehicleSeat") then
+            return part
+        end
+    end
+
+    return nil
+end
+
 -------------------------------------------------------------------------------------------
 -- RETURN MODULE
 -------------------------------------------------------------------------------------------
@@ -333,4 +354,5 @@ return {
 	-- Other
 	personalityFacesLib = personalityFacesLib,
 	replaceFace = replaceFace,
+	getNearbyVehicleSeat = getNearbyVehicleSeat,
 }
