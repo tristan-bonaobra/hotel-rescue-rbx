@@ -67,6 +67,12 @@ local function knockout()
     script:Destroy()
 end
 
+local function killScriptIfRescued()
+    if npc:GetAttribute("IsRescued") then
+        script:Destroy()
+    end
+end
+
 local function trip()
     if npc:FindFirstChild("NpcTripScript")
         or npc:GetAttribute("IsUnconscious")
@@ -96,5 +102,6 @@ end)
 local min = Config.NPC_UTTERANCE_INTERVAL_MIN
 local max = Config.NPC_UTTERANCE_INTERVAL_MAX
 while task.wait(math.random(min, max)) do
+    killScriptIfRescued()
     trip()
 end
