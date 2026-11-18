@@ -4,7 +4,7 @@
 
 ## About
 
-A heroic twist on disaster survival.
+A heroic twist on disaster survival. Instead of "surviving the disaster", you must dig through the rubble and help others survive.
 
 # Usage guide
 
@@ -43,7 +43,7 @@ ServerStorage/
 
 ## How to play
 
-Escort NPCs to the green finish line, standing or otherwise.
+Escort NPCs to the green finish line, conscious or otherwise.
 
 ### Recommended starter gear
 
