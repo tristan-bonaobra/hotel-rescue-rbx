@@ -1,7 +1,5 @@
 # Hotel Rescue
 
-**README version**: Last updated v1.3.0 on November 15, 2026.
-
 [hotel-rescue-rbx on GitHub](https://github.com/tristan-bonaobra/hotel-rescue-rbx)
 
 ## About
