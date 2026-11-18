@@ -27,6 +27,10 @@ local function isBellable(part)
 	
 	if npcsBin and part:IsDescendantOf(npcsBin) then
 		for _, v in npcsBin:GetChildren() do
+			if v:GetAttribute("IsMounted") then
+				continue
+			end
+			
 			if part:IsDescendantOf(v) then
 				npc = v
 				break
