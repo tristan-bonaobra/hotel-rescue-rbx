@@ -1,19 +1,15 @@
+# Rojo / Build artifacts
 sourcemap.json
-
-# Dist
-assets/
 /*.zip
 
-# Project place file
-/hotel-rescue-rbx.rbxlx
+# Media & audio source files (keep icons/ tracked)
+media/
 
-# Roblox Studio lock files
-/*.rbxlx.lock
-/*.rbxl.lock
-
-# Ignore Roblox place files
+# Roblox place & lock files
 /*.rbxl
 /*.rbxlx
+/*.rbxl.lock
+/*.rbxlx.lock
 
 # Editor & IDE Configs
 .vscode/
