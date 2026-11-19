@@ -135,6 +135,8 @@ From a game design standpoint, the Pull Wrench is arguably the single most impor
 
 The first "tech" playtesters would often discover is using the Pull Wrench to pull a small part up through their feet and jumping on it, creating a momentum loop that results in them flying high into the air. Some tricks that I discovered myself during playtesting include hanging from a wall to break through a high window, attaching to conscious NPCs before slowly and safely lowering them from a ledge, and even reaching the main island from spawn early using a precise "slingshot" combo with the [Translocator](#translocator). Rest assured, these techniques are all features, not bugs, and I have no intention of ever removing them. Truly a Swiss Army knife! I only wonder what [other players](#designing-for-speedrunners) will discover about it.
 
+As for implementation, I remember that I had to create an exception for `tempUnanchor` so that parts didn't reanchor mid-pull: wait until the unanchored part in question no longer contained an `Attachment`. A bandage solution? Sure, but it's lasted this long. The properties of the `SpringConstraint` were deliberately tuned to feel powerful and responsive, plus, in case you haven't noticed, it was designed to look like a rubber band!
+
 ### Teddy Bear
 
 | Icon | Details |
