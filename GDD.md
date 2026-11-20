@@ -1,16 +1,18 @@
 # Hotel Rescue: Game Design Document
 
+The recommended way of reading this is to plug it into an AI and talk about it. It's also for the rare type that still reads books!
+
+This document is for players first, nerds second. I shall start with the what's before the why's.
+
 This document may or may not be up to date. Check for its latest update on the online repo or through the link below.
 
 [hotel-rescue-rbx on GitHub](https://github.com/tristan-bonaobra/hotel-rescue-rbx)
 
 ## Introduction
 
-`GDD.md` (short for "game design document") talks about all the what's and why's of Hotel Rescue in the form of an **autobiography**. This should tell you just about everything about the game as of its current state and why I thought it up that way. I realize that this sort of subverts what is expected of a file named `GDD.md`, which is often more forward-looking and less retrospective, but I figured that something industry standard would most quickly communicate the contents of the file.
+`GDD.md` (short for "game design document") talks about all the features and design decisions behind Hotel Rescue in the form of an **autobiography**. This should tell you just about everything about the game as of its current state and why I thought it up that way. I realize that this sort of subverts what is expected of a file named `GDD.md`, which is often more forward-looking and less retrospective, but I figured that something industry standard would most quickly communicate the contents of the file.
 
 I write this now because the design philosophy has been behind everything added to the game thus far and it's been bugging me. I figured that it counts as source code, and this _is_ open-source. Believe it or not, there's some real consideration behind this!
-
-The recommended way of reading this is to plug it into an AI and talk about it. It's also for the rare type that still reads books!
 
 ## Where Can I Play?
 
@@ -36,6 +38,8 @@ The primary loop looks like this:
 
 Be careful, though, as the NPCs may not be as super or smart as you!
 
+### Opening Sequence and In-Game Lore
+
 ### Inspiration and Early Experiments
 
 Hotel Rescue is a game that I wanted to make for a very long time. I would play disaster games on Roblox and think, wouldn't it be interesting if you had to rescue people instead? It would mean actually interacting with the environment instead of simply dodging killbricks. It was a totally unfilled niche, except, somewhat, for games such as [Emergency Response: Liberty County](https://www.roblox.com/games/2534724415/Emergency-Response-Liberty-County) and [Blackhawk Rescue Mission 5](https://www.roblox.com/games/2916899287/Blackhawk-Rescue-Mission-5), which were really about a bunch of other things _besides_ rescue and disaster physics!
@@ -56,7 +60,7 @@ About a year later I was brainstorming with AI about ways I'd go about running m
 
 Remember when scripting meant adding a `.Touched` script inside a part, turning it red, and calling it a lava brick? Good times. I still proudly animate with welds like a real man. In fact, this was about the same approach I brought to this project at the beginning. `tempUnanchor` was originally just a script that was cloned inside parts that I wanted unanchored, which destroyed itself when its job was done. And I was hesitant to entertain this idea one last time because of a previous mental breakdown trying to find the button that makes players R6. Is this a lesson about perseverance and adaptability? Not really. I can't promise that I won't freak out again the next time the Roblox Studio interface shifts around. I think of [MikuMikuClub's](https://www.roblox.com/communities/2729347/MikuMikuClub#!/about) About:
 
-> Roblox isn't a viable platform for stability nor "non-metaverse" games.
+> _Roblox isn't a viable platform for stability nor "non-metaverse" games._
 
 _(Miss you guys. More on the importance of first principles [later](#on-retro-aesthetics).)_
 
@@ -94,19 +98,12 @@ Meanwhile, gears are priced according to standard tiers:
 | :--- | :--- | :--- | 
 | Spawn | 0 Points | [Super Pick](#super-pick), [Pull Wrench](#pull-wrench), [Teddy Bear](#teddy-bear) |
 | Starter | 10 Points | [Dog Treats](#dog-treats), [Gravity Coil](#gravity-coil), [Brickmobile](#brickmobile) |
+| Substandard | 20 Points | [Power Piston](#power-piston), [Wooden Platform](#wooden-platform) |
 | Standard | 30 Points | [Power Bell](#power-bell), [Rally Flag](#rally-flag), [Translocator](#translocator), [Freeze Ray](#freeze-ray) |
 
 That is to say, it takes 4 good rescues to be able to purchase, say, a [Power Bell](#power-bell). Alternatively, you could purchase a starter gear right away, at the opportunity cost of choosing one starter gear over others and not being able to purchase a higher-tier gear until much later, at 10 good rescues. Still, this is the recommended option for most maps.
 
-You could argue that since an unconscious survivor takes considerably more effort to retrieve, it should be worth as much or even more points. But the _point_ is to prevent players from skipping the "be careful" half of the game by simply pushing NPCs off a high ledge for free.
-
-As an above-average player in terms of skill and experience I can consistently get between 10 and 15 out of the 30 NPCs each round. Of course the vast majority of players will not be anywhere as skilled as me, but the hope right now is that it would be balanced by having more players in the server. As for early playtests where there would often only be the playtester, c'est la vie.
-
-### Recommended Purchases Per Map
-
-This assumes that you are a new player that hasn't yet learned to [grapple](#pull-wrench). Feel free to ignore this chart, though, as the game is designed to be possible* with just the spawn gear.
-
-| Map | Gear | Reason |
+| Map | Recommended Gear | Reason |
 | :--- | :--- | :--- |
 | [Disaster Hotel](#disaster-hotel) | [Dog Treats](#dog-treats) | Lots of small rooms that could be hiding NPCs. |
 | [End of Roblox](#end-of-roblox) | [Gravity Coil](#gravity-coil) | Reach NPCs on roofs. |
@@ -115,13 +112,19 @@ This assumes that you are a new player that hasn't yet learned to [grapple](#pul
 | [Robloxian High School](#robloxian-high-school) | [Gravity Coil](#gravity-coil) | Reach NPCs on high surfaces. |
 | [Town of Robloxia](#town-of-robloxia) | [Dog Treats](#dog-treats) | Large map with a lot of structures means it might be harder to find NPCs. |
 
+The above chart assumes that you are a new player that hasn't yet mastered the [grapple](#pull-wrench). Feel free to ignore it, though, as the game is designed to be possible* with just the spawn gear.
+
+You could argue that since an unconscious survivor takes considerably more effort to retrieve, it should be worth as much or even more points. But the _point_ is to prevent players from skipping the "be careful" half of the game by simply pushing NPCs off a high ledge for free.
+
+As an above-average player in terms of skill and experience I can consistently get between 10 and 15 out of the 30 NPCs each round. Of course the vast majority of players will not be anywhere as skilled as me, but the hope right now is that it would be balanced by having more players in the server. As for early playtests where there would often only be the playtester, c'est la vie.
+
 ### Super Pick
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/SuperPick.png" width="120" alt="Super Pick"> | **Appearance**: A hammer with a yellow shaft and black handle. It shares the same model as the classic [Delete Tool](https://roblox.fandom.com/wiki/Catalog:Delete_Tool).<br>**Effect**: Breaks parts in half at each dimension greater than a threshold (currently 3 studs). If no dimension is greater than the threshold, or the part is otherwise incalculable (e.g. a truss, cylinder, or corner wedge), it is instead "crushed" into sand, clipping out of the map.<br>**Niche**: Many parts are welded to surrounding walls or are otherwise too big to pull as they are. Breaking down debris is often the first step to moving it out of the way.<br>**Cost**: 0 (Obtained by spawning). Breaking debris is a fundamental mechanic and the game is unplayable without it, especially on [Underground Base](#underground-base), where the entrance is literally blocked. |
+| <img src="./icons/SuperPick.png" width="120" alt="Super Pick"> | **Appearance**: A hammer with a yellow shaft and black handle. It shares the same model as the classic [Delete Tool](https://roblox.fandom.com/wiki/Catalog:Delete_Tool).<br>**Effect**: Breaks parts in half at each dimension greater than a threshold (currently 3 studs). If no dimension is greater than the threshold, or the part is otherwise incalculable (e.g. a truss, cylinder, or corner wedge), it is instead "crushed" into sand, clipping out of the map. If the Super Pick misses or otherwise tries to interact with an invalid part, a windy swing can be heard, similar to the [Linked Sword](https://www.roblox.com/catalog/125013769/Linked-Sword).<br>**Niche**: Many parts are welded to surrounding walls or are otherwise too big to pull as they are. Breaking down debris is often the first step to moving it out of the way.<br>**Cost**: 0 (Obtained by spawning). Breaking debris is a fundamental mechanic and the game is unplayable without it, especially on [Underground Base](#underground-base), where the entrance is literally blocked. |
 
-I remember that I wanted there to be a clear visual indicator that a part was broken, otherwise you couldn't tell that the part in front of you had actually become four parts. A red dot at `mouse.Hit`? A subtle `SelectionBox`? A cracked decal? Eventually I settled for random tint. I figured that the discoloration added to the destruction aesthetic while looking colorful and whimsical. After some experimentation I decided that simply changing the value slider looked better than changing hue, which looked like puke.
+I remember that I wanted there to be a clear visual indicator that a part was broken, otherwise you couldn't tell that the part in front of you had actually become four parts. A red dot at `mouse.Hit`? Too vague. A subtle `SelectionBox`? Varies with lighting. A cracked decal? Too ugly. Eventually I settled for random tint. I figured that the discoloration added to the destruction aesthetic while looking colorful and whimsical. After some experimentation I decided that simply changing the value slider looked better than changing hue, which looked like puke.
 
 As for implementation, simple enough—just use the existing `breakPart` function. Of course, there was the question of what counts as parts you were allowed to break—we can't have players breaking the spawn island, accidentally or not. The core logic is that the part had to be inside `CurrentMap` which is a line of thought that would eventually run through almost every other gear that would be added.
 
@@ -141,7 +144,11 @@ As for implementation, I remember that I had to create an exception for `tempUna
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/TeddyBear.png" width="120" alt="Teddy Bear"> | **Appearance**:<br>**Effect**:<br>**Niche**:<br>**Cost**: |
+| <img src="./icons/TeddyBear.png" width="120" alt="Teddy Bear"> | **Appearance**: A yellowish-brown teddy bear. It shares the same model, animations, and sounds as the [Teddy Bloxpin](https://www.roblox.com/catalog/12848902/Teddy-Bloxpin) and [Teddy Trap](https://www.roblox.com/catalog/12890798/Teddy-Trap)<br>**Effect**: Commands nearby NPCs to start following the player, including jumps. If all nearby NPCs are already following a player, they are instead commanded to stop. If no NPCs are nearby, the player instead hugs the Teddy Bear, and a squeak can be heard. Following NPCs have a delayed reaction time and will keep a respectable distance from the player, unless they are [Clingy](#clingy-npcs). When commanding, a speech bubble appears above the player, saying either _"Follow me!"_ or _"Stay here!"_<br>**Niche**: Given the objective of the game, the Teddy Bear serves as the primary win condition.<br>**Cost**: 0 (Obtained by spawning). Should it ever become unavailable, the alternative would be painstakingly pulling heavy NPCs by rope. |
+
+In case you missed it, the survivor in the opening dialog cries for their teddy bear after the disaster, hinting at its function. I find it funny funny that when you try to tell a [Clingy](#clingy-npcs) NPC to stop following, the player character will repeatedly exclaim _"Stay here!_ to no effect.
+
+What it really does is clone a script called `NpcFollowScript` into the NPC, which other things in the game can check for and sometimes remove, like the [Brickmobile](#brickmobile) upon mounting. It uses the convenient and therefore deprecated service `Chat` for speech bubbles and I remember that I wanted it to have `Enum.ChatColor`, but it no longer worked so I settled for emojis, which then also broke when I migrated the project to Rojo. Might fix that soon.
 
 ### Dog Treats
 
@@ -196,6 +203,8 @@ As for implementation, I remember that I had to create an exception for `tempUna
 | Icon | Details |
 | :--- | :--- |
 | <img src="./icons/FreezeRay.png" width="120" alt="Freeze Ray"> | **Appearance**:<br>**Effect**:<br>**Niche**:<br>**Cost**: |
+
+### Designing Gears
 
 ## The NPCs
 
@@ -253,7 +262,10 @@ As for implementation, I remember that I had to create an exception for `tempUna
 
 ### The Cutting Room Floor
 
-This should be a table.
+| Rejected Feature | Reason |
+| :--- | :--- |
+| Trusses |  |
+| Multi-pull mechanics |  |
 
 #### Trusses
 
