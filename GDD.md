@@ -10,7 +10,7 @@ This document may or may not be up to date. Check for its latest update on the o
 
 ## Introduction
 
-`GDD.md` (short for "game design document") talks about all the features and design decisions behind Hotel Rescue in the form of an **autobiography**. This should tell you just about everything about the game as of its current state and why I thought it up that way. I realize that this sort of subverts what is expected of a file named `GDD.md`, which is often more forward-looking and less retrospective, but I figured that something industry standard would most quickly communicate the contents of the file.
+`GDD.md` (short for "game design document") talks about all the features and design decisions behind Hotel Rescue in the form of a **retrospective**. This should tell you just about everything about the game as of its current state and why I thought it up that way. I realize that this sort of subverts what is expected of a file named `GDD.md`, which is often more forward-looking and less reflective, but I figured that something industry-standard would most quickly communicate the contents of the file.
 
 I write this now because the design philosophy has been behind everything added to the game thus far and it's been bugging me. I figured that it counts as source code, and this _is_ open-source. Believe it or not, there's some real consideration behind this!
 
@@ -144,7 +144,7 @@ As for implementation, I remember that I had to create an exception for `tempUna
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/TeddyBear.png" width="120" alt="Teddy Bear"> | **Appearance**: A yellowish-brown teddy bear. It shares the same model, animations, and sounds as the [Teddy Bloxpin](https://www.roblox.com/catalog/12848902/Teddy-Bloxpin) and [Teddy Trap](https://www.roblox.com/catalog/12890798/Teddy-Trap)<br>**Effect**: Commands nearby NPCs to start following the player, including jumps. If all nearby NPCs are already following a player, they are instead commanded to stop. If no NPCs are nearby, the player instead hugs the Teddy Bear, and a squeak can be heard. Following NPCs have a delayed reaction time and will keep a respectable distance from the player, unless they are [Clingy](#clingy-npcs). When commanding, a speech bubble appears above the player, saying either _"Follow me!"_ or _"Stay here!"_<br>**Niche**: Given the objective of the game, the Teddy Bear serves as the primary win condition.<br>**Cost**: 0 (Obtained by spawning). Should it ever become unavailable, the alternative would be painstakingly pulling heavy NPCs by rope. |
+| <img src="./icons/TeddyBear.png" width="120" alt="Teddy Bear"> | **Appearance**: A yellowish-brown teddy bear. It shares the same model, animations, and sounds as the [Teddy Bloxpin](https://www.roblox.com/catalog/12848902/Teddy-Bloxpin) and [Teddy Trap](https://www.roblox.com/catalog/12890798/Teddy-Trap).<br>**Effect**: Commands nearby NPCs to start following the player, including jumps. If all nearby NPCs are already following a player, they are instead commanded to stop. If no NPCs are nearby, the player instead hugs the Teddy Bear, and a squeak can be heard. Following NPCs have a delayed reaction time and will keep a respectable distance from the player, unless they are [Clingy](#clingy-npcs). When commanding, a speech bubble appears above the player, saying either _"Follow me!"_ or _"Stay here!"_<br>**Niche**: Given the objective of the game, the Teddy Bear serves as the primary win condition.<br>**Cost**: 0 (Obtained by spawning). Should it ever become unavailable, the alternative would be painstakingly pulling heavy NPCs by rope. |
 
 In case you missed it, the survivor in the opening dialog cries for their teddy bear after the disaster, hinting at its function. I find it funny funny that when you try to tell a [Clingy](#clingy-npcs) NPC to stop following, the player character will repeatedly exclaim _"Stay here!_ to no effect.
 
@@ -154,7 +154,12 @@ What it really does is clone a script called `NpcFollowScript` into the NPC, whi
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/DogTreats.png" width="120" alt="Dog Treats"> | **Appearance**:<br>**Effect**:<br>**Niche**:<br>**Cost**: |
+| <img src="./icons/DogTreats.png" width="120" alt="Dog Treats"> | **Appearance**: A bag of dog food labelled, _"Sacred Snack's Dog, 8kg"_. It has a crimped top seal, blue and yellow color blocking, and a white cartoon dog sitting in a red bowl and wearing a crown with its tongue out. The original model was uploaded by [dgonlinebr on Sketchfab](https://sketchfab.com/3d-models/sacred-snacks-dog-3d-f2aa252f7f444f42812335e15f40d72a).<br>**Effect**: Summons a dog that runs and bunnyhops straight toward the nearest NPC, often into walls and holes in the ground. It prioritizes high-value, "undiscovered" conscious NPCs, ignoring others such as rescued, follower, mounted, and unconscious NPCs.<br>**Niche**: It saves time locating NPCs in maps where it would otherwise not be as straightforward, such as [Disaster Hotel](#disaster-hotel), which has a lot of rooms that could be hiding NPCs. <br>**Cost**: 10 (Can be purchased immediately). Not every map is a Dog Treats map, but when it is, it is often inconvenient not to have it. |
+| <img src="./icons/Dog.png" width="120" alt="Dog"> | The dog itself is very small, at only about 2 studs long. It is reddish brown and tilts its head towards its target, indicating whether they're currently above, below, or in front of the player. It runs slightly slower than a player that is [rallied](#rally-flag) but much faster than a player walking at normal speed. It is gear-attachable, which means you can put, say, a [piston](#power-piston) on it, if for some reason you need to do that. As far as I know, it is the [dog morph used in Robloxville](https://roblox.fandom.com/wiki/Player:Playrobot/Robloxaville?file=Robloxville.png) and therefore any other game that used [Morph Magic](https://www.reddit.com/r/roblox/comments/1smsiar/youre_not_an_og_roblox_player_if_you_dont_know/), such as, in fact, the original [Welcome to the Town of Robloxia](https://roblox.fandom.com/wiki/Player:1dev2/Welcome_to_the_Town_of_Robloxia%E2%84%A2). Is it not fitting that it got a major buff when its home was added? |
+
+I remember using the sound of leaves rustling to simulate the sound of treats shuffling inside a bag. I also remember giving the thing a cooldown so that players don't relentlessly spawn a multi-part model into workspace.
+
+It was always going to be a dog, even during the early prototypes. That's how I imagined it. Initially I figured that it added roleplay and realism and a little bit of cuteness that the dog would walk up to sleeping NPCs on the field, and crying NPCs in the response scene. That was until [v1.3.0](https://github.com/tristan-bonaobra/hotel-rescue-rbx/releases/tag/v1.3.0) saw a massive overhaul of the dog specifically for [Town of Robloxia](#town-of-robloxia), which was a map far too large to have any time for "roleplay". I'd say, the new roleplay now is a highly energetic dog.
 
 ### Power Piston
 
@@ -266,8 +271,8 @@ What it really does is clone a script called `NpcFollowScript` into the NPC, whi
 | :--- | :--- |
 | Trusses |  |
 | Multi-pull mechanics |  |
-
-#### Trusses
+| Pathfinding |  |
+| Fire and smoke |  |
 
 ## Authors
 
