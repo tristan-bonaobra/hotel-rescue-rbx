@@ -82,9 +82,9 @@ As an above-average player in terms of skill and experience I can consistently g
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/SuperPick.png" width="120" alt="Super Pick"> | **Appearance**: A hammer with a yellow shaft and black handle. It shares the same model as the classic [Delete Tool](https://roblox.fandom.com/wiki/Catalog:Delete_Tool).<br>**Effect**: Breaks parts in half at each dimension greater than a threshold (currently 3 studs). If no dimension is greater than the threshold, or the part is otherwise incalculable (e.g. a truss, cylinder, or corner wedge), it is instead "crushed" into sand, clipping out of the map. If the Super Pick misses or otherwise tries to interact with an invalid part, a windy swing can be heard, similar to the [Linked Sword](https://www.roblox.com/catalog/125013769/Linked-Sword).<br>**Niche**: Many parts are welded to surrounding walls or are otherwise too big to pull as they are. Breaking down debris is often the first step to moving it out of the way.<br>**Cost**: 0 (Obtained by spawning). Breaking debris is a fundamental mechanic and the game is unplayable without it, especially on [Underground Base](#underground-base), where the entrance is literally blocked. |
+| <img src="./icons/SuperPick.png" width="120" alt="Super Pick"> | **Appearance**: A hammer with a yellow shaft and black handle. It shares the same model as the classic [Delete Tool](https://roblox.fandom.com/wiki/Catalog:Delete_Tool).<br>**Effect**: Breaks parts in half at each dimension greater than a threshold (currently 3 studs). If no dimension is greater than the threshold, or the part is otherwise incalculable (e.g. a truss, cylinder, or corner wedge), it is instead "crushed" into sand, clipping out of the map.<br>**Sound**: A light, high-pitched sound of a hard object breaking, with a subtle pitch shift. If the Super Pick misses or otherwise tries to interact with an invalid part, it is instead a windy swing, similar to the [Linked Sword](https://www.roblox.com/catalog/125013769/Linked-Sword).<br>**Niche**: Many parts are welded to surrounding walls or are otherwise too big to pull as they are. Breaking down debris is often the first step to moving it out of the way.<br>**Value**: 0 (Obtained by spawning). Breaking debris is a fundamental mechanic and the game is unplayable without it, especially on [Underground Base](#underground-base), where the entrance is literally blocked. |
 
-I remember that I wanted there to be a clear visual indicator that a part was broken, otherwise you couldn't tell that the part in front of you had actually become four parts. A red dot at `mouse.Hit`? Too vague. A subtle `SelectionBox`? Varies with lighting. A cracked decal? Too ugly. Eventually I settled for random tint. I figured that the discoloration added to the destruction aesthetic while looking colorful and whimsical. After some experimentation I decided that simply changing the value slider looked better than changing hue, which looked like puke.
+I remember that I wanted there to be a clear visual indicator that a part was broken, otherwise you couldn't tell that the part in front of you had actually become four parts. A red dot at `mouse.Hit`? Too vague. A subtle `SelectionBox`? Varies with lighting. A cracked decal? Too ugly. Eventually I settled for random tint. I figured that the discoloration added to the destruction aesthetic while looking colorful and whimsical. After some experimentation I decided that simply changing the value slider looked better than changing hue, which looked like vomit.
 
 As for implementation, simple enough—just use the existing `breakPart` function. Of course, there was the question of what counts as parts you were allowed to break—we can't have players breaking the spawn island, accidentally or not. The core logic is that the part had to be inside `CurrentMap` which is a line of thought that would eventually run through almost every other gear that would be added.
 
@@ -92,7 +92,7 @@ As for implementation, simple enough—just use the existing `breakPart` functio
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/PullWrench.png" width="120" alt="Pull Wrench"> | **Appearance**: A grey crescent wrench. It shares the same model as the classic [Configuration Tool](https://roblox.fandom.com/wiki/Catalog:Configuration_Tool).<br>**Effect**: Ties a `SpringConstraint` between the user's `HumanoidRootPart` and the target surface. Upon disconnecting, it applies a small impulse to the player towards the other end of the "grapple".<br>**Niche**: It is the primary tool for tearing down debris, pulling unconscious NPCs to the finish line. In more advanced playthroughs, it is also the primary means of vertical mobility. <br>**Cost**: 0 (Obtained by spawning). While the game is theoretically possible without the ability to pull, it is far too central to the game's skill expression to ever be unavailable. It would also be impossible to retrieve unconscious NPCs. |
+| <img src="./icons/PullWrench.png" width="120" alt="Pull Wrench"> | **Appearance**: A grey crescent wrench. It shares the same model as the classic [Configuration Tool](https://roblox.fandom.com/wiki/Catalog:Configuration_Tool).<br>**Effect**: Ties a `SpringConstraint` between the user's `HumanoidRootPart` and the target surface. Upon disconnecting, it applies a small impulse to the player towards the other end of the "grapple".<br>**Sound**: A heavy, stringy, bouncy sound, specifically the iconic [bass.wav](https://create.roblox.com/store/asset/12221944/basswav) used in the [Trowel](https://roblox.fandom.com/wiki/Trowel).<br>**Niche**: It is the primary tool for tearing down debris, pulling unconscious NPCs to the finish line. In more advanced playthroughs, it is also the primary means of vertical mobility. <br>**Value**: 0 (Obtained by spawning). While the game is theoretically possible without the ability to pull, it is far too central to the game's skill expression to ever be unavailable. It would also be impossible to retrieve unconscious NPCs. |
 
 From a game design standpoint, the Pull Wrench is arguably the single most important gear in the game. I like to think of it as the player's "hands", which, given everything humans have done with their hands, you can imagine is quite significant. And it is so simple, too.
 
@@ -104,7 +104,13 @@ As for implementation, I remember that I had to create an exception for `tempUna
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/TeddyBear.png" width="120" alt="Teddy Bear"> | **Appearance**: A yellowish-brown teddy bear. It shares the same model, animations, and sounds as the [Teddy Bloxpin](https://www.roblox.com/catalog/12848902/Teddy-Bloxpin) and [Teddy Trap](https://www.roblox.com/catalog/12890798/Teddy-Trap).<br>**Effect**: Commands nearby NPCs to start following the player, including jumps. If all nearby NPCs are already following a player, they are instead commanded to stop. If no NPCs are nearby, the player instead hugs the Teddy Bear, and a squeak can be heard. Following NPCs have a delayed reaction time and will keep a respectable distance from the player, unless they are [Clingy](#clingy-npcs). When commanding, a speech bubble appears above the player, saying either _"Follow me!"_ or _"Stay here!"_<br>**Niche**: Given the objective of the game, the Teddy Bear serves as the primary win condition.<br>**Cost**: 0 (Obtained by spawning). Should it ever become unavailable, the alternative would be painstakingly pulling heavy NPCs by rope. |
+| <img src="./icons/TeddyBear.png" width="120" alt="Teddy Bear"> | **Appearance**: A yellowish-brown teddy bear. It shares the same model, animations, and sounds as the [Teddy Bloxpin](https://www.roblox.com/catalog/12848902/Teddy-Bloxpin) and [Teddy Trap](https://www.roblox.com/catalog/12890798/Teddy-Trap).<br>**Effect**: Commands nearby NPCs to start following the player, including jumps. If all nearby NPCs are already following a player, they are instead commanded to stop. If no NPCs are nearby, the player instead hugs the Teddy Bear. Following NPCs have a delayed reaction time and will keep a respectable distance from the player, unless they are [Clingy](#clingy-npcs). When commanding, a speech bubble appears above the player, saying either _"Follow me!"_ or _"Stay here!"_<br>**Sound**: When herding, the teddy bear (not the player) speaks a random dialog in a high-pitched male voice ([see list](#list-of-teddy-bear-dialog-prompts)). When halting, a [button sound](https://create.roblox.com/store/asset/12221967/buttonwav) plays. If the player hugs the bear, a squeak is heard, similar to the gear's original sound.<br>**Niche**: Given the objective of the game, the Teddy Bear serves as the primary win condition.<br>**Value**: 0 (Obtained by spawning). Should it ever become unavailable, the alternative would be painstakingly pulling heavy NPCs by rope. |
+
+#### List of Teddy Bear Dialog Prompts
+1. _"Follow me!"_
+2. _"You're safe with me."_
+3. _"I'm here."_
+4. _"Stay calm..."_
 
 In case you missed it, the survivor in the opening dialog cries for their teddy bear after the disaster, hinting at its function. I find it funny funny that when you try to tell a [Clingy](#clingy-npcs) NPC to stop following, the player character will repeatedly exclaim _"Stay here!_ to no effect.
 
@@ -114,10 +120,8 @@ What it really does is clone a script called `NpcFollowScript` into the NPC, whi
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/DogTreats.png" width="120" alt="Dog Treats"> | **Appearance**: A bag of dog food labelled, _"Sacred Snack's Dog, 8kg"_. Despite the labelled weight, it is tiny and appears no heavier than a few pounds. It has a crimped top seal, blue and yellow color blocking, and a white cartoon dog sitting in a red bowl and wearing a crown with its tongue out. The original model was uploaded by [dgonlinebr on Sketchfab](https://sketchfab.com/3d-models/sacred-snacks-dog-3d-f2aa252f7f444f42812335e15f40d72a).<br>**Effect**: Summons a dog that runs and bunnyhops straight toward the nearest NPC, often into walls and holes in the ground. It prioritizes high-value, "undiscovered" conscious NPCs, ignoring others such as rescued, follower, mounted, and unconscious NPCs.<br>**Niche**: It saves time locating NPCs in maps where it would otherwise not be as straightforward, such as [Disaster Hotel](#disaster-hotel), which has a lot of rooms that could be hiding NPCs. <br>**Cost**: 10 (Can be purchased immediately). Not every map is a Dog Treats map, but when it is, it is often inconvenient not to have it. |
+| <img src="./icons/DogTreats.png" width="120" alt="Dog Treats"> | **Appearance**: A bag of dog food labelled, _"Sacred Snack's Dog, 8kg"_. Despite the labelled weight, it is tiny and appears no heavier than a few pounds. It has a crimped top seal, blue and yellow color blocking, and a white cartoon dog sitting in a red bowl and wearing a crown with its tongue out. The original model was uploaded by [dgonlinebr on Sketchfab](https://sketchfab.com/3d-models/sacred-snacks-dog-3d-f2aa252f7f444f42812335e15f40d72a).<br>**Effect**: Summons a dog that runs and bunnyhops straight toward the nearest NPC, often into walls and holes in the ground. It prioritizes high-value, "undiscovered" conscious NPCs, ignoring others such as rescued, follower, mounted, and unconscious NPCs.<br>**Sound**: When either summoning or recalling, the sound of leaves rustling plays, simulating kibble inside the bag. When summoning, the dog makes a high-pitched bark after a delay. When recalling, a human whistle call is heard.<br>**Niche**: It saves time locating NPCs in maps where it would otherwise not be as straightforward, such as [Disaster Hotel](#disaster-hotel), which has a lot of rooms that could be hiding NPCs. <br>**Value**: 10 (Can be purchased immediately). Not every map is a Dog Treats map, but when it is, it is often inconvenient not to have it. |
 | <img src="./icons/Dog.png" width="120" alt="Dog"> | The dog itself is very small, at only about 2 studs long. It is reddish brown and tilts its head towards its target, indicating whether they're currently above, below, or in front of the player. It runs slightly slower than a player that is [rallied](#rally-flag) but much faster than a player walking at normal speed. It is gear-attachable, which means you can put, say, a [piston](#power-piston) on it, if for some reason you need to do that. As far as I know, it is the [dog morph used in Robloxville](https://roblox.fandom.com/wiki/Player:Playrobot/Robloxaville?file=Robloxville.png) and therefore any other game that used [Morph Magic](https://www.reddit.com/r/roblox/comments/1smsiar/youre_not_an_og_roblox_player_if_you_dont_know/), such as, in fact, the original [Welcome to the Town of Robloxia](https://roblox.fandom.com/wiki/Player:1dev2/Welcome_to_the_Town_of_Robloxia%E2%84%A2). Is it not fitting that it got a major buff when it came home? |
-
-I remember using the sound of leaves rustling to simulate the sound of treats shuffling inside a bag. I also remember giving the thing a cooldown so that players don't relentlessly spawn a multi-part model into workspace.
 
 It was always going to be a dog, even during the early prototypes. That's how I imagined it, like real life search dogs. Initially I figured that it added roleplay and realism and a little bit of cuteness that the dog would walk up to sleeping NPCs on the field, and crying NPCs in the response scene. That was until [v1.3.0](https://github.com/tristan-bonaobra/hotel-rescue-rbx/releases/tag/v1.3.0) saw a massive overhaul of the dog specifically for [Town of Robloxia](#town-of-robloxia), which was a map far too large to have any time for "roleplay". I'd say, the new roleplay now is a highly energetic dog.
 
@@ -125,7 +129,7 @@ It was always going to be a dog, even during the early prototypes. That's how I 
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/PowerPiston.png" width="120" alt="Power Piston"> | **Appearance**: A spring platform with a wide red top and a black base, connected by a thick grey coil. The top surface is studded. While the gear itself is a cardboard box (implying that the piston comes out of the box), the icon is of the piston itself.<br>**Effect**: Summons a piston pushing outwards from the target surface using a `PrismaticConstraint`. The motor is heard only briefly unless the piston's path is blocked or it is otherwise under stress, in which case it whirs loudly and smoke appears.<br>**Niche**: Pushes heavy debris and creates a raised platform to land on or jump from.<br>**Cost**: 20. I consider it less valuable because I personally don't use it often when the [Power Bell](#power-bell) can push debris more flexibly and the [Pull Wrench](#pull-wrench) already safely lowers NPCs for free. |
+| <img src="./icons/PowerPiston.png" width="120" alt="Power Piston"> | **Appearance**: A spring platform with a wide red top and a black base, connected by a thick grey coil. The top surface is studded. While the gear itself is a cardboard box (implying that the piston comes out of the box), the icon is of the piston itself.<br>**Effect**: Summons a piston pushing outwards from the target surface using a `PrismaticConstraint`. When the piston is under stress, smoke appears. It is gear-attachable, in case, I suppose, you need an extra grip for [grappling](#pull-wrench).<br>**Sound**: Summoning and recalling sound like assembly and disassembly. The motor sound starts loud as the piston rebounds, whirring if it is blocked or under stress.<br>**Niche**: Pushes heavy debris and creates a raised platform to land on or jump from.<br>**Value**: 20. I consider it less valuable because I personally don't use it often when the [Power Bell](#power-bell) can push debris more flexibly and the [Pull Wrench](#pull-wrench) already safely lowers NPCs for free. |
 
 I think the Power Piston was really the first instance of a perfectly over-engineered feature in Hotel Rescue. Did you know that the whole structure of it is hardcoded? I really wanted there to be some indicator that the piston was under stress, and I thought of how a blender sounds when it doesn't like what it's blending. Turns out that involves a lot of math so I had to get help from AI. I remember the absolute spaghetti of it where that was handled by a script cloned not into the piston but into the sound inside the base specifically. The sounds took a lot of fine-tuning to not drive anyone absolutely mad. I believe the 50-stud `RolloffMaxDistance` standard for gear sounds really started with the Power Piston. It is also the reason the [Power Bell](#power-bell) exists!
 
@@ -135,49 +139,57 @@ I remember that it used to be a lot longer because I wanted it to be able to pus
 
 The Power Piston is really an unfortunate case of a gear being balanced solely for [Disaster Hotel](#disaster-hotel), specifically during the early days where the game was not as matured and tech was yet to be discovered, because even today it's kinda useless even on that map. I remember a single scenario where an unconscious NPC was trapped in the air underneath the hotel and needed a piston to be pushed out, but even then it was inconsistent because the NPC kept slipping off the platform. That resulted in a feature where it would actually teleport unconscious NPCs on top of it, though this has since been removed for reasons I can't remember. If I had to guess, it was probably glitchy physics jank. Nowadays I'd simply change the material of the surface to something with more friction.
 
-As of writing this, I think the Power Piston is due for a rework. I thought about making it adjustable for a while but figured that it would feel better and more "straightforward" if it were simply the perfect length instantly each time. Well, it's starting to look like there isn't a "perfect length". Here's to versatility?
+As of writing this, I think the Power Piston is due for a rework. I liked keeping the upper red platform tiny because part of me wanted to keep gears low-footprint for a reason I can't quite explain. Elegant minimalism? Unfortunately there isn't much you can do with a tiny platform when you're herding multiple NPCs. I also thought about making it adjustable for a while but figured that it would feel better and more "straightforward" if it were simply the perfect length instantly each time. Well, it's starting to look like there isn't a "perfect length". Here's to versatility?
 
 ### Power Bell
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/PowerBell.png" width="120" alt="Power Bell"> | **Appearance**: A smooth, yellow bell. The normally wooden handle is also smooth and yellow.<br>**Effect**: Knocks back all nearby parts and NPCs, creating a purple shockwave. <br>**Niche**:<br>**Cost**: |
+| <img src="./icons/PowerBell.png" width="120" alt="Power Bell"> | **Appearance**: A smooth, yellow bell. The normally wooden handle is also smooth and yellow.<br>**Effect**: Unanchors and knocks back all nearby dislodged parts and NPCs, creating a purple shockwave.<br>**Sound**: A springy, heavy bass, similar to the [Pull Wrench](#pull-wrench), but deeper and paired with a subtle earth shake.<br>**Niche**: The primary tool for pushing through obstacles, usually paired with the [Super Pick](#super-pick) to break up walls and doors before breaching.<br>**Value**: 30. A very powerful demolition tool if you ask me. It's good on any map with walls between you and the NPC, which is every map. It is often my second "meta" pick, after the [Translocator](#translocator). |
+
+It was originally added to support the [Power Piston](#power-piston) when it is stuck. The Power Bell has since overshadowed it when it comes to pushing debris on demand.
+
+Why purple? Well, it goes well with yellow, for one. And I think violet is a powerful color, like the [Power Stone from Marvel](https://marvelcinematicuniverse.fandom.com/wiki/Power_Stone), or the [Soul Knight from Black Magic](https://youtu.be/n-_p_QQJkdI?si=uNhfYdV54Xrli9sI&t=50).
 
 ### Wooden Platform
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/WoodenPlatform.png" width="120" alt="Wooden Platform"> | **Appearance**:<br>**Effect**:<br>**Niche**:<br>**Cost**: |
+| <img src="./icons/WoodenPlatform.png" width="120" alt="Wooden Platform"> | **Appearance**: A wooden, reddish brown, circular platform.<br>**Sound**: When placing, an echoing, dropped-wood sound is heard, similar to classic Roblox [skateboards](https://roblox.fandom.com/wiki/Skateboard_(series)). When retrieving, a windy sound is heard, similar to the [Super Pick](#super-pick) when it misses, implying that the platform has flown back into the player's hand.<br>**Effect**: Places a circular wooden platform that is level regardless of the target surface. It is gear-attachable, which I suppose has the niche use of allowing [pistons](#power-piston) to extend upwards from the side of a wall.<br>**Niche**: Used for safely escorting NPCs across gaps, lowering them down walls, and extending the [Power Piston's](#power-piston) coverage. <br>**Value**: 20. It should probably be less, because this is arguably the most useless gear in Hotel Rescue right now. More on that below. |
+
+The Wooden Platform was created after I saw that there was a hole in the ground between me and an NPC in [Disaster Hotel](#disaster-hotel). That situation has never happened since. Nowadays I would simply walk over and [grapple](#pull-wrench) up or perhaps break the floor underneath the NPC, safely onto the floor below. I thought making it circular would make it "consistent", but there isn't much you can do with a tiny, semicircular ledge when herding multiple NPCs, so really it is only consistently mediocre. I think there's a game design lesson to be learned there.
+
+I believe this is another case of the [Power Piston](#power-piston) syndrome where it was created before better strategies were discovered and practiced and now requires a rework. If I were to rework it now, I would make it a long, rectangular board that faces the camera. That should make it more versatile and useful for escorting NPCs. I thought of this before and I don't recall why it never came through. Maybe part of me saw elegance in a perfectly even, circular platform that is too narrow to get in the way but wide enough to have an impact. Well, it has no impact. If it was overshadowed by another gear in terms of safely lowering NPCs, it was most likely the [Pull Wrench](#pull-wrench).
 
 ### Gravity Coil
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/GravityCoil.png" width="120" alt="Gravity Coil"> | **Appearance**:<br>**Effect**:<br>**Niche**:<br>**Cost**: |
+| <img src="./icons/GravityCoil.png" width="120" alt="Gravity Coil"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
 
 ### Rally Flag
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/RallyFlag.png" width="120" alt="Rally Flag"> | **Appearance**:<br>**Effect**:<br>**Niche**:<br>**Cost**: |
+| <img src="./icons/RallyFlag.png" width="120" alt="Rally Flag"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
 
 ### Translocator
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/Translocator.png" width="120" alt="Translocator"> | **Appearance**:<br>**Effect**:<br>**Niche**:<br>**Cost**: |
+| <img src="./icons/Translocator.png" width="120" alt="Translocator"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
 
 ### Brickmobile
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/Brickmobile.png" width="120" alt="Brickmobile"> | **Appearance**:<br>**Effect**:<br>**Niche**:<br>**Cost**: |
+| <img src="./icons/Brickmobile.png" width="120" alt="Brickmobile"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
 
 ### Freeze Ray
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/FreezeRay.png" width="120" alt="Freeze Ray"> | **Appearance**:<br>**Effect**:<br>**Niche**:<br>**Cost**: |
+| <img src="./icons/FreezeRay.png" width="120" alt="Freeze Ray"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
 
 ## Chapter III: The NPCs
 
@@ -223,7 +235,9 @@ As of writing this, I think the Power Piston is due for a rework. I thought abou
 
 #### Nikkocity
 
-## Chapter V: Development History and Design Philosophy
+## Chapter V: Considerations before Adding Features
+
+## Chapter VI: Development History and Design Philosophy
 
 ### Inspiration and Early Experiments
 
