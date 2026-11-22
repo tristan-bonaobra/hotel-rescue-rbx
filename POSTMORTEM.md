@@ -14,13 +14,11 @@ This document may or may not be up to date. Check for its latest update on the o
 
 I write this now because the design philosophy has been behind everything added to the game thus far and it's been bugging me. I figured that it counts as source code, and this _is_ open-source. Believe it or not, there's some real consideration behind this!
 
-## Where Can I Play?
+### Where Can I Play?
 
 As of writing this, there is currently no publicly playable version of the game on Roblox! The reason for this is to minimize any link between my IGN and my real-world identity for the sake of privacy. I could upload it on a throwaway account, but you wouldn't be able to play it anyway, unless you've somehow already given Roblox your biometrics for voice chat. [Creator Documentation](https://en.help.roblox.com/hc/en-us/articles/203313890-How-to-Publish-Games-on-Roblox)
 
 To play, you'll have to set it up yourself with this [usage guide](README.md). If you do and your upload takes off, I'd be happy just knowing that others see the vision!
-
-## Chapter I: The Game
 
 ### What is Hotel Rescue?
 
@@ -36,9 +34,7 @@ The primary loop looks like this:
 
 Be careful, though, as the NPCs may not be as super or smart as you!
 
-### Opening Sequence and In-Game Lore
-
-## Chapter II: Gears and Economy
+## Chapter I: Gears and Economy
 
 The gears in this chapter shall be sorted roughly according to the order in which the gears were created.
 
@@ -96,7 +92,17 @@ As for implementation, simple enough—just use the existing `breakPart` functio
 
 From a game design standpoint, the Pull Wrench is arguably the single most important gear in the game. I like to think of it as the player's "hands", which, given everything humans have done with their hands, you can imagine is quite significant. And it is so simple, too.
 
-The first "tech" playtesters would often discover is using the Pull Wrench to pull a small part up through their feet and jumping on it, creating a momentum loop that results in them flying high into the air. Some tricks that I discovered myself during playtesting include hanging from a wall to break through a high window, attaching to conscious NPCs before slowly and safely lowering them from a ledge, slingshotting to the top of [Hotel Rescue](#what-is-hotel-rescue), and even reaching the main island from spawn early using a precise "slingshot" combo with the [Translocator](#translocator). Rest assured, these techniques are all features, not bugs, and I have no intention of ever removing them. I only wonder what [other players](#designing-for-speedrunners) will discover about it.
+The first "tech" playtesters would often discover is using the Pull Wrench to pull a small part up through their feet and jumping on it, creating a momentum loop that results in them flying high into the air. Some tricks that I discovered myself during playtesting include hanging from a wall to break through a high window, attaching to conscious NPCs before slowly and safely lowering them from a ledge, slingshotting to the top of [Hotel Rescue](#what-is-hotel-rescue), and even reaching the main island from spawn early using a precise "slingshot" combo with the [Translocator](#translocator).
+
+In fact this rubber band is so powerful that it singlehandedly made several gears obsolete as it shifted the meta, though fortunately not in a way that completely eliminates new niches:
+
+| Outclassed Gear | Reason |
+| :--- | :--- |
+| [Power Piston](#power-piston) | The Pull Wrench is better at safely lowering NPCs. |
+| [Wooden Platform](#wooden-platform) | The Pull Wrench is better at safely lowering NPCs. |
+| [Gravity Coil](#gravity-coil) | The Pull Wrench is better at vertical mobility. |
+
+Rest assured, these techniques are all features, not bugs, and I have no intention of ever removing them. Besides, I wouldn't call it overpowered—there is definitely still room for new niches. While the Pull Wrench _has_ the ability to safely lower NPCs, it is very slow at it and can only do so one at a time, plus there isn't really anything an NPC can do with the _player's_ vertical mobility. In fact, they would die if they had it. It is the weaker gears that need improvements, not as power creep, but because they were outclassed from the start and we just didn't know it yet. In other words, a metagame shift. I only wonder what else [other players](#designing-for-speedrunners) might discover about the Pull Wrench.
 
 As for implementation, I remember that I had to create an exception for `tempUnanchor` so that parts didn't reanchor mid-pull: wait until the unanchored part in question no longer contained an `Attachment`. A bandage solution? Sure, but it's lasted this long. The properties of the `SpringConstraint` were deliberately tuned to feel powerful and responsive, plus, in case you haven't noticed, it was designed to look like a rubber band!
 
@@ -112,7 +118,7 @@ As for implementation, I remember that I had to create an exception for `tempUna
 3. _"I'm here."_
 4. _"Stay calm..."_
 
-In case you missed it, the survivor in the opening dialog cries for their teddy bear after the disaster, hinting at its function. I find it funny funny that when you try to tell a [Clingy](#clingy-npcs) NPC to stop following, the player character will repeatedly exclaim _"Stay here!_ to no effect.
+In case you missed it, the survivor in the [opening dialog](#opening-sequence-and-in-game-lore) cries for their teddy bear after the disaster, hinting at its function. I find it funny that when you try to tell a [Clingy](#clingy-npcs) NPC to stop following, the player character will repeatedly exclaim _"Stay here!_ to no effect.
 
 What it really does is clone a script called `NpcFollowScript` into the NPC, which other things in the game can check for and sometimes remove, like the [Brickmobile](#brickmobile) upon mounting. It uses the convenient and therefore deprecated service `Chat` for speech bubbles and I remember that I wanted it to have `Enum.ChatColor`, but it no longer worked so I settled for emojis, which then also broke when I migrated the project to Rojo. Might fix that soon.
 
@@ -165,7 +171,15 @@ I believe this is another case of the [Power Piston](#power-piston) syndrome whe
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/GravityCoil.png" width="120" alt="Gravity Coil"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
+| <img src="https://static.wikia.nocookie.net/roblox/images/e/e1/Gravity_Coil1.png/revision/latest?cb=20180702034124" width="120" alt="Gravity Coil"> | **Appearance**: A light blue coil that wraps around the player's arm, exactly like the original [Gravity Coil](https://roblox.fandom.com/wiki/Catalog:Gravity_Coil) gear.<br>**Sound**: A drawn out, springy "boing" sound, also like the original.<br>**Effect**: Boosts the player's `JumpPower` from 50 to 90.<br>**Niche**: Serves as a crutch for newer players that can't [grapple](#pull-wrench) yet.<br>**Value**: 10 (Can be purchased immediately). Vertical mobility is essential to reach NPCs, but it is ultimately possible without it. |
+
+The Gravity Coil's downfall from endgame chase to 10-point "crutch" was slow but sure. It was created during a time when I thought that that kind of free vertical mobility was overpowered and a way of skipping half the game. Likewise I priced it as a 90-point luxury item. Mind you, "mobility" at the time was limited to hopping just high enough to reach the next floor using the [Pull Wrench](#pull-wrench). Of course nowadays we know that the wrench can jump much higher than that and can in fact scale the entirety of [Disaster Hotel](#disaster-hotel) in a matter of seconds.
+
+If we look past the "downfall" dramatics, though, the Gravity Coil's niche as a crutch for new players is genuinely valuable—if not in the meta, then for the game's overall health and UX. It took _me_ a long time to discover the potential of [grappling](#pull-wrench), and I'm the developer! I don't imagine that most players would ever discover it at all, at least not on their own. Playtest results second this.
+
+It used to function exactly like the original [Gravity Coil](https://roblox.fandom.com/wiki/Catalog:Gravity_Coil)—script copypasted and all—but I was too cautious in thinking that the grapple-coil combo with the original anti-gravity was way too potent in skipping [Disaster Hotel](#disaster-hotel), when the truth is that it only saved a few seconds, so really the rework to a simple `JumpPower` buff was pointless from the start. And it isn't really "skipping" anyway, because there's still the problem of safely herding all the NPCs you find on the way down. The reworked version is also uninteractive—from a physical anti-gravitational property to a stat change for exactly one `Humanoid`. A revert is certainly in order here.
+
+The Gravity Coil was the last gear added before the project was moved to Rojo.
 
 ### Rally Flag
 
@@ -189,9 +203,9 @@ I believe this is another case of the [Power Piston](#power-piston) syndrome whe
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/FreezeRay.png" width="120" alt="Freeze Ray"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
+| <img src="https://static.wikia.nocookie.net/roblox/images/9/95/Freeze_Ray_BackpackIcon.png/revision/latest?cb=20260718182535" width="120" alt="Freeze Ray"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
 
-## Chapter III: The NPCs
+## Chapter II: The NPCs
 
 ### NPC Designs
 
@@ -207,7 +221,9 @@ I believe this is another case of the [Power Piston](#power-piston) syndrome whe
 
 #### Dizzy NPCs
 
-## Chapter IV: Environment and Music
+## Chapter III: World and Music
+
+### Opening Sequence and In-Game Lore
 
 ### Locations
 
@@ -235,9 +251,9 @@ I believe this is another case of the [Power Piston](#power-piston) syndrome whe
 
 #### Nikkocity
 
-## Chapter V: Considerations before Adding Features
+## Chapter IV: Considerations before Adding Features
 
-## Chapter VI: Development History and Design Philosophy
+## Chapter V: Development History and Design Philosophy
 
 ### Inspiration and Early Experiments
 
