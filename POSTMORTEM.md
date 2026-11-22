@@ -110,15 +110,16 @@ As for implementation, I remember that I had to create an exception for `tempUna
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/TeddyBear.png" width="120" alt="Teddy Bear"> | **Appearance**: A yellowish-brown teddy bear. It shares the same model, animations, and sounds as the [Teddy Bloxpin](https://www.roblox.com/catalog/12848902/Teddy-Bloxpin) and [Teddy Trap](https://www.roblox.com/catalog/12890798/Teddy-Trap).<br>**Effect**: Commands nearby NPCs to start following the player, including jumps. If all nearby NPCs are already following a player, they are instead commanded to stop. If no NPCs are nearby, the player instead hugs the Teddy Bear. Following NPCs have a delayed reaction time and will keep a respectable distance from the player, unless they are [Clingy](#clingy-npcs). When commanding, a speech bubble appears above the player, saying either _"Follow me!"_ or _"Stay here!"_<br>**Sound**: When herding, the teddy bear (not the player) speaks a random dialog in a high-pitched male voice ([see list](#list-of-teddy-bear-dialog-prompts)). When halting, a [button sound](https://create.roblox.com/store/asset/12221967/buttonwav) plays. If the player hugs the bear, a squeak is heard, similar to the gear's original sound.<br>**Niche**: Given the objective of the game, the Teddy Bear serves as the primary win condition.<br>**Value**: 0 (Obtained by spawning). Should it ever become unavailable, the alternative would be painstakingly pulling heavy NPCs by rope. |
+| <img src="./icons/TeddyBear.png" width="120" alt="Teddy Bear"> | **Appearance**: A yellowish-brown teddy bear. It shares the same model, animations, and sounds as the [Teddy Bloxpin](https://www.roblox.com/catalog/12848902/Teddy-Bloxpin) and [Teddy Trap](https://www.roblox.com/catalog/12890798/Teddy-Trap).<br>**Effect**: Commands nearby NPCs to start following the player, including jumps. If all nearby NPCs are already following a player, they are instead commanded to stop. If no NPCs are nearby, the player instead hugs the Teddy Bear. Following NPCs have a delayed reaction time and will keep a respectable distance from the player, unless they are [Clingy](#clingy-npcs). When commanding, a speech bubble appears above the player, saying either "Follow me!" or "Stay here!"<br>**Sound**: When herding, the teddy bear (not the player) speaks a random dialog in a high-pitched male voice ([see list](#list-of-teddy-bear-dialog-prompts)). When halting, a [button sound](https://create.roblox.com/store/asset/12221967/buttonwav) plays. If the player hugs the bear, a squeak is heard, similar to the gear's original sound.<br>**Niche**: Given the objective of the game, the Teddy Bear serves as the primary win condition.<br>**Value**: 0 (Obtained by spawning). Should it ever become unavailable, the alternative would be painstakingly pulling heavy NPCs by rope. |
 
-#### List of Teddy Bear Dialog Prompts
-1. _"Follow me!"_
-2. _"You're safe with me."_
-3. _"I'm here."_
-4. _"Stay calm..."_
+Below is a list of the random dialogue the Teddy Bear might say:
 
-In case you missed it, the survivor in the [opening dialog](#opening-sequence-and-in-game-lore) cries for their teddy bear after the disaster, hinting at its function. I find it funny that when you try to tell a [Clingy](#clingy-npcs) NPC to stop following, the player character will repeatedly exclaim _"Stay here!_ to no effect.
+1. "Follow me!"
+2. "You're safe with me."
+3. "I'm here."
+4. "Stay calm..."
+
+In case you missed it, the survivor in the [opening dialog](#opening-sequence-and-in-game-lore) cries for their teddy bear after the disaster, hinting at its function. I find it funny that when you try to tell a [Clingy](#clingy-npcs) NPC to stop following, the player character will repeatedly exclaim "Stay here! to no effect.
 
 What it really does is clone a script called `NpcFollowScript` into the NPC, which other things in the game can check for and sometimes remove, like the [Brickmobile](#brickmobile) upon mounting. It uses the convenient and therefore deprecated service `Chat` for speech bubbles and I remember that I wanted it to have `Enum.ChatColor`, but it no longer worked so I settled for emojis, which then also broke when I migrated the project to Rojo. Might fix that soon.
 
@@ -126,7 +127,7 @@ What it really does is clone a script called `NpcFollowScript` into the NPC, whi
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="./icons/DogTreats.png" width="120" alt="Dog Treats"> | **Appearance**: A bag of dog food labelled, _"Sacred Snack's Dog, 8kg"_. Despite the labelled weight, it is tiny and appears no heavier than a few pounds. It has a crimped top seal, blue and yellow color blocking, and a white cartoon dog sitting in a red bowl and wearing a crown with its tongue out. The original model was uploaded by [dgonlinebr on Sketchfab](https://sketchfab.com/3d-models/sacred-snacks-dog-3d-f2aa252f7f444f42812335e15f40d72a).<br>**Effect**: Summons a dog that runs and bunnyhops straight toward the nearest NPC, often into walls and holes in the ground. It prioritizes high-value, "undiscovered" conscious NPCs, ignoring others such as rescued, follower, mounted, and unconscious NPCs.<br>**Sound**: When either summoning or recalling, the sound of leaves rustling plays, simulating kibble inside the bag. When summoning, the dog makes a high-pitched bark after a delay. When recalling, a human whistle call is heard.<br>**Niche**: It saves time locating NPCs in maps where it would otherwise not be as straightforward, such as [Disaster Hotel](#disaster-hotel), which has a lot of rooms that could be hiding NPCs. <br>**Value**: 10 (Can be purchased immediately). Not every map is a Dog Treats map, but when it is, it is often inconvenient not to have it. |
+| <img src="./icons/DogTreats.png" width="120" alt="Dog Treats"> | **Appearance**: A bag of dog food labelled, "Sacred Snack's Dog, 8kg". Despite the labelled weight, it is tiny and appears no heavier than a few pounds. It has a crimped top seal, blue and yellow color blocking, and a white cartoon dog sitting in a red bowl and wearing a crown with its tongue out. The original model was uploaded by [dgonlinebr on Sketchfab](https://sketchfab.com/3d-models/sacred-snacks-dog-3d-f2aa252f7f444f42812335e15f40d72a).<br>**Effect**: Summons a dog that runs and bunnyhops straight toward the nearest NPC, often into walls and holes in the ground. It prioritizes high-value, "undiscovered" conscious NPCs, ignoring others such as rescued, follower, mounted, and unconscious NPCs.<br>**Sound**: When either summoning or recalling, the sound of leaves rustling plays, simulating kibble inside the bag. When summoning, the dog makes a high-pitched bark after a delay. When recalling, a human whistle call is heard.<br>**Niche**: It saves time locating NPCs in maps where it would otherwise not be as straightforward, such as [Disaster Hotel](#disaster-hotel), which has a lot of rooms that could be hiding NPCs. <br>**Value**: 10 (Can be purchased immediately). Not every map is a Dog Treats map, but when it is, it is often inconvenient not to have it. |
 | <img src="./icons/Dog.png" width="120" alt="Dog"> | The dog itself is very small, at only about 2 studs long. It is reddish brown and tilts its head towards its target, indicating whether they're currently above, below, or in front of the player. It runs slightly slower than a player that is [rallied](#rally-flag) but much faster than a player walking at normal speed. It is gear-attachable, which means you can put, say, a [piston](#power-piston) on it, if for some reason you need to do that. As far as I know, it is the [dog morph used in Robloxville](https://roblox.fandom.com/wiki/Player:Playrobot/Robloxaville?file=Robloxville.png) and therefore any other game that used [Morph Magic](https://www.reddit.com/r/roblox/comments/1smsiar/youre_not_an_og_roblox_player_if_you_dont_know/), such as, in fact, the original [Welcome to the Town of Robloxia](https://roblox.fandom.com/wiki/Player:1dev2/Welcome_to_the_Town_of_Robloxia%E2%84%A2). Is it not fitting that it got a major buff when it came home? |
 
 It was always going to be a dog, even during the early prototypes. That's how I imagined it, like real life search dogs. Initially I figured that it added roleplay and realism and a little bit of cuteness that the dog would walk up to sleeping NPCs on the field, and crying NPCs in the response scene. That was until [v1.3.0](https://github.com/tristan-bonaobra/hotel-rescue-rbx/releases/tag/v1.3.0) saw a massive overhaul of the dog specifically for [Town of Robloxia](#town-of-robloxia), which was a map far too large to have any time for "roleplay". I'd say, the new roleplay now is a highly energetic dog.
@@ -171,13 +172,13 @@ I believe this is another case of the [Power Piston](#power-piston) syndrome whe
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="https://static.wikia.nocookie.net/roblox/images/e/e1/Gravity_Coil1.png/revision/latest?cb=20180702034124" width="120" alt="Gravity Coil"> | **Appearance**: A light blue coil that wraps around the player's arm, exactly like the original [Gravity Coil](https://roblox.fandom.com/wiki/Catalog:Gravity_Coil) gear.<br>**Sound**: A drawn out, springy "boing" sound, also like the original.<br>**Effect**: Boosts the player's `JumpPower` from 50 to 90.<br>**Niche**: Serves as a crutch for newer players that can't [grapple](#pull-wrench) yet.<br>**Value**: 10 (Can be purchased immediately). Vertical mobility is essential to reach NPCs, but it is ultimately possible without it. |
+| <img src="https://static.wikia.nocookie.net/roblox/images/e/e1/Gravity_Coil1.png/revision/latest?cb=20180702034124" width="120" alt="Gravity Coil"> | **Appearance**: A light blue coil that wraps around the player's arm, exactly like the original [Gravity Coil](https://roblox.fandom.com/wiki/Catalog:Gravity_Coil) gear.<br>**Sound**: A drawn out, springy "boing" sound, also like the original.<br>**Effect**: Boosts the player's `JumpPower` from 50 to 90.<br>**Niche**: Serves as a crutch for newer players that can't [grapple](#pull-wrench) yet.<br>**Value**: 10 (Can be purchased immediately). Vertical mobility is essential to reach NPCs, so new players cannot be left out. The reason you don't just spawn with it is that mobility is ultimately possible without it and that it can unlock interactions, probably. |
 
 The Gravity Coil's downfall from endgame chase to 10-point "crutch" was slow but sure. It was created during a time when I thought that that kind of free vertical mobility was overpowered and a way of skipping half the game. Likewise I priced it as a 90-point luxury item. Mind you, "mobility" at the time was limited to hopping just high enough to reach the next floor using the [Pull Wrench](#pull-wrench). Of course nowadays we know that the wrench can jump much higher than that and can in fact scale the entirety of [Disaster Hotel](#disaster-hotel) in a matter of seconds.
 
 If we look past the "downfall" dramatics, though, the Gravity Coil's niche as a crutch for new players is genuinely valuable—if not in the meta, then for the game's overall health and UX. It took _me_ a long time to discover the potential of [grappling](#pull-wrench), and I'm the developer! I don't imagine that most players would ever discover it at all, at least not on their own. Playtest results second this.
 
-It used to function exactly like the original [Gravity Coil](https://roblox.fandom.com/wiki/Catalog:Gravity_Coil)—script copypasted and all—but I was too cautious in thinking that the grapple-coil combo with the original anti-gravity was way too potent in skipping [Disaster Hotel](#disaster-hotel), when the truth is that it only saved a few seconds, so really the rework to a simple `JumpPower` buff was pointless from the start. And it isn't really "skipping" anyway, because there's still the problem of safely herding all the NPCs you find on the way down. The reworked version is also uninteractive—from a physical anti-gravitational property to a stat change for exactly one `Humanoid`. A revert is certainly in order here.
+It used to function exactly like the original [Gravity Coil](https://roblox.fandom.com/wiki/Catalog:Gravity_Coil)—script copypasted and all—but I was too cautious in thinking that the grapple-coil combo with the original anti-gravity was way too potent in skipping [Disaster Hotel](#disaster-hotel), when the truth is that it only saved a few seconds, so really the rework to a simple `JumpPower` buff was pointless from the start. And it isn't really "skipping" anyway, because there's still the problem of safely herding all the NPCs you find on the way down. The reworked version is also uninteractive—from a physical anti-gravitational property to a stat change for exactly one `Humanoid`. Perhaps anti-gravity might have interactions with NPC-lowering strategies as well as the [Brickmobile](#brickmobile). A revert is certainly in order here.
 
 The Gravity Coil was the last gear added before the project was moved to Rojo.
 
@@ -186,6 +187,8 @@ The Gravity Coil was the last gear added before the project was moved to Rojo.
 | Icon | Details |
 | :--- | :--- |
 | <img src="./icons/RallyFlag.png" width="120" alt="Rally Flag"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
+
+Up next on "perfectly overengineered"
 
 ### Translocator
 
@@ -273,13 +276,19 @@ About a year later I was brainstorming with AI about ways I'd go about running m
 
 ### Unlocking Roblox a Different Way
 
+Hotel Rescue is the result of a developer playing a games and asking, "What if?"
+
 > Roblox characters don't really have hands, and yet, in disaster games, they are often surrounded by parts that are just begging to be grabbed. Tools such as the Pull Wrench unlock that whole new dimension in a physics engine where it should've made sense from the start.
 
 > The popularity of games such as [VR Hands](https://www.roblox.com/games/4832438542/VR-Hands-v3-2), [Surgeon Simulator](https://store.steampowered.com/app/233720/Surgeon_Simulator/), and [GIRP](https://foddy.net/blog/2011/03/girp/) hint at the universal appeal of the near-direct extension of basic, biological human agency and sheer physics.
 
 ### On "Retro" Aesthetics
 
-(One of the primitives is that Roblox is a PC game.)
+The first thing you might notice about Hotel Rescue is that it fits the description of a "retro" aesthetic. How on earth could the developer have replicated it so accurately?
+
+Firstly, what is "retro"? Well, as far as 2026 seems concerned, retro means [noobs](https://roblox.fandom.com/wiki/Noob?file=NOOB%21.png), tongue-in-cheek references to [Crossroads](https://roblox.fandom.com/wiki/Player:Roblox/Classic:_Crossroads), and slapping `Enum.SurfaceType.Universal` on every surface, assuming you even notice it past the visual effects, camera shake, and reward screens. Well, my parts only have studs on the top surface, so either my game isn't retro or something isn't right.
+
+What is retro? Is it 2008? Well, surely a 2007 player would've called you a newgen. The same could be said about 2007 players by 2006 players. [Interactive Physics](https://roblox.fandom.com/wiki/Knowledge_Revolution) players envy anyone nostalgic for something whose birth year starts with a 2. Perhaps a board of armchair experts could come together and name a range and list some rules, and with those rules you make a game. Well, now you have yourself a retro game, but it is also deprecated, if not entirely broken. That would answer what retro means, but it doesn't really mean anything good,
 
 ### On Player "Freedom"
 
@@ -300,7 +309,7 @@ About a year later I was brainstorming with AI about ways I'd go about running m
 
 Remember when scripting meant adding a `.Touched` script inside a part, turning it red, and calling it a lava brick? Good times. I still proudly animate with welds like a real man. In fact, this was about the same approach I brought to this project at the beginning. `tempUnanchor` was originally just a script that was cloned inside parts that I wanted unanchored, which destroyed itself when its job was done. And I was hesitant to entertain this idea one last time because of a previous mental breakdown trying to find the button that makes players R6. Is this a lesson about perseverance and adaptability? Not really. I can't promise that I won't freak out again the next time the Roblox Studio interface shifts around. I think of [MikuMikuClub's](https://www.roblox.com/communities/2729347/MikuMikuClub#!/about) About:
 
-> _Roblox isn't a viable platform for stability nor "non-metaverse" games._
+> "Roblox isn't a viable platform for stability nor "non-metaverse" games."
 
 _(Miss you guys. More on the importance of first principles [later](#on-retro-aesthetics).)_
 
@@ -312,7 +321,7 @@ Hotel Rescue is open-source. I think it is extremely unlikely that it would ever
 
 At [AMD's booth](https://www.facebook.com/amdredteamph/posts/amd-is-here-at-the-1st-ai-philippine-expo-2026visit-the-amd-booth-and-experience/122172433244658437/) during the [AI Philippine Expo of 2026](https://www.linkedin.com/search/results/all/?keywords=%23iotconference2026), I witnessed an LLM go through an entire repo to fix one bug. I intend to use some form of that functionality in the future to audit my code, refining anything that looks shaky or prone to—trigger warning—deprecation.
 
-Will this game ever be playable on mobile? No—I don't think so. There's just too much going on. Or, rather, there's a lot going on that just wouldn't work on mobile. Or, it could work on mobile, but I just don't need that kind of additional maintenance work. Sorry, economists, but the mobile market will have to sit this one out. Or, rather, I'll be the one missing out on the mobile market. [Fine by me!](#on-retro-aesthetics)
+Will this game ever be playable on mobile? No—I don't think so. There's just too much going on. Or, rather, there's a lot going on that just wouldn't work on mobile. Or, it could work on mobile, but I just don't need that kind of additional maintenance work. Sorry, economists, but the mobile market will have to sit this one out. Or, rather, I'll be the one missing out on the mobile market. Fine by me!
 
 You might notice that Hotel Rescue uses semantic versioning that starts with a 1 (i.e. `v1.X.X`), implying a `v2.X.X`. You can expect that all versions will be starting with a 1, unless something happens and someone gives the game a complete makeover with a new lobby and a new island with brand-spanking-new [UIs, animations](https://www.youtube.com/watch?v=l3n3_w2mmz8), and... proximity prompts... in which case that 1 shall turn into a 2. I'd welcome any new ideas then.
 
