@@ -76,7 +76,7 @@ As an above-average player in terms of skill and experience I can consistently g
 
 ### Super Pick
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
 | <img src="./icons/SuperPick.png" width="120" alt="Super Pick"> | **Appearance**: A hammer with a yellow shaft and black handle. It shares the same model as the classic [Delete Tool](https://roblox.fandom.com/wiki/Catalog:Delete_Tool).<br>**Effect**: Breaks parts in half at each dimension greater than a threshold (currently 3 studs). If no dimension is greater than the threshold, or the part is otherwise incalculable (e.g. a truss, cylinder, or corner wedge), it is instead "crushed" into sand, clipping out of the map.<br>**Sound**: A light, high-pitched sound of a hard object breaking, with a subtle pitch shift. If the Super Pick misses or otherwise tries to interact with an invalid part, it is instead a windy swing, similar to the [Linked Sword](https://www.roblox.com/catalog/125013769/Linked-Sword).<br>**Niche**: Many parts are welded to surrounding walls or are otherwise too big to pull as they are. Breaking down debris is often the first step to moving it out of the way.<br>**Value**: 0 (Obtained by spawning). Breaking debris is a fundamental mechanic and the game is unplayable without it, especially on [Underground Base](#underground-base), where the entrance is literally blocked. |
 
@@ -86,7 +86,7 @@ As for implementation, simple enough—just use the existing `breakPart` functio
 
 ### Pull Wrench
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
 | <img src="./icons/PullWrench.png" width="120" alt="Pull Wrench"> | **Appearance**: A grey crescent wrench. It shares the same model as the classic [Configuration Tool](https://roblox.fandom.com/wiki/Catalog:Configuration_Tool).<br>**Effect**: Ties a `SpringConstraint` between the user's `HumanoidRootPart` and the target surface. Upon disconnecting, it applies a small impulse to the player towards the other end of the "grapple".<br>**Sound**: A heavy, stringy, bouncy sound, specifically the iconic [bass.wav](https://create.roblox.com/store/asset/12221944/basswav) used in the [Trowel](https://roblox.fandom.com/wiki/Trowel).<br>**Niche**: It is the primary tool for tearing down debris, pulling unconscious NPCs to the finish line. In more advanced playthroughs, it is also the primary means of vertical mobility. <br>**Value**: 0 (Obtained by spawning). While the game is theoretically possible without the ability to pull, it is far too central to the game's skill expression to ever be unavailable. It would also be impossible to retrieve unconscious NPCs. |
 
@@ -108,7 +108,7 @@ As for implementation, I remember that I had to create an exception for `tempUna
 
 ### Teddy Bear
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
 | <img src="./icons/TeddyBear.png" width="120" alt="Teddy Bear"> | **Appearance**: A yellowish-brown teddy bear. It shares the same model, animations, and sounds as the [Teddy Bloxpin](https://www.roblox.com/catalog/12848902/Teddy-Bloxpin) and [Teddy Trap](https://www.roblox.com/catalog/12890798/Teddy-Trap).<br>**Effect**: Commands nearby NPCs to start following the player, including jumps. If all nearby NPCs are already following a player, they are instead commanded to stop. If no NPCs are nearby, the player instead hugs the Teddy Bear. Following NPCs have a delayed reaction time and will keep a respectable distance from the player, unless they are [Clingy](#clingy-npcs). When commanding, a speech bubble appears above the player, saying either "Follow me!" or "Stay here!"<br>**Sound**: When herding, the teddy bear (not the player) speaks a random dialog in a high-pitched male voice. When halting, a [button sound](https://create.roblox.com/store/asset/12221967/buttonwav) plays. If the player hugs the bear, a squeak is heard, similar to the gear's original sound.<br>**Niche**: Given the objective of the game, the Teddy Bear serves as the primary win condition.<br>**Value**: 0 (Obtained by spawning). Should it ever become unavailable, the alternative would be painstakingly pulling heavy NPCs by rope. |
 
@@ -125,7 +125,7 @@ What it really does is clone a script called `NpcFollowScript` into the NPC, whi
 
 ### Dog Treats
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
 | <img src="./icons/DogTreats.png" width="120" alt="Dog Treats"> | **Appearance**: A bag of dog food labelled, "Sacred Snack's Dog, 8kg". Despite the labelled weight, it is tiny and appears no heavier than a few pounds. It has a crimped top seal, blue and yellow color blocking, and a white cartoon dog sitting in a red bowl and wearing a crown with its tongue out. The original model was uploaded by [dgonlinebr on Sketchfab](https://sketchfab.com/3d-models/sacred-snacks-dog-3d-f2aa252f7f444f42812335e15f40d72a).<br>**Effect**: Summons a dog that runs and bunnyhops straight toward the nearest NPC, often into walls and holes in the ground. It prioritizes high-value, "undiscovered" conscious NPCs, ignoring others such as rescued, follower, mounted, and unconscious NPCs.<br>**Sound**: When either summoning or recalling, the sound of leaves rustling plays, simulating kibble inside the bag. When summoning, the dog makes a high-pitched bark after a delay. When recalling, a human whistle call is heard.<br>**Niche**: It saves time locating NPCs in maps where it would otherwise not be as straightforward, such as [Disaster Hotel](#disaster-hotel), which has a lot of rooms that could be hiding NPCs. <br>**Value**: 10 (Can be purchased immediately). Not every map is a Dog Treats map, but when it is, it is often inconvenient not to have it. |
 | <img src="./icons/Dog.png" width="120" alt="Dog"> | The dog itself is very small, at only about 2 studs long. It is reddish brown and tilts its head towards its target, indicating whether they're currently above, below, or in front of the player. It runs slightly slower than a player that is [rallied](#rally-flag) but much faster than a player walking at normal speed. It is gear-attachable, which means you can put, say, a [piston](#power-piston) on it, if for some reason you need to do that. As far as I know, it is the [dog morph used in Robloxville](https://roblox.fandom.com/wiki/Player:Playrobot/Robloxaville?file=Robloxville.png) and therefore any other game that used [Morph Magic](https://www.reddit.com/r/roblox/comments/1smsiar/youre_not_an_og_roblox_player_if_you_dont_know/), such as, in fact, the original [Welcome to the Town of Robloxia](https://roblox.fandom.com/wiki/Player:1dev2/Welcome_to_the_Town_of_Robloxia%E2%84%A2). Is it not fitting that it got a major buff when it came home? |
@@ -134,7 +134,7 @@ It was always going to be a dog, even during the early prototypes. That's how I 
 
 ### Power Piston
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
 | <img src="./icons/PowerPiston.png" width="120" alt="Power Piston"> | **Appearance**: A spring platform with a wide red top and a black base, connected by a thick grey coil. The top surface is studded. While the gear itself is a cardboard box (implying that the piston comes out of the box), the icon is of the piston itself.<br>**Effect**: Summons a piston pushing outwards from the target surface using a `PrismaticConstraint`. When the piston is under stress, smoke appears. It is gear-attachable, in case, I suppose, you need an extra grip for [grappling](#pull-wrench).<br>**Sound**: Summoning and recalling sound like assembly and disassembly. The motor sound starts loud as the piston rebounds, whirring if it is blocked or under stress.<br>**Niche**: Pushes heavy debris and creates a raised platform to land on or jump from.<br>**Value**: 20. I consider it less valuable because I personally don't use it often when the [Power Bell](#power-bell) can push debris more flexibly and the [Pull Wrench](#pull-wrench) already safely lowers NPCs for free. |
 
@@ -150,7 +150,7 @@ As of writing this, I think the Power Piston is due for a rework. I liked keepin
 
 ### Power Bell
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
 | <img src="./icons/PowerBell.png" width="120" alt="Power Bell"> | **Appearance**: A smooth, yellow bell. The normally wooden handle is also smooth and yellow.<br>**Effect**: Unanchors and knocks back all nearby dislodged parts and NPCs, creating a purple shockwave.<br>**Sound**: A springy, heavy bass, similar to the [Pull Wrench](#pull-wrench), but deeper and paired with a subtle earth shake.<br>**Niche**: The primary tool for pushing through obstacles, usually paired with the [Super Pick](#super-pick) to break up walls and doors before breaching.<br>**Value**: 30. A very powerful demolition tool if you ask me. It's good on any map with walls between you and the NPC, which is every map. It is often my second "meta" pick, after the [Translocator](#translocator). |
 
@@ -160,7 +160,7 @@ Why purple? Well, it goes well with yellow, for one. And I think violet is a pow
 
 ### Wooden Platform
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
 | <img src="./icons/WoodenPlatform.png" width="120" alt="Wooden Platform"> | **Appearance**: A wooden, reddish brown, circular platform.<br>**Sound**: When placing, an echoing, dropped-wood sound is heard, similar to classic Roblox [skateboards](https://roblox.fandom.com/wiki/Skateboard_(series)). When retrieving, a windy sound is heard, similar to the [Super Pick](#super-pick) when it misses, implying that the platform has flown back into the player's hand.<br>**Effect**: Places a circular wooden platform that is level regardless of the target surface. It is gear-attachable, which I suppose has the niche use of allowing [pistons](#power-piston) to extend upwards from the side of a wall.<br>**Niche**: Used for safely escorting NPCs across gaps, lowering them down walls, and extending the [Power Piston's](#power-piston) coverage. <br>**Value**: 20. It should probably be less, because this is arguably the most useless gear in Hotel Rescue right now. More on that below. |
 
@@ -170,7 +170,7 @@ I believe this is another case of the [Power Piston](#power-piston) syndrome whe
 
 ### Gravity Coil
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
 | <img src="https://static.wikia.nocookie.net/roblox/images/e/e1/Gravity_Coil1.png/revision/latest?cb=20180702034124" width="120" alt="Gravity Coil"> | **Appearance**: A light blue coil that wraps around the player's arm, exactly like the original [Gravity Coil](https://roblox.fandom.com/wiki/Catalog:Gravity_Coil) gear.<br>**Sound**: A drawn out, springy "boing" sound, also like the original.<br>**Effect**: Boosts the player's `JumpPower` from 50 to 90.<br>**Niche**: Serves as a crutch for newer players that can't [grapple](#pull-wrench) yet.<br>**Value**: 10 (Can be purchased immediately). Vertical mobility is essential to reach NPCs, so new players cannot be left out. The reason you don't just spawn with it is that mobility is ultimately possible without it and that it can unlock interactions, probably. |
 
@@ -184,27 +184,27 @@ The Gravity Coil was the last gear added before the project was moved to Rojo.
 
 ### Rally Flag
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
-| <img src="./icons/RallyFlag.png" width="120" alt="Rally Flag"> | **Appearance**: A yellow flag with the Roblox "R" in a black circle at its center. The flag is held up by a cylindrical black pole. In the world, it has a faint yellow glow and yellow sparkles. It is the classic [Flag](https://roblox.fandom.com/wiki/Flag) object used in [Capture the Flag](https://roblox.fandom.com/wiki/Capture_The_Flag) games, before it was deprecated in 2015. [Roblox Engine API Reference](https://create.roblox.com/docs/reference/engine/classes/Flag) <br>**Sound**: When a `Humanoid` is rallied, a high-pitched, zippy rev plays at its location, similar to the sound of the [Speed Coil](https://roblox.fandom.com/wiki/Catalog:Speed_Coil#Audio). If equipped while the flag is in hand, a game whistle plays. Placing and retrieving the flag plays a suction pop at alternating pitches. If the flag is dropped, a high-pitched "pop" is heard.<br>**Effect**: Increases the walk speed of nearby players and NPCs. The effect is the same whether or not the flag is in hand. If dropped or otherwise placed on an unanchored part, it forces a fixed orientation. It is gear-attachable and can be placed on players and NPCs, allowing for shenanigans. The activation radius is quite small, but the deactivation is radius is significantly larger. The effect checks the character's distance from _any_ flag, which means you could leave the deactivation radius of the first flag but remain in the deactivation radius of a flag you never came close to, and the speed boost would remain. <br>**Niche**: A supportive item that boosts the tempo for the user and others.<br>**Value**: 30. Its potential scales significantly with the number of players and other flags in the server, and inversely with the size of the map. One could place it at an entry chokepoint in, say, [Prison Panic](#prison-panic), and players—and therefore their income generation—would remain accelerated for half the map. |
+| <img src="./icons/RallyFlag.png" width="120" alt="Rally Flag"> | **Appearance**: A yellow flag with the Roblox "R" in a black circle at its center. The flag is held up by a cylindrical black pole. In the world, it has a faint yellow glow and yellow sparkles. It is the classic [Flag](https://roblox.fandom.com/wiki/Flag) object used in [Capture the Flag](https://roblox.fandom.com/wiki/Capture_The_Flag) games, before it was deprecated in 2015. [Roblox Engine API Reference](https://create.roblox.com/docs/reference/engine/classes/Flag) <br>**Sound**: When a `Humanoid` is rallied, a high-pitched, zippy rev plays at its location, similar to the sound of the [Speed Coil](https://roblox.fandom.com/wiki/Catalog:Speed_Coil#Audio). If equipped while the flag is in hand, a game whistle plays. Placing and retrieving the flag plays a suction pop at alternating pitches. If the flag is dropped, a high-pitched "pop" is heard.<br>**Effect**: Increases the walk speed of nearby players and NPCs. The effect is the same whether or not the flag is in hand. If dropped or otherwise placed on an unanchored part, it forces a fixed orientation. It is gear-attachable and can be placed on players and NPCs, allowing for shenanigans. The activation radius is quite small, but the deactivation is radius is significantly larger. The effect checks the character's distance from _any_ flag, which means you could leave the deactivation radius of the first flag but remain in the deactivation radius of a flag you never came close to, and the speed buff would remain. <br>**Niche**: A supportive item that boosts the tempo for the user and others.<br>**Value**: 30. Its potential scales significantly with the number of players and other flags in the server, and inversely with the size of the map. One could place it at an entry chokepoint in, say, [Prison Panic](#prison-panic), and players—and therefore their income generation—would remain accelerated for half the map. |
 
-Up next on "perfectly overengineered"
+Up next on Perfectly Overengineered is the unassuming yellow flag that on the surface does nothing but boost your `WalkSpeed`. Of course, your own celerity isn't worth much if the NPCs you're herding remain slow. So, boost them, too, within a `Magnitude`. Now just boosting them once wasn't an issue, until you take replication into account and realize that while the NPCs appear close enough on screen, the server does not agree, and they slowly fall behind. Suddenly the gameplay became oscillating back and forth and then repeatedly placing and retrieving the flag just to reapply the boost. So, make it a lingering buff that lasts for a few seconds. Easier said than done but even so it turned out that the NPC being out of range once while the player was moving in a straight line meant that the NPC was out of range forever. It didn't prevent the oscillation—only slow it down. So, buff the activation radius and the buff duration. Somehow, it still didn't work! And I hesitated to buff it even further because I wanted players to still have to walk up to whomever they wanted to buff so that it doesn't just become a brainless global "win aura". So, after a lot of brainstorming with AI, I came up with a solution: use a different, bigger radius for deactivation. Again, easier said than done—there was also the problem of avoiding stacking buffs and considering boost deactivation when outside the effect radius of the original flag but within the radius of another. After refactoring what used to be a simple, cloned `EntityScript` into a global "flag controller", it worked! It takes a special kind of earned grit to not lose your mind thoroughly troubleshooting something that was supposed to be simple. Such is programming.
 
 ### Translocator
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
 | <img src="./icons/Translocator.png" width="120" alt="Translocator"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
 
 ### Brickmobile
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
 | <img src="./icons/Brickmobile.png" width="120" alt="Brickmobile"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
 
 ### Freeze Ray
 
-| <img width="120" height="1"><br>Icon | <img width="120" height="1"><br>Details |
+| Icon | Details |
 | :--- | :--- |
 | <img src="https://static.wikia.nocookie.net/roblox/images/9/95/Freeze_Ray_BackpackIcon.png/revision/latest?cb=20260718182535" width="120" alt="Freeze Ray"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
 
@@ -294,7 +294,7 @@ What is retro? Is it 2008? Well, surely a 2007 player would've called you a newg
 
 Maybe by retro they meant early-to-mid-2010s. Well, the original* [Flood Escape](https://flood-escape.fandom.com/wiki/Flood_Escape) and [DODGEBALL!](https://roblox.fandom.com/wiki/Player:Alexnewtron/ROBLOX_DODGEBALL!) came out during that era with tween-animated GUI elements, detailed surroundings, and custom player animations, and my game has none of that. What Hotel Rescue does have are the titular [Disaster Hotel](https://roblox.fandom.com/wiki/Player:Waterlimon/Disaster_Hotel) map, which came out in 2010, and shop pads inspired by [Survive the 87 Disasters!](https://www.youtube.com/watch?v=i8LsRRNsoW4), which came out in 2009. So, retro is 2009-2010? Congratulations, you just made someone very angry.
 
-Is retro simplicity? I'd say, "[Throw a Seed](https://www.roblox.com/games/129081220403721/Throw-a-Seed)" and "[Fish for Secret Animals!](https://www.roblox.com/games/107192230357786/Fish-for-Secret-Animals)" seem quite simple to me. Is retro pre-greed? Well, back then if it wasn't colorful, gacha "simulator" mechanics it was literally game-breaking, pay-to-win gamepasses and admin commands. Is retro `Message` and `Hint`? Anyone could slap that on and then have `ProximityPrompt` in place of `Touched`. Where do we draw the line? Is it some fundamental, philosophical concept of primitives and first principles that could be defined as a thematic congruency to Roblox's origins as a part-based, gear-based, player-based destructive physics sandbox? Well, [Sword Fights on the Heights](https://roblox.fandom.com/wiki/Sword_Fights_on_the_Heights_(series)) had no destructive physics, so is that not "retro"? Of course it is. Or, it would be, if "retro" were a thing.
+Is retro simplicity? I'd say, "[Throw a Seed](https://www.roblox.com/games/129081220403721/Throw-a-Seed)" and "[Fish for Secret Animals!](https://www.roblox.com/games/107192230357786/Fish-for-Secret-Animals)" seem quite simple to me. Is it pre-greed? Well, back then if it wasn't colorful, gacha "simulator" mechanics it was literally game-breaking, pay-to-win gamepasses and admin commands. Is retro `Message` and `Hint`? Anyone could slap that on and then have `ProximityPrompt` in place of `Touched`. Where do we draw the line? Is it some fundamental, philosophical concept of primitives and first principles that could be defined as a thematic congruency to Roblox's origins as a part-based, gear-based, player-based destructive physics sandbox? Well, [Sword Fights on the Heights](https://roblox.fandom.com/wiki/Sword_Fights_on_the_Heights_(series)) had no destructive physics, so is that not "retro"? Of course it is. Or, it would be, if "retro" were a thing.
 
 The rhetoric can go on and on when really the truth is that my game is not retro because retro doesn't exist. Hotel Rescue's "retro" aesthetic is not deliberate but rather a natural byproduct of limited manpower and my habits as a mid-2010s developer. If retro does exist, it's impossible to define because anyone who would be old enough to argue about it is too busy raising kids. Or, I'm just tired after contemplating it for years.
 
