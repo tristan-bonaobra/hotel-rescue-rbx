@@ -38,6 +38,8 @@ Be careful, though, as the NPCs may not be as super or smart as you!
 
 ## Chapter I: Gears and Economy
 
+Gears are obtainable tactical items that aid in NPC rescue through debris control, crowd control, and mobility.
+
 The gears in this chapter shall be sorted roughly according to the order in which the gears were created.
 
 ### Points Economy
