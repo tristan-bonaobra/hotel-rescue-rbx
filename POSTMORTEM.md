@@ -228,7 +228,7 @@ Oh, Brickmobile. Where do we even begin? It's a shame that it is no more than on
 
 Let's start with the car itself—wheels and chassis and all. Of course the metaverse way involves  `PrismaticConstraint` suspension with `HingeConstraints`, `Enum.ActuatorTypes`, and 30-line control scripts that are nowhere to be found in official documentation. Unfortunately I am but a curious 11-year-old who found this funny block game on an ad while playing [Snail Bob](https://play.google.com/store/apps/details?id=com.hunterhamster.snailbob).
 
-So, let's look at some free models. No, I do not want a [2019 Chevrolet Tahoe PPV powered by the A-chassis 1.5.2](https://create.roblox.com/store/asset/139248881138858/2019-Chevrolet-Tahoe-PPV-Update). I had a vision for the Brickmobile from the start—blocky, for the rest of world was made of parts, and heavy with proportionally large wheels, as well as a low center of gravity, so that it could navigate rough terrain without flipping over. But no combination of search terms could satisfy. Strangely, the car that performed best was the [big yellow toy car from Telamon's Big World](https://youtu.be/GSBfYfgEkQs?si=t4ZLOg1iTq9pzvpS&t=30), in other words the 2009-2011 starter place, which surely says something about just what kind of game this is. I wasn't satisfied with it, though, especially since it was quite big and could easily be used for griefing in [Underground Base](#underground-base).
+So, let's look at some free models. No, I do not want a [2019 Chevrolet Tahoe PPV powered by the A-chassis 1.5.2](https://create.roblox.com/store/asset/139248881138858/2019-Chevrolet-Tahoe-PPV-Update). I had a vision for the Brickmobile from the start—blocky, for the rest of the world was made of parts, and heavy with proportionally large wheels, as well as a low center of gravity, so that it could navigate rough terrain without flipping over. But no combination of search terms could satisfy. Strangely, the car that performed best was the [big yellow toy car from Telamon's Big World](https://youtu.be/GSBfYfgEkQs?si=t4ZLOg1iTq9pzvpS&t=30), in other words the 2009-2011 starter place, which surely says something about just what kind of game this is. I wasn't satisfied with it, though, especially since it was quite big and could easily be used for griefing in [Underground Base](#underground-base).
 
 So, I thought to look for templates, such as [this one uploaded by Adel_GamingYT](https://create.roblox.com/store/asset/13321887045/Car-Template), instead of finished vehicles, and then simply resize them until they were the shape that I wanted. The car shook violently after shrinking one dimension by one stud. Apparently the post-pandemic engine doesn't like that anymore. I remember when it [didn't mind](https://roblox.fandom.com/wiki/Player:B0BBA/Ultimate_Build)—do you?
 
@@ -246,17 +246,17 @@ The problem was that vehicles hop ownership to clientside for the sake of respon
 
 So, forget seats, and forget welds. Now what? How do we transport groups of NPCs? Unwelded jittering like a [Builder Brothers supplier truck](https://workatapizzaplace.fandom.com/wiki/Supplier) in 2015? Fling machine. A large floating box? Great, if you're a griefer. Portable teleporter? Skips the game. Dual-key portal? Creates a boring, "portal boy" job in co-op. [Poké Ball](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9_Ball)? Drive off the map. Force server ownership? That should've worked on paper, even at the cost of responsiveness, but it still somehow didn't work!
 
-At some point after a lot of brainstorming with AI, I thought to combine some of those ideas and remodel the Brickmobile into the Warp Rover. It was the same, except it was black and blue with a long antenna. Got as far as a working prototype and visual effects. The idea was to first pull over, establish a link between the rover and nearby NPCs, drive all the way back to the finish line, and finally press a button to teleport all linked NPCs back to the rover's location. It was a great idea on paper because the player still had to go through the labor of driving the thing around to get results. What didn't sit right with me, though, was that the NPCs themselves experienced zero of that physics, which felt anti-game.
+At some point after a lot of brainstorming with AI, I thought to combine some of those ideas and remodel the Brickmobile into the Warp Rover. It was the same, except it was black and blue with a long antenna. Got as far as a working prototype and visual effects. The idea was to first pull over, establish a link between the rover and nearby NPCs, drive all the way back to the finish line, and finally press a button to teleport all linked NPCs back to the rover's location. It was a great idea on paper because the player still had to go through the labor of driving the thing around to get results. What didn't sit right with me, though, was that the NPCs themselves experienced zero of that physics, which felt anti-game. It felt wasteful, but I had to let it go. If you ever find unused assets for a sci-fi WiFi car, that is wi.
 
-So, it was back to Brickmobile, and to questioning whether this was worth it. But this was the patch to release [Town of Robloxia](#town-of-robloxia)—I simply couldn't release it without a car. It just makes sense.
+So, it was back to Brickmobile, and to questioning whether this was even worth it. But this was the patch to release [Town of Robloxia](#town-of-robloxia)—I simply couldn't release it without a car. I mean, have you _been_ to suburbia?
 
 A solution that I actually figured out early on, before the whole Warp Rover experiment, was to let the visible, green seats be "fake" while the "real" seats were disjointed, transparent, and anchored, following the Brickmobile on a heartbeat. The problem, though, was the way the Brickmobile and the NPCs' positions desynced in the eyes of the client. Just visually would've been fine, but reversing was impossible because the player kept colliding into the floating passengers. And at the time the only way I knew to make characters intangible was to set `CanCollide` every frame, which was a no-go performance-wise. It was only when I revisited the idea that I realized: wait, collision groups exist! So, I set it up, replication and reversing are both solved, and that's how it's been since.
 
 #### Combinatorial Explosions
 
-What made the Brickmobile quite a handful to code was the sheer number of unexpected interactions it had with the game's world. We already covered the big ones, so let's quickly go through some of the others:
+What made the Brickmobile quite a handful to code was the sheer number of interactions it had with the game's world, especially the NPCs. We already covered the big ones, so let's quickly go through the rest:
 
-1. Driving on debris made it sway side-to-side, which meant terrible steering. The solution was a timed `AlignOrientation`, which was actually the first thing I solved after modelling with the help of AI.
+1. Driving on debris made it sway side-to-side, which meant terrible steering. The solution was a timed `AlignOrientation` indicated by the rear lights, which was actually the first thing I solved after modelling with the help of AI.
 
 2. Despite not interacting with clientside `Seats`, NPCs still welded themselves to `VehicleSeats` like normal, causing replication glitches anyway. So, disable all seats and rebuild debounced `Touched` logic from scratch.
 
@@ -277,7 +277,15 @@ So, when did it end? I don't know. Eventually testing went on for long enough wi
 
 | Icon | Details |
 | :--- | :--- |
-| <img src="https://static.wikia.nocookie.net/roblox/images/9/95/Freeze_Ray_BackpackIcon.png/revision/latest?cb=20260718182535" width="120" alt="Freeze Ray"> | **Appearance**:<br>**Sound**:<br>**Effect**:<br>**Niche**:<br>**Value**: |
+| <img src="https://static.wikia.nocookie.net/roblox/images/9/95/Freeze_Ray_BackpackIcon.png/revision/latest?cb=20260718182535" width="120" alt="Freeze Ray"> | **Appearance**: A grey, metallic weapon or tool with white and dark grey accents. It has a curved rear grip and a long, slender barrel. Three narrow glass tubes protrude from the top, containing glowing, light-blue coolant. A subtle white mist follows the Freeze Ray while equipped.<br>**Sound**: Firing the Freeze Ray emits a glassy, echoing, windy sound, just like the original [Freeze Ray](https://www.youtube.com/watch?v=vNcHb6YZS-Q&t=43s) gear. A high-pitched, crunchy sound plays when a part is frozen, similar to the [Vine Staff](https://www.youtube.com/watch?v=efj42mD-pWY&t=121s) gear on equip.<br>**Effect**: Fires an ice beam a short distance in front of it. Any part that's caught at both the beginning and end of the beam is frozen into small, brittle pieces of ice. Due to the precise timing involved, a thin, white ray indicates the tool's true trajectory serverside.<br>**Niche**: Saves big time breaking down debris. Often paired with the [Power Bell](#power-bell).<br>**Value**: 30. Particularly impactful in [Underground Base](#underground-base). |
+
+Speaking of simple, the Freeze Ray is basically a reconfigured version of the [Super Pick](#super-pick) in terms of implementation. However, it fulfills a totally different tactical niche.
+
+The biggest difference is that, unlike, the Super Pick, it does _not_ unanchor the broken pieces. As a result it actually takes _more_ steps to clear a path in a bunch of situations, such as breaking through a floor or ceiling. There are also some cases where you'd rather a wall be broken into a few large, manageable pieces instead of a dozen smaller ones, so that you only have to pull down one or two to make way. Another glaring difference is that the Freeze Ray can only hit directly in front of where the player is facing, and cannot be aimed vertically.
+
+So, then, what's the point? The thing is that when you pair it with the [Power Bell](#power-bell), which removes small parts from the map, it becomes the closest thing the game has to a "delete button". This is really good on [Underground Base](#underground-base)'s stone walls and [Prison Panic](#prison-panic)'s reinforced entrance, to name two. Suddenly, players and NPCs have a wide open path to generate income without having to navigate debris.
+
+Now, I try to make the gears modular in that they don't rely on each other to work. But I'd say—the Freeze Ray's job is, well, freezing parts, not clearing debris. And it can freeze parts just fine on its own.
 
 ## Chapter II: The NPCs
 
@@ -319,15 +327,17 @@ So, when did it end? I don't know. Eventually testing went on for long enough wi
 
 ### Music
 
+_include debut map_
+
 #### Urban Descent
 
 #### Groundworks Complex
 
 #### Nikkocity
 
-## Chapter IV: Considerations before Adding Features
+## Chapter IV: How to Do It Like Hotel Rescue
 
-## Chapter V: Development History and Design Philosophy
+## Chapter V: Development History and Higher Philosophy
 
 ### Inspiration and Early Experiments
 
